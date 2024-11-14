@@ -1,0 +1,44 @@
+% % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % LaTeX-Vorlage für Bachelor- und Masterarbeiten  % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % %
+%
+\documentclass[language=de,degree=bachelor]{mfithesis} % optionen: language=[de|en], degree=[bachelor|master], [natbib|biblatex], [bibtex|biber]
+%
+\begin{document}
+
+\author{Name der Autorin}
+\title{Titel der Abschlussarbeit}
+\matrno{Matrikelnummer der Autorin}
+\course{Studiengang}
+
+\betreuer{Name der Betreuerin}
+\zweitgutachterin{Name der Zweitgutachterin}
+%\zweitgutachter{Name des Zweitgutachters}
+%\drittgutachterin{Name der externen Betreuerin} % optional
+
+\date{Datum der Fertigstellung}
+\logo{logoUDE.pdf} % das UDE-Logo
+%\extralogo{filename.png} % optional: ein zusätzliches Logo
+
+
+
+
+\maketitle % Titelseite erzeugen
+\tableofcontents % Inhaltsverzeichnis erzeugen
+
+
+%% Der eigentliche Inhalt der Abschlussarbeit beginnt hier.
+\section{Titel des ersten Abschnitts}
+Inhalt des ersten Abschnitts\ldots
+
+%% Bibliography
+\bibliography{bib_filename} % print the bibliography, using the .bib-file "bib_filename.bib"
+
+
+
+
+%% Eidesstattliche Erklärung
+\newpage
+\declaration
+
+\end{document}

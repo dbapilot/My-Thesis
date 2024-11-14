@@ -1,0 +1,59 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{titletoc}
+
+% Customizing the table of contents
+\titlecontents{section}
+[0em] % left margin
+{\vspace{0.5em}\bfseries} % above code (e.g., vertical space and bold font)
+{\contentslabel{2.3em}} % numbered entry format
+{} % unnumbered entry format
+{\titlerule*[1pc]{.}\contentspage} % filler-page format (e.g., dots followed by page number)
+
+\titlecontents{subsection}
+[2.3em] % left margin
+{\vspace{0.25em}} % above code
+{\contentslabel{2.3em}} % numbered entry format
+{} % unnumbered entry format
+{\titlerule*[1pc]{.}\contentspage} % filler-page format
+
+\titlecontents{subsubsection}
+[4.6em] % left margin
+{\vspace{0.25em}} % above code
+{\contentslabel{3.2em}} % numbered entry format
+{} % unnumbered entry format
+{\titlerule*[1pc]{.}\contentspage} % filler-page format
+
+\begin{document}
+
+\tableofcontents
+\newpage
+
+\section{Introduction and Motivation}
+This section introduces the main topics.
+
+\subsection{Background}
+Here's some background information.
+
+\subsubsection{Early Work}
+Discussion of the early work.
+
+\section{Methodology}
+Overview of the methods used in the study.
+
+\subsection{Experimental Design}
+Details on the experimental design.
+
+\subsection{Data Collection}
+How data was collected.
+
+\section{Results}
+Presentation of the study's results.
+
+\subsection{Data Analysis}
+Analysis of the data collected.
+
+\section{Conclusion}
+Concluding remarks and implications of the work.
+
+\end{document}
