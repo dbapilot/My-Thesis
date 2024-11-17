@@ -5,7 +5,7 @@
 
 \documentclass[language=en,degree=bachelor, 12pt, book]{./other_pages/mfithesis} % options: language=[de|en], degree=[bachelor|master], [natbib|biblatex], [bibtex|biber]
 %\newtheorem{definition}{Definition}[Section]
-%%% Here is the various packages 
+
 \bibliographystyle{achemso}
 \usepackage[utf8]{inputenc} % Ensures the document can use Unicode characters
 \usepackage[T1]{fontenc}    % Output font encoding for international characters
@@ -20,7 +20,10 @@
 \usepackage{rotating}
 %\usepackage{ulem}
 \usepackage[caption=false]{subfig}
-\usepackage{url}           
+\usepackage{url} 
+\usepackage{hyperref}
+\usepackage{natbib}
+\bibliographystyle{plainnat}
 \usepackage{float}
 \restylefloat{figure}
 \usepackage{placeins}
@@ -35,7 +38,7 @@
 %\usepackage[explicit]{titlesec}
 %\usepackage{tocbibind}
 %\usepackage{blindtext}
-\usepackage{subfigure} 
+%\usepackage{subfigure} 
 %\restylefloat{figure}
 %Enumerations
 \usepackage{enumerate}
