@@ -1,7 +1,5 @@
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
 % % LaTeX template for bachelor's and master's theses % %
-% % % % % % % % % % % % % % % % % % % % % % % % % % % % %
-%
 
 \documentclass[language=en,degree=bachelor, 12pt, book]{./other_pages/mfithesis} % options: language=[de|en], degree=[bachelor|master], [natbib|biblatex], [bibtex|biber]
 %\newtheorem{definition}{Definition}[Section]
@@ -9,16 +7,19 @@
 \bibliographystyle{achemso}
 \usepackage[utf8]{inputenc} % Ensures the document can use Unicode characters
 \usepackage[T1]{fontenc}    % Output font encoding for international characters
-%\usepackage[dvipsnames]{xcolor}
+\usepackage[dvipsnames]{xcolor}
 \usepackage{lipsum} % This package generates filler text for the example
 \usepackage{fncychap}
 %\usepackage{chapterbib}
+
 \usepackage{natbib}
-%----From Zihad %%%%
+%----From --- %%%%
 \usepackage[linguistics]{forest}
 \usepackage[utf8]{inputenc}
 \usepackage{rotating}
-%\usepackage{ulem}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage[normalem]{ulem}
 \usepackage[caption=false]{subfig}
 \usepackage{url} 
 \usepackage{hyperref}
@@ -31,38 +32,44 @@
 \usepackage{graphicx}
 %%---%
 \usepackage{fancyhdr}
-\usepackage{mdwlist}
+\usepackage{scrlayer}
   % Optional, for coloring code
-\usepackage[colorlinks=false]{hyperref}
-%\usepackage{xcolor}#
-%\usepackage[explicit]{titlesec}
-%\usepackage{tocbibind}
-%\usepackage{blindtext}
-%\usepackage{subfigure} 
-%\restylefloat{figure}
+\usepackage[colorlinks=true]{hyperref}
 %Enumerations
 \usepackage{enumerate}
+\usepackage{placeins}
 \usepackage{enumitem}
 \usepackage{acronym}
 \usepackage{booktabs, tabularx}
 \usepackage{amsmath}
 \newtheorem{definition}{Definitions}
+%Hyperlinks
 \usepackage{hyperref}
-\hypersetup
-    {
+\hypersetup{
     colorlinks=true,
-    linkcolor=black,
+    linkcolor=black ,
     filecolor=magenta,      
-    urlcolor=cyan,
+    urlcolor=green,
     pdftitle={Overleaf Example},
     pdfpagemode=FullScreen,
+    breaklinks=true,
+    colorlinks=true,
+    linkcolor=black,
+    citecolor=blue
     }
 \urlstyle{same}
 
 %-----
+%New colors defined below
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
 
+\usepackage{listings}
 
-
+\lstset{style=mystyle}
+\usepackage[colorlinks=true, urlcolor=blue, linkcolor=blue, citecolor=blue]{hyperref}
 %-------
 %\usepackage[table, dvipsnames]{xcolor}  % Include all the options you need
 %\usepackage{amsthm}
