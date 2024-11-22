@@ -142,7 +142,21 @@ This materialized view "ProductSalesSummary" stores precomputed join results bet
 \end{enumerate}
 \subsubsection{Materialized view vs Database View:} With the usual syntax of creating a view, we create a database view  and that's different from the materialized view because a normal database view is just a virtual table that is defined by a SQL query. It is stored in the user database and can be accessed by user who have appropriate permissions. A MV view doesn't not store any data itself, it is simply  a way of presenting data from one  or more tables in different way. Materialized views are disk based and are updated periodically based upon the query definition.\cite{Stackoverflow-author-08-2008} Views are virtual and run the query definition each time they are accessed. Materialized views are useful when data is accessed frequently and updated infrequently.
 
- \subsubsection{ Materialized views on MSSQL:} Microsoft sql server supports materialized views, but they are called "indexed views" because a materialized view may be indexed in multiple ways. A view is materialized by creating a unique clustered index on an existing view. Uniqueness implies that the view output must contain a unique key
+ \subsubsection{ How materialized views work on MSSQL:} Not every database supports materialized views, and those that do each handle them a little differently, especially when it comes to the approach to view maintenance.\cite{hattemer-2020} Microsoft sql server supports materialized views, but they are called "indexed views" because a materialized view may be indexed in multiple ways and a materialization step is a matter of creating an index on a regular view. A view is materialized by creating a unique clustered index on an existing view. Uniqueness implies that the view output must contain a unique key. An indexable view must be defined by a single level SQL statement containing selections, inner joins and optional group-by.\cite{goldstein-2001}\vspace{0.8cm}
+
+ To create a materialized views on mssql we have to create a  regular view and then a clustered index on the view:
+ \begin{itemize}
+     \item {Create a regular view with schemabinding:}
+\input{SQL/MV_on_mssql}
+The queries specify the schema and name of the view. With schemabinding options binds the view to the schema of the underlying tables. It prevents changes to the base tables that would affect the views definition.
+      \item {Create a unique clustered index on the view:}
+\input{SQL/Clustered_view}
+This statement materialize the view and stores the result in a clustered index
+\end{itemize}
+
+
+
+ 
 \subsubsection{Deciding when to create a materialized view or a regular view}
 There are some key factors to consider when deciding to create a materialized view or a regular view:\\
 \textbf{Create a materialized view when all of the following are true}:
