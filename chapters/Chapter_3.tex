@@ -1,4 +1,121 @@
-\section{Methodology}
+\section{Methodology}\vspace{.4cm}
+\subsection{Materialized Views}
+ A special type of views are materialized views, It refers to that fact that the contents of the view are stored in form of a separate table, in the database system. MV are designed on the user requirements. A MV definition includes aggregation function like MIN, MAX, COUNT(DISTINCT),COUNT(*), SUM, AVG one or more table joined together and a GROUP BY operation doing on attributed and basic data definition language operation such as CREATE; ALTER and DROP may be applied on tables.\cite{Kardel_Thakare}. MV are a decision support/ data warehousing system tool that is able to increase by many orders of magnitude the speed of queries that access a large number of records.\cite{Kishan_Sainath_no_date} Nevertheless, materialized views can also be stored as a file or a data structure in-memory. Opposed to that a virtual view would be loaded from the base table in the moment it is requested. while the on-demand idea behind virtual views is certainly desirable.\cite{jan-no-date,ashadevi-2024}
+
+\begin{definition}
+Materialized views, also known as materialized tables or summary tables, are database objects that store the result of a query physically. Unlike regular views, which are virtual and compute their results on the fly, materialized views pre-compute and store the query results, allowing for faster retrieval and improved query performance.\\
+Materialized views in databases optimize query performance by pre-computing and storing the result of complex queries involving aggregations and joins. This reduces the computational load during the execution, significantly speeding up the response times.
+
+\end{definition}
+
+A materialized view (sometimes called a sorted, projected and materialized view or SPM view) is a view whose columns have been sorted, projected and materialized.\cite{IBM} In database system optimize query performance by pr-computing and storing the result of complex queries involving aggregations and joins. As they store the results physically in a table re-computation to a query is not needed again. When it is view is already materialized at any time the same query is entered in the system. This reduces the computational load during the execution, significantly speeding up the response times.\vspace{.4cm}
+
+Here's how they work:
+\begin{itemize}
+    \item\textbf{Pre-computations:} It store the results of queries that involve complex join and aggregations. These results are pre-computed and stored in database, reducing the time needed to fetch the data when required.
+    \item\textbf{Storage and retrieval:} The data in materialized view is periodically refreshed to reflect changes in the underlying tables. The refresh can be scheduled or triggered by specific events, depending on the use case and requirements.
+    \item\textbf{Refresh mechanism:}  Materialized views need to be refreshed to stay up to date with the underlying data.\vspace{.4cm}
+
+    \begin{itemize}
+        \item\textbf{Full Refresh:} The entire view is recomputed from scratch.
+        \item\textbf{Incremental Refresh:} Only the changes since the last refresh are applied.
+        \item\textbf{On Demand Refresh:} Triggered by specific events or user requests.
+    \end{itemize}
+\end{itemize}\vspace{.4cm}
+
+Most of the time, the types of materialized views used are as follows:\vspace{.4cm}
+
+\begin{enumerate}[label=\alph*)]
+    \item \textbf{Materialized views with aggregates:} Materialized views with aggregates store the results of queries that perform aggregate calculations (e.g., SUM, COUNT, AVG, MIN, MAX) over large datasets. These views are particularly useful for optimizing query performance in scenarios that involve complex aggregations over vast amounts of data, such as reporting, analytics, and decision support systems. Example:\vspace{.4cm}
+    
+    \input{SQL/Aggregation}
+
+    In this example, The materialized view "salesSummary" precomputes the Sum, AVG and COUNT for sales data grouped by ProductID, Region and CategoryID.
+
+    \item \textbf{Materialized views with join }: Materialized views with joins store the results of queries that involve multiple tables combined using join operations (e.g., INNER JOIN, LEFT JOIN, RIGHT JOIN). These types of materialized views can significantly speed up complex queries that frequently access multiple related tables. By precomputing the join results, the materialized view avoids the need to recompute them during every query execution. Example: \vspace{.4cm}
+    
+    \input{SQL/MV_Joins}
+
+    In this example, The materialized view "CustomerOrderSummary"
+    stores the results of the joins between the customers, orders and products table.
+    \item \textbf{Hybrid materialized views}: Hybrid materialized views combine features of both aggregate and join-based materialized views, optimizing performance for queries that require both aggregation and joins between multiple tables. They are designed to handle more complex queries efficiently, as they store precomputed results that involve both aggregated data and joined tables. Hybrid materialized views are particularly useful in environments like data warehouses or reporting systems where queries often need to summarize and relate data from various sources.\vspace{.4cm}
+    
+    \input{SQL/MV_hybrid} 
+    
+This materialized view "ProductSalesSummary" stores precomputed join results between customers, orders, products and region as well as aggregate data total quantity and total sales.
+    
+\end{enumerate}
+
+\subsubsection{Materialized view vs Database View:} With the usual syntax of creating a view, we create a database view  and that's different from the materialized view because a normal database view is just a virtual table that is defined by a SQL query. It is stored in the user database and can be accessed by user who have appropriate permissions. A MV view doesn't not store any data itself, it is simply  a way of presenting data from one  or more tables in different way. Materialized views are disk based and are updated periodically based upon the query definition.\cite{Stackoverflow-author-08-2008} Views are virtual and run the query definition each time they are accessed. Materialized views are useful when data is accessed frequently and updated infrequently.
+
+
+ \subsection{ How materialized views work on MSSQL:} Not every database supports materialized views, and those that do each handle them a little differently, especially when it comes to the approach to view maintenance.\cite{hattemer-2020} Microsoft sql server supports materialized views, but they are called "indexed views" because a materialized view may be indexed in multiple ways and a materialization step is a matter of creating an index on a regular view. A view is materialized by creating a unique clustered index on an existing view. Uniqueness implies that the view output must contain a unique key. An indexable view must be defined by a single level SQL statement containing selections, inner joins and optional group-by.\cite{goldstein-2001}\vspace{0.8cm}
+
+ To create a materialized views on mssql we have to create a  regular view and then a clustered index on the view:
+ \begin{itemize}
+     \item {Create a regular view with schemabinding:}\vspace{0.4cm}
+     
+\input{SQL/MV_on_mssql}
+The queries specify the schema and name of the view. With schemabinding options binds the view to the schema of the underlying tables. It prevents changes to the base tables that would affect the views definition.
+      \item {Create a unique clustered index on the view:}\vspace{0.4cm}
+      
+\input{SQL/Clustered_view} \vspace{0.4cm}
+
+This statement materialize the view and stores the result in a clustered index.
+\end{itemize}
+
+
+
+ 
+\subsection{Deciding when to create a materialized or a regular view}\vspace{0.4cm}
+
+There are some key factors to consider when deciding to create a materialized view or a regular view:\vspace{0.4cm}
+
+\input{Table/Regular_vs_MV_View}
+
+
+ \subsection{Cost Model}
+Materialized views are great optimization method. However, there is a cost associated with the jobs that maintain them.This section will discuss about the cost model of Materialized view.\vspace{.4cm}
+ \begin{enumerate}[label=\alph*)]
+    \item \textbf{Computing cost :} Computing cost mostly depends on the workload and data size. Query processing, data transferring, there are refresh mechanism to stay accurate. This all procedures are costly. Both the initial creation and subsequent refreshes of materialized views consume compute resources.
+    \item \textbf{Maintenance cost:} This costs are associated with keeping Materialized views up-to-date and on service as base data changes. Every refresh or recalculation uses compute resources. Regular tuning, indexing, and monitoring to ensure the view optimally benefits query performance. The frequency of updates to base tables and complexity of the the materialized view impacts these cost. 
+    \item \textbf{Storage cost}: Materialized views require additional disk space, particularly for large database.The storage cost of MV should be offset by the gain in query performance. Disabled views  still incur storage costs, even  they're not maintained or used for query optimization. As data volume grow, the storage costs for MV can increase significantly. This  aspect should be considered when designing a long term strategy for MV. 
+    
+    \item \textbf{Usage cost:}\vspace{.3cm}
+    
+    Materialized views are great however there is a cost associated with the jobs that maintain them. We can calculate the cost with the help of the following formula.\cite{10.1145/2206869.2206874}
+
+    \input{Math/Total_cost}
+  
+\end{enumerate}
+
+
+
+
+\subsection{ Static vs dynamic view selection }
+\subsection{How  materialized views are different from normal tables in  SQL server }
+\subsection{Conditions that must be fulfilled to be capable of using materialized views }
+
+\subsection{ How Materialized view management and selection approach} :There are three types of materialized view that used to increase query performance and reduce the response time are as follows:
+
+\begin{enumerate}[label=\alph*)]
+    \item \textbf{Materialized view management task}
+    \item \textbf{Materialized view selection}
+    \item \textbf{Incremental Materialized View Maintenance}
+\end{enumerate}
+
+\subsection{Multiple View Processing Plans (MVPP) }
+\subsection{Do all required rows exist in the views }
+\subsection{Particle Swarm Optimization ( PSO ) Algorithm
+ }
+\subsection{Maintenance of existing materialized views (refresh)
+}
+\subsection{Materialized View Selection using (PSO) algorithm }
+\subsection{Maintenance of existing materialized views (refresh)
+}
+\subsection{Do all required rows exist in the views }
+\subsection{Fast filtering of MV}
+
 \subsection{Database system Selection}
 \subsection{Test Environment Setup }
 \subsection{Query Design}
