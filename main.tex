@@ -33,8 +33,17 @@
 \usepackage{placeins}
 \usepackage{listings}
 \usepackage{graphicx}
-%%---%
+%%-Chapter title--%
 \usepackage{fancyhdr}
+  \fancyhf{}
+  \pagestyle{fancy}
+  \fancyhead[C]{{\nouppercase\leftmark\nonumber}}
+  \fancyfoot[C]{\thepage}
+  \renewcommand{\headrulewidth}{0pt}
+\fancypagestyle{plain}{
+
+}
+%%
 \usepackage{scrlayer}
   % Optional, for coloring code
 \usepackage[colorlinks=true]{hyperref}
@@ -93,7 +102,7 @@
  \logo{logoUDE.pdf}
 
  \maketitle % generate the title page\\ 
-
+e
  \declaration
  \newpage
 \include{other_pages/non-Disclosure-agrement}

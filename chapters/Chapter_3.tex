@@ -1,6 +1,6 @@
 \section{Methodology}\vspace{.4cm}
 
- \subsection{ How materialized views work on MSSQL:} Not every database supports materialized views, and those that do each handle them a little differently, especially when it comes to the approach to view maintenance.\cite{hattemer-2020} Microsoft SQL server supports materialized views. Still, they are called "indexed views" because a materialized view may be indexed in multiple ways, and a materialization step is a matter of creating an index on a regular view. A view is materialized by creating a unique clustered index on an existing view. Uniqueness implies that the view output must contain a unique key. An indexable view must be defined by a single level SQL statement containing selections, inner joins and optional group-by.\cite{goldstein-2001}\vspace{0.8cm}
+ \subsection{ How materialized views work on MSSQL:} Not every database supports materialized views, and those that do each handle them a little differently, especially when it comes to the approach to view maintenance \cite{hattemer-2020}. Microsoft SQL server supports materialized views. Still, they are called "indexed views" because a materialized view may be indexed in multiple ways, and a materialization step is a matter of creating an index on a regular view. A view is materialized by creating a unique clustered index on an existing view. Uniqueness implies that the view output must contain a unique key. An indexable view must be defined by a single-level SQL statement containing selections, inner joins, and optional group-by \cite{goldstein-2001}.\vspace{0.8cm}
 
  To create materialized views on mssql we have to create a  regular view and then a clustered index on the view:
  \begin{itemize}
@@ -23,7 +23,7 @@ This statement materializes the view and stores the result in a clustered index.
 There are some key factors to consider when deciding to create a materialized view or a regular view:\vspace{0.4cm}
 
 \input{Table/Regular_vs_MV_View}
-
+\vspace{1cm}
 
  \subsection{Cost Model}
 Materialized views are a great optimization method. However, there is a cost associated with the jobs that maintain them. This section will discuss the cost model of Materialized view.\vspace{.4cm}
@@ -34,7 +34,7 @@ Materialized views are a great optimization method. However, there is a cost ass
     
     \item \textbf{Usage cost:}\vspace{.3cm}
     
-    Materialized views are great; however, there is a cost associated with the jobs that maintain them. We can calculate the cost using the following formula:\cite{10.1145/2206869.2206874}
+    Materialized views are great; however, there is a cost associated with the jobs that maintain them. We can calculate the cost using the following formula: \cite{10.1145/2206869.2206874}
 
     \input{Math/Total_cost}
   
@@ -47,7 +47,7 @@ Materialized views are a great optimization method. However, there is a cost ass
 
 \subsection{View matching for query optimization }
 
-View matching is a critical process in query optimization that determines whether a query or sub-expression can be computed from existing materialized views. Since the objective of query optimization is to minimize the computational cost of query execution by taking advantage of precomputed results, this is an essential component.\\
+View matching is a critical process in query optimization that determines whether a query or sub-expression can be computed from existing materialized views. Since the objective of query optimization is to minimize the computational cost of query execution by taking advantage of precomputed results, this is an essential component.\vspace{.4cm}
 
  The view matching typically involves the following steps:
   \begin{itemize}
@@ -73,13 +73,35 @@ This stage guarantees the selection of the most efficient execution plan, optimi
 
 \subsection{Conditions that must be fulfilled to be capable of using materialized views }
 
-\subsection{ How Materialized view management and selection approach}: Three types of materialized views used to increase query performance and reduce the response time are as follows:
+\subsection{ Materialized view management and selection approach}
+
+\subsubsection{Materialized view management }
+
 
 \begin{enumerate}[label=\alph*)]
-    \item \textbf{Materialized view management task}
-    \item \textbf{Materialized view selection}
-    \item \textbf{Incremental Materialized View Maintenance}
+    \item \textbf{Creation Strategies:}
+    \item \textbf{Refresh Strategies:}
+    \item \textbf{Storage management:}
+    \item \textbf{consistency and  indexing :}
 \end{enumerate}
+\subsubsection{Materialized View Selection Approach}
+
+  Query Frequency and Cost-Based Analysis:
+  
+\begin{enumerate}[label=\alph*)]
+    \item \textbf{Query Patterns:}
+    \item \textbf{Cost-Based Optimization}
+    \item \textbf{Storage management:}
+    \item \textbf{ Refresh Policies:}
+\end{enumerate}
+
+%% Three types of materialized views used to increase query performance and reduce the response time are as follows:
+
+%%\begin{enumerate}[label=\alph*)]
+   % \item \textbf{Materialized view management task}
+    %\item \textbf{Materialized view selection}
+    %\item \textbf{Incremental Materialized View Maintenance}
+%%\end{enumerate}
 
 \subsection{Multiple View Processing Plans (MVPP) }
 \subsection{Do all required rows exist in the views }
