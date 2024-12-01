@@ -1,6 +1,6 @@
 \section{Methodology}\vspace{.4cm}
 
- \subsection{ How materialized views work on MSSQL:} Not every database supports materialized views, and those that do each handle them a little differently, especially when it comes to the approach to view maintenance \cite{hattemer-2020}. Microsoft SQL server supports materialized views. Still, they are called "indexed views" because a materialized view may be indexed in multiple ways, and a materialization step is a matter of creating an index on a regular view. A view is materialized by creating a unique clustered index on an existing view. Uniqueness implies that the view output must contain a unique key. An indexable view must be defined by a single-level SQL statement containing selections, inner joins, and optional group-by \cite{goldstein-2001}.\vspace{0.8cm}
+ \subsection{How Materialized Views Work on MSSQL:} Not every database supports materialized views, and those that do each handle them a little differently, especially when it comes to the approach to view maintenance \cite{hattemer-2020}. Microsoft SQL server supports materialized views. Still, they are called "indexed views" because a materialized view may be indexed in multiple ways, and a materialization step is a matter of creating an index on a regular view. A view is materialized by creating a unique clustered index on an existing view. Uniqueness implies that the view output must contain a unique key. An indexable view must be defined by a single-level SQL statement containing selections, inner joins, and optional group-by \cite{goldstein-2001}.\vspace{0.8cm}
 
  To create materialized views on mssql we have to create a  regular view and then a clustered index on the view:
  \begin{itemize}
@@ -18,7 +18,7 @@ This statement materializes the view and stores the result in a clustered index.
 
 
  
-\subsection{Deciding when to create a materialized or a regular view}\vspace{0.4cm}
+\subsection{Deciding When to Create a Materialized or A regular View}\vspace{0.4cm}
 
 There are some key factors to consider when deciding to create a materialized view or a regular view:\vspace{0.4cm}
 
@@ -43,16 +43,24 @@ Materialized views are a great optimization method. However, there is a cost ass
 
 
 
-\subsection{ Static vs dynamic view selection } xxxx
+\subsection{ Static vs Dynamic View Selection } The selection process for materialized views in query optimization can be classified into static and dynamic. Both alternatives are designed to improve query performance but differ in their timing, adaptivity, and resource management. Below is the static and dynamic selection process breakdown:
+\begin{itemize}
+    \item \textbf{Static View Selection:} Before execution of any query, the process of selecting the static view would involve the materialized views that were selected in either the design or the setup phase of a database. Whether or not to create and keep particular materialized views are dependent on what has been analyzed historically, workload patterns, and domain knowledge. The views are predefined and fixed until the database reconfiguration is done manually.\vspace{.4cm}
+    
+    \textbf{Key Characteristics:}
+    \item \textbf{Dynamic View Selection:}Dynamic View Selection is the selection of dynamic materialized views at execution time or the adaptation of a set of materialized views to changing workload patterns. This is thus a continuous process consisting of monitoring query patterns and data modification in conjunction with cost-benefit considerations to decide whether to add a materialized view, maintain one, or remove it.\vspace{.4cm}
+    
+    \textbf{Key Characteristics:}
+\end{itemize}
 
-\subsection{View matching for query optimization }
+
+\subsection{View Matching for Query Optimization }
 
 View matching is a critical process in query optimization that determines whether a query or sub-expression can be computed from existing materialized views. Since the objective of query optimization is to minimize the computational cost of query execution by taking advantage of precomputed results, this is an essential component.\vspace{.4cm}
 
  The view matching typically involves the following steps:
   \begin{itemize}
-      \item \textbf{Query Decomposition:} The entering query is examined and deconstructed into its essential elements, including projection, selection, aggregation, and joins.
-This step assists in determining the information requested by the query and the components accessible in materialized views.
+      \item \textbf{Query Decomposition:} The entering query is reviewed and broken down into its constituent elements, which include projection, selection, aggregation, and joins. This stage aids in determining the information required by the query and the components available in materialized views.
 
       \item \textbf{Normalization and canonical form:} The incoming query and the materialized view definitions transform into a canonical form, facilitating a more straightforward comparison.
 This normalization aids in removing discrepancies in the expression of similar operations, thereby enhancing the efficiency of matching.
@@ -71,11 +79,11 @@ This stage guarantees the selection of the most efficient execution plan, optimi
   \end{itemize}
 
 
-\subsection{Conditions that must be fulfilled to be capable of using materialized views }
+\subsection{Conditions that Must be Fulfilled to be Capable of Using Materialized Views }
 
-\subsection{ Materialized view management and selection approach}
+\subsection{ Materialized View Management and Selection Approach}
 
-\subsubsection{Materialized view management }
+\subsubsection{Materialized View Management }
 
 
 \begin{enumerate}[label=\alph*)]
