@@ -1,4 +1,5 @@
 \section{Methodology}\vspace{.4cm}
+In this chapter, we will focus on materialized view selection processes, strategies for implementation, and best practices for creating and maintaining materialized views. The chapter ends with highlights of the performance improvements, such as query execution time and scalable systems that make materialized views important in modern database systems.
 
  \subsection{How Materialized Views Work on MSSQL:} Not every database supports materialized views, and those that do each handle them a little differently, especially when it comes to the approach to view maintenance \cite{hattemer-2020}. Microsoft SQL server supports materialized views. Still, they are called "indexed views" because a materialized view may be indexed in multiple ways, and a materialization step is a matter of creating an index on a regular view. A view is materialized by creating a unique clustered index on an existing view. Uniqueness implies that the view output must contain a unique key. An indexable view must be defined by a single-level SQL statement containing selections, inner joins, and optional group-by \cite{goldstein-2001}.\vspace{0.8cm}
 
@@ -128,4 +129,4 @@ This stage guarantees the selection of the most efficient execution plan, optimi
 \subsection{Materialized View Management \& Selection Approach}
 \subsection{View Maintenance Strategies}
 \subsection{Testing Procedure}
-\subsection{Tools and software}: 
+\subsection{Tools and Software}: 

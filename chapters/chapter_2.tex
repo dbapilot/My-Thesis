@@ -7,7 +7,7 @@ In this chapter, we present high-level descriptions of the most significant part
 \subsection{ Database System}
 
 \begin{definition}
-A database is an organized collection of data or a type of data store based on the use of a database management system(DBMS), the software that enables the creation, modification, and the database itself to capture and analyze the data \end{definition}.\vspace{.4cm}
+A database is an organized collection of data or a type of data store based on the use of a database management system(DBMS), the software that enables the creation, modification, and the database itself to capture and analyze the data. \end{definition}
 A database in SQL Server is made up of a collection of tables that stores a specific set of structured data. A table contains a collection of rows, also referred to as records or tuples, and columns, also referred to as attributes. Each column in the table is designed to store a certain type of information, for example, dates, names, dollars, and numbers \cite{williamdassafmsft-2024}. Scalability, security, high availability, Network latency, and fault tolerance are the key characteristics of databases. There are two distinct types of databases: Relational and NoSQL databases.
 
 \begin{itemize}
@@ -32,7 +32,7 @@ A query is a request sent to a database for data retrieval. Specific conditions 
         \item \textbf{Syntax check:} A query is checked for syntax error. It concludes syntactic validity. Example:\\
         \input{SQL/Query1}
           Here, the error of the wrong spelling of FROM is given by this check.
-        \item \textbf{Semantic check:} It checks whether the statement is meaningful or not. Example: Query contains a table name which doesn't exist\\
+        \item \textbf{Semantic check:} It checks whether the statement is meaningful or not. Example: Query contains a table name which does not exist\\
         \input{SQL/Query2}
         A syntactically correct statement can fail a semantic check, as shown in the following example of a query of a nonexistent table \cite{Oracle}.
         \item \textbf{Shared pool check:} During the parse, the database performs a shared pool check to determine whether it can skip (hash code )resource-intensive steps of statement processing. Every query possesses a hash code.
@@ -78,7 +78,7 @@ Here is a summary of key metrics used to evaluate and enhance query performance 
 \begin{itemize}
     \item\textbf{Precomputed result:} Materialized views store the results of a query that allows subsequent queries to access these precomputed results directly rather than recalculating them from the base tables. These results are updated periodically or on-demand based on the underlying data changes \cite{khan-2023,Risingwave-no-date}.
     \item\textbf{Reduced Query complexity:} The main reason for creating materialized views is to improve query performance. It stores a snapshot of the data, that reduces the need for intricate query design, as we get the accesses precomputed results directly \cite{Risingwave-no-date,Databricks-no-date}.
-    \item\textbf{Efficient use of resources:} As we get the data from pre-computed data and don't need to run a full query every time materialized views decrease the computational load on database servers. It leads to faster query response time, improved overall system performance, and requires fewer resources \cite{google-no-date, khan-2023}.
+    \item\textbf{Efficient use of resources:} As we get the data from pre-computed data and don not need to run a full query every time materialized views decrease the computational load on database servers. It leads to faster query response time, improved overall system performance, and requires fewer resources \cite{google-no-date, khan-2023}.
     
 \end{itemize}\vspace{.4cm}
 
@@ -165,4 +165,4 @@ This materialized view, "ProductSalesSummary," stores precomputed join results b
     
 \end{enumerate}
 
-\subsubsection{Materialized View vs Database View:} With the usual syntax of creating a view, we create a database view, and that's different from the materialized view because a normal database view is just a virtual table that is defined by a SQL query. It is stored in the user database and can be accessed by users who have appropriate permissions. An MV view doesn't store any data itself; it is simply a way of presenting data from one or more tables in different ways. Materialized views are disk-based and are updated periodically based on the query definition \cite{Stackoverflow-author-08-2008}. Views are virtual and run the query definition each time they are accessed. Materialized views are useful when data is accessed frequently and updated infrequently.
+\subsubsection{Materialized View vs Database View:} With the usual syntax of creating a view, we create a database view, and that is different from the materialized view because a normal database view is just a virtual table that is defined by a SQL query. It is stored in the user database and can be accessed by users who have appropriate permissions. An MV view does not store any data itself; it is simply a way of presenting data from one or more tables in different ways. Materialized views are disk-based and are updated periodically based on the query definition \cite{Stackoverflow-author-08-2008}. Views are virtual and run the query definition each time they are accessed. Materialized views are useful when data is accessed frequently and updated infrequently.
