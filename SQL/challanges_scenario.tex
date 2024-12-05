@@ -21,8 +21,9 @@
   xleftmargin =1em
 }
          \begin{lstlisting}
-     ALTER SESSION SET OPTIMIZER_MODE=ALL_ROWS;
-     ALTER SYSTEM FLUSH SHARED_POOL; 
-     SELECT * FROM Employees WHERE DepartmentID = 10;
+SELECT *
+FROM Patients
+JOIN Treatments ON Patients.PatientID = Treatments.PatientID
+WHERE TreatmentDate >= '2024-12-02';
 
         \end{lstlisting}

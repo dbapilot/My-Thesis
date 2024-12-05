@@ -38,6 +38,16 @@ Materialized views are a great optimization method. However, there is a cost ass
     Materialized views are great; however, there is a cost associated with the jobs that maintain them. We can calculate the cost using the following formula: \cite{10.1145/2206869.2206874}
 
     \input{Math/Total_cost}
+
+  Suppose, opta data Gruppe runs a complex query with a materialized view which takes 1ms to execute, compared to 5ms without MV. If it runs 100 times per day, the total savings would be:
+  
+   (5-1)x100=400ms which valued \$400 per day.\\
+   Maintenance cost for refreshing = \$50 \\
+   Storage cost for keeping MV =\$20\\
+   Estimated correction cost=\$10 \\
+   Total cost={400-(50+20+10)}=\$320 which means net benefit for using MV is \$320
+
+ 
   
 \end{enumerate}
 
