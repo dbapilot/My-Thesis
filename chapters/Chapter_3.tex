@@ -1,45 +1,54 @@
 \section{Methodology}\vspace{.4cm}
-In this chapter, we will focus on materialized view selection processes, strategies for implementation, and best practices for creating and maintaining materialized views. The chapter ends with highlights of the performance improvements, such as query execution time and scalable systems that make materialized views important in modern database systems.
+In this chapter, we will focus on materialized view selection processes, implementation strategies, and best practices for creating and maintaining materialized views. The chapter ends with highlights of the performance improvements, such as query execution time and scalable systems that make materialized views important in modern database systems.
 
- \subsection{How Materialized Views Work on MSSQL:} Not every database supports materialized views, and those that do each handle them a little differently, especially when it comes to the approach to view maintenance \cite{hattemer-2020}. Microsoft SQL server supports materialized views. Still, they are called "indexed views" because a materialized view may be indexed in multiple ways, and a materialization step is a matter of creating an index on a regular view. A view is materialized by creating a unique clustered index on an existing view. Uniqueness implies that the view output must contain a unique key. An indexable view must be defined by a single-level SQL statement containing selections, inner joins, and optional group-by \cite{goldstein-2001}.\vspace{0.8cm}
+ \subsection{How Materialized Views Work on MSSQL:} Not every database supports materialized views, and those that do each handle them a little differently, especially when it comes to the approach to view maintenance \cite{hattemer-2020}. Microsoft SQL Server supports materialized views. Still, they are called "indexed views" because a materialized view may be indexed in multiple ways, and a materialization step is a matter of creating an index on a regular view. A view is materialized by creating a unique clustered index on an existing view. Uniqueness implies that the view output must contain a unique key. An indexable view must be defined by a single-level SQL statement containing selections, inner joins, and optional group-by \cite{goldstein-2001}.\vspace{0.8cm}
 
- To create materialized views on mssql we have to create a  regular view and then a clustered index on the view:
- \begin{itemize}
-     \item {Create a regular view with schema binding:}\vspace{0.4cm}
+ To create materialized views in mssql, we must follow a step-by-step creation procedure:
+ \begin{enumerate}
      
-\input{SQL/MV_on_mssql}
-The queries specify the schema and name of the view. Schema binding options bind the view to the schema of the underlying tables. This prevents changes to the base tables from affecting the view's definition.
-      \item {Create a unique clustered index on the view:}\vspace{0.4cm}
+
+     \item\textbf{Identify the query or queries:} The most vital step in materialized view creation is detecting the exact query or queries that will form the view. Hence, they must be fine-tuned to ensure that the required data is fetched optimally and the performance of view generation is optimized. Queries should consider the complexity of determination, the size of their result sets, and the frequency of data updates \cite{castordoc2023}.
+     
+      \item\textbf{ Write the base query :} Begin by writing the base  SQL query that defines the materialized views. It should contain all necessary data, join, aggregation, or other complex operations that need to be optimized. \vspace{0.4cm}
+      \input{SQL/Base_query}
       
-\input{SQL/Clustered_view} \vspace{0.4cm}
+      \item\textbf{ Create the materialized view :} After writing the query, proceed to create a materialized view (indexed view) in SQL server using the `` with schemabinding'' clause starting with schema and view name. Schema binding options bind the view to the schema of the underlying tables, preventing changes to the base tables from affecting the view's definition \cite{risingwave2024}.\vspace{0.4cm}
+
+      \input{SQL/MV_on_mssql}
+
+      \item\textbf{ Create a unique clustered index:} This step is very crucial for the SQL server to materialize it. It makes the view physically store data, transforming it into an MV. \vspace{0.4cm}
+      
+      \input{SQL/Clustered_view} 
 
 This statement materializes the view and stores the result in a clustered index.
-\end{itemize}
+      
+      \item\textbf{ Configure refresh options:} Finally, it is crucial to refresh the materialized view periodically to ensure it remains up-to-date. This option needs to be configured to decide whether manual or automatic refreshes will be preferred. Manual refresh is updated at the user's discretion. On the other hand, automatic refresh occurs at scheduled intervals. The frequency of refreshing the materialized view depends on the rate of data updates and the requirements of the application \cite{castordoc2023}.\vspace{0.4cm}
+      
+      \item\textbf{ Querying the MV:} Once created, configured, and populated, an Mv can be queried just like a table based on cost and necessity.  \vspace{0.4cm}
+      
 
+\end{enumerate}
 
-
- 
-\subsection{Deciding When to Create a Materialized or A regular View}\vspace{0.4cm}
-
-There are some key factors to consider when deciding to create a materialized view or a regular view:\vspace{0.4cm}
+\subsection{Deciding When to Create a Materialized or A regular View}There are some key factors to consider when deciding to create a materialized view or a regular view.
 
 \input{Table/Regular_vs_MV_View}
-\vspace{1cm}
+
 
  \subsection{Cost Model}
 Materialized views are a great optimization method. However, there is a cost associated with the jobs that maintain them. This section will discuss the cost model of Materialized view.\vspace{.4cm}
+
  \begin{enumerate}[label=\alph*)]
     \item \textbf{Computing cost :} Computing cost mostly depends on the workload and data size. Query processing and data transferring, there are refresh mechanisms to stay accurate. All these procedures are costly. Both the initial creation and subsequent refreshes of materialized views consume compute resources.
+    
     \item \textbf{Maintenance cost:} These costs are associated with keeping Materialized views up-to-date and on service as base data changes. Every refresh or recalculation uses compute resources. Regular tuning, indexing, and monitoring to ensure the view optimally benefits query performance. The frequency of updates to base tables and the complexity of the materialized view impact these costs. 
+    
     \item \textbf{Storage cost}: Materialized views require additional disk space, particularly for large databases. The gain in query performance should offset the storage cost of MV. Disabled views still incur storage costs, even if they're not maintained or used for query optimization. As data volume grows, the storage costs for MV can increase significantly. This aspect should be considered when designing a long-term strategy for MV. 
-    
-    \item \textbf{Usage cost:}\vspace{.3cm}
-    
-    Materialized views are great; however, there is a cost associated with the jobs that maintain them. We can calculate the cost using the following formula: \cite{10.1145/2206869.2206874}
+     
+    \item \textbf{Usage cost:} Materialized views are great; however, there is a cost associated with the jobs that maintain them. We can calculate the cost using the following formula: \cite{10.1145/2206869.2206874}
 
     \input{Math/Total_cost}
 
-  Suppose, opta data Gruppe runs a complex query with a materialized view which takes 1ms to execute, compared to 5ms without MV. If it runs 100 times per day, the total savings would be:
+  Suppose opta data Gruppe runs a complex query with a materialized view, which takes 1 ms to execute, compared to 5 ms without MV. If it runs 100 times per day, the total savings would be:
   
    (5-1)x100=400ms which valued \$400 per day.\\
    Maintenance cost for refreshing = \$50 \\
@@ -55,14 +64,14 @@ Materialized views are a great optimization method. However, there is a cost ass
 
 
 \subsection{ Static vs Dynamic View Selection } The selection process for materialized views in query optimization can be classified into static and dynamic. Both alternatives are designed to improve query performance but differ in their timing, adaptivity, and resource management. Below is the static and dynamic selection process breakdown:
-\begin{itemize}
-    \item \textbf{Static View Selection:} Before execution of any query, the process of selecting the static view would involve the materialized views that were selected in either the design or the setup phase of a database. Whether or not to create and keep particular materialized views are dependent on what has been analyzed historically, workload patterns, and domain knowledge. The views are predefined and fixed until the database reconfiguration is done manually.\vspace{.4cm}
+\begin{enumerate}
+        \item \textbf{Static View Selection:} Before execution of any query, the process of selecting the static view would involve the materialized views that were selected in either the design or the setup phase of a database. Whether or not to create and keep particular materialized views is dependent on what has been analyzed historically, workload patterns, and domain knowledge. The views are predefined and fixed until the database reconfiguration is done manually.\vspace{.4cm}
     
-    \textbf{Key Characteristics:}
-    \item \textbf{Dynamic View Selection:}Dynamic View Selection is the selection of dynamic materialized views at execution time or the adaptation of a set of materialized views to changing workload patterns. This is thus a continuous process consisting of monitoring query patterns and data modification in conjunction with cost-benefit considerations to decide whether to add a materialized view, maintain one, or remove it.\vspace{.4cm}
+    \textbf{Key Characteristics:} In this case, the fixed view predetermines materialized views at the design stage, generally deriving the predetermined set from historical analysis of expected workloads. Once chosen, these remain set unless some manual alteration is applied. This is suitable for the predictable nature of stable workloads where queries are not so prone to changes over time-such as data warehouse environments or environments that perform online analytical processing (OLAP). By saving time spent on choices, static view selection becomes quite easy to implement and run. It has an inherent limitation because any considerable shift in the workload would entail manual intervention in the set of materialized views \cite{lohman2000selftuning,mamoulis2012survey,gupta2002selftuning}.
+    \item \textbf{Dynamic View Selection:} Dynamic View Selection is the selection of dynamic materialized views at execution time or the adaptation of a set of materialized views to changing workload patterns. This is thus a continuous process consisting of monitoring query patterns and data modification in conjunction with cost-benefit considerations to decide whether to add a materialized view, maintain one, or remove it.\vspace{.4cm}
     
-    \textbf{Key Characteristics:}
-\end{itemize}
+    \textbf{Key Characteristics:} On the contrary, dynamic view selection automatically selects, creates, and keeps materialized views updated according to the real-time analysis of workload. This monitoring approach continuously studies the pattern of incoming queries and applies a sophisticated algorithm to decide which view should either be created, dropped, or modified. Consequently, it is well-suited to environments with unpredictable or rapidly changing workloads such as in transactional databases or mixed workloads requiring both operational and analytical capabilities. Dynamic nature is what makes this technique effective in response to workload shifts, with selected materialized views being optimized for current usage patterns. On the contrary, real-time adaptability comes with complexity in implementation and increased maintenance overhead because it requires continuous monitoring and decision-making processes. Dynamic view selection necessitates a lot of cost trade-offs for computation of maintaining and refreshing views against the benefits it would have accrued in processing query performance \cite{lohman2000selftuning,mamoulis2012survey,gupta2002selftuning}.
+\end{enumerate}
 
 
 \subsection{View Matching for Query Optimization }
@@ -71,20 +80,18 @@ View matching is a critical process in query optimization that determines whethe
 
  The view matching typically involves the following steps:
   \begin{itemize}
-      \item \textbf{Query Decomposition:} The entering query is reviewed and broken down into its constituent elements, which include projection, selection, aggregation, and joins. This stage aids in determining the information required by the query and the components available in materialized views.
+      \item \textbf{Query Decomposition:} The entering query is reviewed and broken down into its constituent elements, which include projection, selection, aggregation, and joins. This stage aids in determining the information required by the query and the components available in materialized views \cite{theodoratos2000decomposition}.
 
       \item \textbf{Normalization and canonical form:} The incoming query and the materialized view definitions transform into a canonical form, facilitating a more straightforward comparison.
 This normalization aids in removing discrepancies in the expression of similar operations, thereby enhancing the efficiency of matching.
 
      \item \textbf{Checking coverage:} The attributes and conditions of the query are assessed against those present in the materialized view to ascertain if the view encompasses all required data. This procedure guarantees that the materialized view encompasses all necessary data as specified by the query. In instances where the query includes a WHERE condition, it is essential that the materialized view contains an equivalent condition or one that is more restrictive.
      
-      \item \textbf{Predicate Subsumption:} The predicates within the materialized view are evaluated to ascertain whether they subsume the predicates of the incoming query.
-The selection conditions in the query must be either encompassed by or more stringent than those in the materialized view. If the predicates of the materialized view are more general, it remains applicable to the query by implementing further filtering as required.
+      \item \textbf{Predicate Subsumption:} The predicates within the materialized view are evaluated to ascertain whether they subsume the predicates of the incoming query. The selection conditions in the query must be either encompassed by or more stringent than those in the materialized view. If the materialized view's predicates are more general, it remains applicable to the query by implementing further filtering as required \cite{adali1996query}.
 
-      \item \textbf{Query Rewriting:} Should the materialized view be determined to encompass the incoming query, the query is subsequently reformulated to utilize the materialized view rather than visiting the basis tables.
-This rewriting entails adjusting the original query to conform to the schema of the materialized view, sometimes incorporating supplementary filters or projections as necessary.
+      \item \textbf{Query Rewriting:} Should the materialized view be determined to encompass the incoming query, the query is subsequently reformulated to utilize the materialized view rather than visiting the basis tables. This rewriting entails adjusting the original query to conform to the schema of the materialized view, sometimes incorporating supplementary filters or projections as necessary \cite{haldar2001query}.
 
-         \item \textbf{Cost Evaluation:} If several materialized views correspond to the query, the query optimizer assesses the cost of utilizing each available view and chooses the one with the lowest predicted cost.
+         \item \textbf{Cost Evaluation:} If several materialized views correspond to the query, the query optimizer assesses the cost of utilizing each available view and chooses the one with the lowest predicted cost \cite{hulgeri2001cost}.
 This stage guarantees the selection of the most efficient execution plan, optimizing aspects such as I/O, memory use, and processing duration.
 
   \end{itemize}
@@ -114,7 +121,7 @@ This stage guarantees the selection of the most efficient execution plan, optimi
     \item \textbf{ Refresh Policies:}
 \end{enumerate}
 
-%% Three types of materialized views used to increase query performance and reduce the response time are as follows:
+% Three types of materialized views used to increase query performance and reduce response time are as follows:
 
 %%\begin{enumerate}[label=\alph*)]
    % \item \textbf{Materialized view management task}

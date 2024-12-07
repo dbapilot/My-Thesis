@@ -1,19 +1,21 @@
+%\usepackage[a4paper, margin=1in]{geometry}
 \begin{table}[h!]
   \centering
   \caption{Deciding between regular and materialized view}\vspace{.4cm}
-  
   \label{tab:view-comparison}
-  \begin{tabular}{|p{0.16\textwidth}|p{0.40\textwidth}|p{0.45\textwidth}|}
-    \hline
-    \textbf{Requirement} & \textbf{Regular view} & \textbf{Materialized view} \\
-    \hline
-    Complex Queries\ & Not ideal, recalculates each time, useful for ad-hoc queries\ & Suitable, precomputes results for faster querying \\
-    \hline
-     Real time Data & Suitable for the most current data  &  Useful when data is accessed frequently and updated infrequently. \\
-    \hline
-    Performance & May slow down with complex queries  &  Faster performance with precomputed data. \\
-    \hline
-    Database size & May slow down with complex queries  &  Suitable for large datasets as they reduce query latency \\
-    \hline
-  \end{tabular}
+  \resizebox{\textwidth}{!}{%
+    \begin{tabular}{|p{0.18\textwidth}|p{0.40\textwidth}|p{0.42\textwidth}|}
+      \hline
+      \textbf{Requirement} & \textbf{Regular view} & \textbf{Materialized view} \\
+      \hline
+      Complex Queries & Not ideal, recalculates each time, useful for ad-hoc queries & Suitable, precomputes results for faster querying \\
+      \hline
+      Real-time Data & Suitable for the most current data & Useful when data is accessed frequently and updated infrequently. \\
+      \hline
+      Performance & May slow down with complex queries & Faster performance with precomputed data. \\
+      \hline
+      Database Size & May slow down with large datasets & Suitable for large datasets as they reduce query latency \\
+      \hline
+    \end{tabular}%
+    }
 \end{table}

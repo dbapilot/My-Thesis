@@ -11,7 +11,7 @@ A database is an organized collection of data or a type of data store based on t
 A database in SQL Server is made up of a collection of tables that stores a specific set of structured data. A table contains a collection of rows, also referred to as records or tuples, and columns, also referred to as attributes. Each column in the table is designed to store a certain type of information, for example, dates, names, dollars, and numbers \cite{williamdassafmsft-2024}. Scalability, security, high availability, Network latency, and fault tolerance are the key characteristics of databases. There are two distinct types of databases: Relational and NoSQL databases.
 
 \begin{itemize}
-    \item \textbf{Relational Databases(RDBMS) :} The relational database model came about 1969-70 as a solution for dealing with the variety of custom-designed DBMSs that were used prior to 1969. These databases store the data in structured tables with rows and columns and use SQL for querying. They are known for their robustness, flexibility, and support for ACID properties. Example: Microsoft SQL Server, MySQL, PostgreSQL, Oracle database \cite{editor-2024,foote-2023}.
+    \item \textbf{Relational Databases(RDBMS) :} The relational database model came about in 1969-70 as a solution for dealing with the variety of custom-designed DBMSs that were used prior to 1969. These databases store the data in structured tables with rows and columns and use SQL for querying. They are known for their robustness, flexibility, and support for ACID properties. Example: Microsoft SQL Server, MySQL, PostgreSQL, Oracle database \cite{editor-2024,foote-2023}.
     
     \item \textbf{NoSQL Databases:} NoSQL, also referred to as "not only SQL," emerged in the late 2000s, is an approach to database design that enables the storage and querying of data outside the traditional structures found in relational databases. It offers flexibility and scalability, making them particularly useful for handling large amounts of unstructured data in real-time applications. They support horizontal scaling, allowing for increased storage and processing capabilities as data volume grows. Example: MongoDB, Redis, CouchDB \cite{ibm-2024,justacademy_nosql_characteristics}.
 \end{itemize}
@@ -24,7 +24,7 @@ The process involves several key steps that ensure efficient data retrieval. It 
 \begin{figure}[h]
     \centering
     
-    \includegraphics[width=0.5\textwidth]{Figure/Flow of QueryProcessing.jpg }
+    \includegraphics[width=0.5\textwidth]{Figure/Flow of QueryProcessing.jpg}
     \caption[The flow of query processing in DBMS]{The flow of query processing in DBMS ~\cite{wwwnaukricom-no-date} }
      
     \label{fig:my_image} 
@@ -52,12 +52,12 @@ The process involves several key steps that ensure efficient data retrieval. It 
         
     \end{enumerate}.
     
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=0.5\textwidth]{Figure/Query processing.jpg}
-    \caption[The flow of query processing in DBMS]{The flow of query processing in DBMS \cite{Oracle}}
-    \label{fig:my_image}
-\end{figure}
+%\begin{figure}[h]
+   % \centering
+   % \includegraphics[width=0.5\textwidth]{Figure/Query processing.jpg}
+   % \caption[The flow of query processing in DBMS]{The flow of query processing in DBMS \cite{Oracle}}
+    %\label{fig:my_image}
+%\end{figure}
     
     \item \textbf{Optimizer}: After parsing the query, the DBMS starts to find the most efficient way of executing the provided query. The factors for the query follow some optimization process. During the optimization stage, at least one complex parsing of one unique DML statement must be done. The database never optimizes DDL unless it includes a DML component, such as a sub-query, which needs optimization. Such operations are used for selecting data, inserting something, updating, etc. After everything is completed, then the evaluation step is made. In this step, the DBMS returns the result. This result is displayed to you in an appropriate format.
     
@@ -85,7 +85,7 @@ Here is a summary of key metrics used to evaluate and enhance query performance 
 
 \subsubsection{Key Optimization Techniques:}
 
-Optimizing a query is critical for increasing database performance. There are various optimization strategies, however the following are the most widely used:
+Optimizing a query is critical for increasing database performance. There are various optimization strategies. However, the following are the most widely used:
 
  \begin{itemize}
      \item \textbf{Indexing}: Indexing is a crucial technique for query optimization in databases. It's named indexing because of how an index works in a book. An index is a structure that holds the field the index is sorting and a pointer from each record to their corresponding record in the original table where data is actually stored \cite{tomar-2021,atlassian-no-date}.
@@ -98,7 +98,9 @@ Optimizing a query is critical for increasing database performance. There are va
      \item \textbf{Materialized view}: Materialized views are a powerful tool for query optimization, which we will focus on. 
  \end{itemize}
  
- \subsection{Reasons for Using MV for Query Optimization}:
+ \subsection{Reasons for Using MV for Query Optimization}
+ Materialized views(MVs) offer several compelling reasons for query optimization in a scheduled manner without compromising accuracy or freshness. Here are some key points:
+ 
 \begin{itemize}
     \item\textbf{Precomputed result:} Materialized views store the results of a query that allows subsequent queries to access these precomputed results directly rather than recalculating them from the base tables. These results are updated periodically or on-demand based on the underlying data changes \cite{khan-2023,Risingwave-no-date}.
     \item\textbf{Reduced Query complexity:} The main reason for creating materialized views is to improve query performance. It stores a snapshot of the data, which reduces the need for intricate query design, as we get the accesses precomputed results directly \cite{Risingwave-no-date,Databricks-no-date}.
@@ -114,7 +116,7 @@ The motivation for using materialized views is to improve performance, but the o
 
 \input{SQL/challanges_scenario}
 
-The join condition in the above query relates the two tables namely, `` Patients '' and `` Treatment''. If the ``PatientID'' column in both the ``Patients'' and `` Treatment'' tables  is not indexed properly, the database may opt for full table scan and that might happen when only a few columns are required from a very big table and this would cause very slow response times and a lot of resources consumed. Further details are discussed below:
+The join condition in the above query relates the two tables namely, `` Patients '' and `` Treatment''. Suppose the ``PatientID'' column in both the ``Patients'' and `` Treatment'' tables is not indexed properly. In that case, the database may opt for a full table scan, and that might happen when only a few columns are required from a very big table, and this would cause very slow response times and a lot of resources consumed. Further details are discussed below:
 
 \begin{itemize}
     \item\textbf{Data Fragmentation and Localization}: Dealing with how data is partitioned and distributed across multiple nodes. Data can be fragmented both horizontally and vertically and spread across nodes. Balancing between local execution and data transfer is also challenging. 
@@ -223,7 +225,7 @@ Two main equations are involved in the process of PSO algorithm:
 \end{itemize} 
 
 \textbf{Example Scenario:}\\
-Consider a scenario where a company has a database with three tables: Patients, Treatments, and Billing. They frequently run a complex query that joins these tables and applies a filter but does not know which materialized views can speed up the query. To solve this problem, they can use the PSO algorithm to determine the best combination. 
+Consider a scenario where a company has a database with three tables: ``Patients'', ``Treatments'', and ``Billing''. They frequently run a complex query that joins these tables and applies a filter but does not know which materialized views can speed up the query. To solve this problem, they can use the PSO algorithm to determine the best combination. 
 
  Each particle represents a different combination of potential configurations of materialized views. For example:
 

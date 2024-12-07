@@ -1,12 +1,17 @@
 % Total Cost Equation
-\begin{equation}
-\text{Total Cost} = \text{Query Execution Savings} - (\text{Maintenance cost} + \\\text{Storage Cost} + \text{Freshness Impact})
-\end{equation}
+
+% Total Cost Equation
+\begin{align}
+\text{Total Cost} =\sum\big(\text{Query Execution Savings} - (&\text{Maintenance Cost} \nonumber \\
+&+ \text{Storage Cost} \nonumber \\
+&+ \text{Freshness Impact})\big)
+\end{align}
 
 % Explanation of Variables
 \begin{align}
-\text{Query Execution Savings} &= \sum (\text{Base Query Cost} - \text{MV Cost}) \times \text{Query Frequency} \\
-\text{Maintenance Cost} &= \text{Refresh Cost} \times \text{Refresh Frequency} \\
-\text{Storage Cost} &= \text{MV Size} \times \text{Storage Unit Cost} \\
-\text{Freshness Impact} &= \text{Staleness Penalty} \times \text{Query Frequency}
+    \text{Execution Savings} &= \sum \Bigl( (\text{Base Query Cost} - \text{MV Cost}) \times \text{Query Frequency} \Bigr) \\
+    \text{Maintenance Cost} &= \text{Refresh Cost} \times \text{Refresh Frequency} \\
+    \text{Storage Cost} &= \text{MV Size} \times \text{Storage Unit Cost} \\
+    \text{Freshness Impact} &= \text{Staleness Penalty} \times \text{Query Frequency}
 \end{align}
+
