@@ -24,7 +24,7 @@
 \usepackage[caption=false]{subfig}
 \usepackage{url} 
 \usepackage[hyphens]{xurl}
-\usepackage{hyperref}
+\usepackage[hidelinks, bookmarksopen, bookmarksnumbered]{hyperref}
 \usepackage{natbib}
 \usepackage[breaklinks]{hyperref}
 \bibliographystyle{plainnat}
@@ -71,7 +71,32 @@
     }
 \urlstyle{same}
 
-%-----
+%-----Python code------
+\usepackage{minted}
+\lstdefinestyle{python}{
+    language=Python,
+    basicstyle=\ttfamily\footnotesize,
+    keywordstyle=\color{blue},
+    stringstyle=\color{green!60!black},
+    commentstyle=\color{red!60!black},
+    frame=lines,
+    numbers=left,
+    numberstyle=\tiny\color{gray},
+    breaklines=true
+}
+
+\lstdefinestyle{sql}{
+    language=SQL,
+    basicstyle=\ttfamily\footnotesize,
+    keywordstyle=\color{blue},
+    stringstyle=\color{green!60!black},
+    commentstyle=\color{red!60!black},
+    frame=lines,
+    numbers=left,
+    numberstyle=\tiny\color{gray},
+    breaklines=true
+}
+% ----python----
 %New colors defined below
 \definecolor{codegreen}{rgb}{0,0.6,0}
 \definecolor{codegray}{rgb}{0.5,0.5,0.5}
@@ -102,7 +127,7 @@
  \logo{logoUDE.pdf}
 
  \maketitle % generate the title page\\ 
-e
+
  \declaration
  \newpage
 \include{other_pages/non-Disclosure-agrement}

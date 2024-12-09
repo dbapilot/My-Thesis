@@ -24,7 +24,7 @@ The process involves several key steps that ensure efficient data retrieval. It 
 \begin{figure}[h]
     \centering
     
-    \includegraphics[width=0.5\textwidth]{Figure/Flow of QueryProcessing.jpg}
+    \includegraphics[width=0.5\textwidth]{Figure/Flow of query processing.png}
     \caption[The flow of query processing in DBMS]{The flow of query processing in DBMS ~\cite{wwwnaukricom-no-date} }
      
     \label{fig:my_image} 
@@ -44,7 +44,7 @@ The process involves several key steps that ensure efficient data retrieval. It 
         
         A syntactically correct statement can fail a semantic check, as shown in the following example of a query of a nonexistent table \cite{Oracle}.\vspace{.4cm}
         
-        \item \textbf{Shared pool check:} During the parse, the database performs a shared pool check to determine whether it can skip (hash code )resource-intensive steps of statement processing. Every query possesses a hash code.\vspace{.4cm}
+        \item \textbf{Shared pool check:} During the parse, the database performs a shared pool check to determine whether it can skip (hash code) resource-intensive steps of statement processing. Every query possesses a hash code.\vspace{.4cm}
         
         \input{SQL/Query3}
         
@@ -59,9 +59,9 @@ The process involves several key steps that ensure efficient data retrieval. It 
     %\label{fig:my_image}
 %\end{figure}
     
-    \item \textbf{Optimizer}: After parsing the query, the DBMS starts to find the most efficient way of executing the provided query. The factors for the query follow some optimization process. During the optimization stage, at least one complex parsing of one unique DML statement must be done. The database never optimizes DDL unless it includes a DML component, such as a sub-query, which needs optimization. Such operations are used for selecting data, inserting something, updating, etc. After everything is completed, then the evaluation step is made. In this step, the DBMS returns the result. This result is displayed to you in an appropriate format.
+    \item \textbf{Optimizer}: After parsing the query, the DBMS starts to find the most efficient way of executing the provided query. The factors for the query follow some optimization process. During the optimization stage, at least one complex parsing of one unique DML statement must be done. The database never optimizes DDL unless it includes a DML component, such as a sub-query, which needs optimization. Such operations are used for selecting data, inserting something, updating, etc. After everything is completed, then the evaluation step is made. In this step, the DBMS returns the result.
     
-    \item \textbf{Result:} After getting the best execution plan, the DBMS starts the execution of the optimized query and operates on data, including selecting the data, inserting something, and updating the data. Once everything is completed, DBMS returns the result after the evaluation step. This result is shown to you in a suitable format \cite{Query,QueryProcessing,Oracle}.
+    \item \textbf{Result:} After getting the best execution plan, the DBMS starts the execution of the optimized query and operates on data, including selecting the data, inserting something, and updating the data. Once everything is completed, DBMS returns the result after the evaluation step \cite{Query,QueryProcessing,Oracle}.
     
 \end{enumerate}
 
@@ -110,9 +110,8 @@ Optimizing a query is critical for increasing database performance. There are va
 
 The motivation for using materialized views is to improve performance, but the overhead associated with materialized view management can become a significant system management problem. The common materialized view management activities include identifying which materialized view to create, indexing the materialized view, ensuring that all materialized views and materialized view indexes are refreshed properly each time the database is updated, checking which materialized views have been used, determining how effective each materialized view has been on workload performance; measuring the space being used by materialized views; determining which existing materialized views should be dropped,  archiving old detail and materialized view data that is no longer useful \cite{Ashadevi2008CostEA,1363763}.
 
-\subsubsection{Challenges in Query Optimization} Query optimization is a crucial aspect of database management, aiming to improve the performance and efficiency of SQL queries. Opta data gruppe, a company that specializing in healthcare data management, faces several challenges in query optimization within its MSSQL. Given the vast amount of patient and operational data they handle, inefficient queries can lead to slow response times and increased resource consumption \cite{Flipico-2024}.\vspace{.4cm} 
+\subsubsection{Challenges in Query Optimization} Query optimization is a crucial aspect of database management, aiming to improve the performance and efficiency of SQL queries. Opta data gruppe, a company that specializing in healthcare data management, faces several challenges in query optimization within its MSSQL. Given the vast amount of patient and operational data they handle, inefficient queries can lead to slow response times and increased resource consumption \cite{Flipico-2024}. The following example scenario shows query challenges:\vspace{.4cm}
 
- The following example scenario shows query challenges:
 
 \input{SQL/challanges_scenario}
 

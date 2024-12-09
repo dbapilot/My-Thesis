@@ -1,0 +1,95 @@
+\begin{lstlisting}[style=python, caption={Python Code Example}]
+import numpy as np
+import random
+
+# Define parameters
+NUM_PARTICLES = 30
+NUM_ITERATIONS = 50
+W = 0.5  # Inertia weight
+C1 = 1.5  # Cognitive coefficient
+C2 = 1.5  # Social coefficient
+STORAGE_BUDGET = 100  # Maximum storage allowed in MB
+
+# Sample input data: candidate materialized views
+views = [
+    {"id": 1, "response_time_savings": 50, "storage_cost": 20, "maintenance_cost": 10},
+    {"id": 2, "response_time_savings": 70, "storage_cost": 30, "maintenance_cost": 20},
+    {"id": 3, "response_time_savings": 40, "storage_cost": 15, "maintenance_cost": 5},
+    {"id": 4, "response_time_savings": 60, "storage_cost": 25, "maintenance_cost": 15},
+    # Add more views as needed
+]
+NUM_VIEWS = len(views)
+
+# Initialize particles
+particles = []
+velocities = []
+pbest_positions = []
+pbest_scores = []
+gbest_position = None
+gbest_score = float('-inf')
+
+# Initialize particles randomly
+for _ in range(NUM_PARTICLES):
+    particle = np.random.randint(0, 2, size=NUM_VIEWS)  # Binary vector (0 or 1)
+    velocity = np.random.uniform(-1, 1, size=NUM_VIEWS)
+    particles.append(particle)
+    velocities.append(velocity)
+    pbest_positions.append(particle)
+    pbest_scores.append(float('-inf'))
+
+# Define fitness function
+def fitness_function(particle):
+    total_savings = 0
+    total_storage_cost = 0
+    total_maintenance_cost = 0
+
+    for i, selected in enumerate(particle):
+        if selected == 1:
+            total_savings += views[i]["response_time_savings"]
+            total_storage_cost += views[i]["storage_cost"]
+            total_maintenance_cost += views[i]["maintenance_cost"]
+
+    # Penalize solutions exceeding storage budget
+    if total_storage_cost > STORAGE_BUDGET:
+        return float('-inf')  # Invalid solution
+
+    return total_savings - (total_storage_cost + total_maintenance_cost)
+
+# PSO loop
+for iteration in range(NUM_ITERATIONS):
+    for i, particle in enumerate(particles):
+        # Calculate fitness
+        fitness = fitness_function(particle)
+
+        # Update personal best
+        if fitness > pbest_scores[i]:
+            pbest_scores[i] = fitness
+            pbest_positions[i] = particle
+
+        # Update global best
+        if fitness > gbest_score:
+            gbest_score = fitness
+            gbest_position = particle
+
+    # Update velocities and positions
+    for i, particle in enumerate(particles):
+        r1 = np.random.uniform(0, 1, size=NUM_VIEWS)
+        r2 = np.random.uniform(0, 1, size=NUM_VIEWS)
+        velocities[i] = (
+            W * velocities[i]
+            + C1 * r1 * (pbest_positions[i] - particle)
+            + C2 * r2 * (gbest_position - particle)
+        )
+        # Update positions using sigmoid activation
+        particles[i] = np.where(np.random.uniform(0, 1, size=NUM_VIEWS) < sigmoid(velocities[i]), 1, 0)
+
+# Sigmoid function for position update
+def sigmoid(x):
+    return 1 / (1 + np.exp(-x))
+
+# Output results
+print("Optimal Materialized Views:", gbest_position)
+print("Maximum Fitness:", gbest_score)
+
+
+\end{lstlisting}

@@ -29,7 +29,7 @@ This statement materializes the view and stores the result in a clustered index.
 
 \end{enumerate}
 
-\subsection{Deciding When to Create a Materialized or A regular View}There are some key factors to consider when deciding to create a materialized view or a regular view.
+\subsection{Deciding When to Create a Materialized or a Regular View}There are some key factors to consider when deciding to create a materialized view or a regular view.
 
 \input{Table/Regular_vs_MV_View}
 
@@ -73,8 +73,8 @@ Materialized views are a great optimization method. However, there is a cost ass
     \textbf{Key Characteristics:} On the contrary, dynamic view selection automatically selects, creates, and keeps materialized views updated according to the real-time analysis of workload. This monitoring approach continuously studies the pattern of incoming queries and applies a sophisticated algorithm to decide which view should either be created, dropped, or modified. Consequently, it is well-suited to environments with unpredictable or rapidly changing workloads such as in transactional databases or mixed workloads requiring both operational and analytical capabilities. Dynamic nature is what makes this technique effective in response to workload shifts, with selected materialized views being optimized for current usage patterns. On the contrary, real-time adaptability comes with complexity in implementation and increased maintenance overhead because it requires continuous monitoring and decision-making processes. Dynamic view selection necessitates a lot of cost trade-offs for computation of maintaining and refreshing views against the benefits it would have accrued in processing query performance \cite{lohman2000selftuning,mamoulis2012survey,gupta2002selftuning}.
 \end{enumerate}
 
-
-\subsection{View Matching for Query Optimization }
+\subsection{ Materialized View Management and Selection Approach}
+\subsubsection{View Matching for Query Optimization }
 
 View matching is a critical process in query optimization that determines whether a query or sub-expression can be computed from existing materialized views. Since the objective of query optimization is to minimize the computational cost of query execution by taking advantage of precomputed results, this is an essential component.\vspace{.4cm}
 
@@ -82,8 +82,7 @@ View matching is a critical process in query optimization that determines whethe
   \begin{itemize}
       \item \textbf{Query Decomposition:} The entering query is reviewed and broken down into its constituent elements, which include projection, selection, aggregation, and joins. This stage aids in determining the information required by the query and the components available in materialized views \cite{theodoratos2000decomposition}.
 
-      \item \textbf{Normalization and canonical form:} The incoming query and the materialized view definitions transform into a canonical form, facilitating a more straightforward comparison.
-This normalization aids in removing discrepancies in the expression of similar operations, thereby enhancing the efficiency of matching.
+      \item \textbf{Normalization and canonical form:} The incoming query and the materialized view definitions transform into a canonical form, facilitating a more straightforward comparison. This normalization aids in removing discrepancies in the expression of similar operations, thereby enhancing the efficiency of matching.
 
      \item \textbf{Checking coverage:} The attributes and conditions of the query are assessed against those present in the materialized view to ascertain if the view encompasses all required data. This procedure guarantees that the materialized view encompasses all necessary data as specified by the query. In instances where the query includes a WHERE condition, it is essential that the materialized view contains an equivalent condition or one that is more restrictive.
      
@@ -95,14 +94,8 @@ This normalization aids in removing discrepancies in the expression of similar o
 This stage guarantees the selection of the most efficient execution plan, optimizing aspects such as I/O, memory use, and processing duration.
 
   \end{itemize}
-
-
-\subsection{Conditions that Must be Fulfilled to be Capable of Using Materialized Views }
-
-\subsection{ Materialized View Management and Selection Approach}
-
+  
 \subsubsection{Materialized View Management }
-
 
 \begin{enumerate}[label=\alph*)]
     \item \textbf{Creation Strategies:}
@@ -110,6 +103,7 @@ This stage guarantees the selection of the most efficient execution plan, optimi
     \item \textbf{Storage management:}
     \item \textbf{consistency and  indexing :}
 \end{enumerate}
+
 \subsubsection{Materialized View Selection Approach}
 
   Query Frequency and Cost-Based Analysis:
@@ -121,6 +115,12 @@ This stage guarantees the selection of the most efficient execution plan, optimi
     \item \textbf{ Refresh Policies:}
 \end{enumerate}
 
+\subsubsection{Conditions that Must be Fulfilled to be Capable of Using Materialized Views }
+
+
+
+
+
 % Three types of materialized views used to increase query performance and reduce response time are as follows:
 
 %%\begin{enumerate}[label=\alph*)]
@@ -129,21 +129,11 @@ This stage guarantees the selection of the most efficient execution plan, optimi
     %\item \textbf{Incremental Materialized View Maintenance}
 %%\end{enumerate}
 
-\subsection{Multiple View Processing Plans (MVPP) }
-\subsection{Do all required rows exist in the views }
-\subsection{Particle Swarm Optimization ( PSO ) Algorithm
- }
-\subsection{Maintenance of existing materialized views (refresh)
-}
-\subsection{Materialized View Selection using (PSO) algorithm }
-\subsection{Do all required rows exist in the views }
-\subsection{Fast filtering of MV}
+\subsubsection{Multiple View Processing Plans (MVPP) }
+\subsubsection{Do All Required Rows Exist in the Views }
+\subsubsection{How ( PSO ) Algorithm Works on MV}
+\subsubsection{Maintenance of Existing Materialized Views (Refresh)}
 
-\subsection{Database system Selection}
-\subsection{Test Environment Setup }
-\subsection{Query Design}
-\subsection{Materialized View Creation} 
-\subsection{Materialized View Management \& Selection Approach}
-\subsection{View Maintenance Strategies}
-\subsection{Testing Procedure}
-\subsection{Tools and Software}: 
+
+\textbf{......\textbf{Work on Progress}..........}       
+ 

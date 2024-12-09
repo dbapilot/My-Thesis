@@ -1,5 +1,45 @@
 %\chapter{Implementaion}
 \section{Implementation}
-\subsection{Materialized View Creation}
 \subsection{Experimental Setup}
-\subsection{Performance Testing and Data Analysis}
+\subsection{Database System Selection}
+%\subsection{Test Environment Setup }
+
+
+
+ \begin{center}
+     \textbf{.................Test Implementation ... Running ...........}
+ \end{center}
+
+\subsection{Practical Implementation}
+\subsubsection{Test Environment Setup }
+\subsubsection{Understand/ Design Query Design} Analyzing the query workload to identify frequently used sub-queries, aggregation ( Queries with GROUP BY, SUM, AVG)s, or frequently joins between tables. 
+\subsubsection{Implement the PSO algorithm:} It is important to prepare the input data to get the best outcome. The following factors should consider for the preparation. 
+
+  \begin{itemize}
+      \item \textbf{Candidate views}
+      \item \textbf{Storage budget}
+      \item \textbf{Query logs}
+  \end{itemize}
+
+  The following Python code demonstrates the implementation of the PSO algorithm for MV.
+
+  \input{SQL/PSO_python}
+  
+\subsubsection{Apply the Selected  Materialized Views in MSSQL:}
+
+\begin{enumerate}
+    \item \textbf{Identify optimal views:} After running the PSO algorithm, we have to select the views to create MV based on the output.
+    \item \textbf{ Create MV on MSSQL :} Create MV in MSSQL using the following SQL commands.
+   \input{SQL/Create_MSSQL}
+    
+\end{enumerate}
+
+
+\subsubsection{Materialized View Management \& Selection Approach}
+\subsubsection{View Maintenance and Refresh Strategies:} Manual or automatic refresh strategies can be set up according to the requirements query to create a scheduled job:
+
+\input{SQL/Refresh_config}
+
+\subsubsection{Performance Testing and Data Analysis}
+
+\textbf{......\textbf{Work on Progress}..........}       
