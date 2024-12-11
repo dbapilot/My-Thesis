@@ -1,5 +1,6 @@
 %\chapter{Implementaion}
 \section{Implementation}
+This section describes a step-by-step process for effectively deploying materialized views to reduce query execution time, minimize computational overhead, and enhance overall performance based on the earlier theoretical foundations. 
 \subsection{Experimental Setup}
 \subsection{Database System Selection}
 %\subsection{Test Environment Setup }
@@ -11,18 +12,27 @@
  \end{center}
 
 \subsection{Practical Implementation}
-\subsubsection{Test Environment Setup }
-\subsubsection{Understand/ Design Query Design} Analyzing the query workload to identify frequently used sub-queries, aggregation ( Queries with GROUP BY, SUM, AVG)s, or frequently joins between tables. 
-\subsubsection{Implement the PSO algorithm:} It is important to prepare the input data to get the best outcome. The following factors should consider for the preparation. 
+\subsubsection{Test Environment Setup:}
+\subsubsection{Understand/ Design Query Design} Analyzing the query workload to identify frequently used sub-queries, aggregation (Queries with GROUP BY, SUM, AVG)s, or frequently joins between tables. This is a very important part of identifying the frequent queries that need to be optimized.
+
+\subsubsection{ Create Candidate Materialized Views:} It is important to prepare the input data to get the best outcome. The following factors should be considered for the preparation. 
 
   \begin{itemize}
-      \item \textbf{Candidate views}
+      \item \textbf{Create views}
       \item \textbf{Storage budget}
       \item \textbf{Query logs}
   \end{itemize}
 
-  The following Python code demonstrates the implementation of the PSO algorithm for MV.
+  \input{SQL/Create_Views}
+  
+\subsubsection{Implement the PSO algorithm:}
+ The following Python code illustrates the implementation of the PSO algorithm for multivariate analysis. It evaluates various combinations of these parameters and selects the one that yields the best query response time.\vspace{.4cm}
 
+
+  \input{SQL/PSO_Best_Response}
+  \vspace{.4cm}
+
+\textbf{Example 2}
   \input{SQL/PSO_python}
   
 \subsubsection{Apply the Selected  Materialized Views in MSSQL:}

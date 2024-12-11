@@ -1,14 +1,14 @@
  %\chapter{Background}
 \section{Background \& Theoretical Basics }
 
-In this chapter, we present high-level descriptions of the most significant parts as well as a full grasp of the fundamental ideas and principles that make query optimization and materialized views effective. The respective sections of the thesis explain the concrete basics needed.
+In this chapter, high-level descriptions of the most significant parts and a full grasp of the fundamental ideas and principles that make query optimization and materialized views effective are presented. The respective sections of the thesis explain the concrete basics needed.
 
 %some basics of the Database particularly distributed database.Then an overview of materialized view as query processing technique. later,we will discuss various methods and algorithms to about materialized view and Finally we discuss related work.
 \subsection{ Database System}
 
 \begin{definition}
 A database is an organized collection of data or a type of data store based on the use of a database management system(DBMS). This software enables the creation, modification, and the database itself to capture and analyze the data. \end{definition}
-A database in SQL Server is made up of a collection of tables that stores a specific set of structured data. A table contains a collection of rows, also referred to as records or tuples, and columns, also referred to as attributes. Each column in the table is designed to store a certain type of information, for example, dates, names, dollars, and numbers \cite{williamdassafmsft-2024}. Scalability, security, high availability, Network latency, and fault tolerance are the key characteristics of databases. There are two distinct types of databases: Relational and NoSQL databases.
+A database in SQL Server is made up of a collection of tables that stores a specific set of structured data. A table contains a collection of rows, also referred to as records or tuples, and columns, also referred to as attributes. Each column in the table is designed to store a certain type of information, for example, dates, names, dollars, and numbers \cite{williamdassafmsft-2024}. Scalability, security, high availability, Network latency, and fault tolerance are the key characteristics of databases. There are two distinct types of databases: Relational and NoSQL databases. Some detailed context in the following: 
 
 \begin{itemize}
     \item \textbf{Relational Databases(RDBMS) :} The relational database model came about in 1969-70 as a solution for dealing with the variety of custom-designed DBMSs that were used prior to 1969. These databases store the data in structured tables with rows and columns and use SQL for querying. They are known for their robustness, flexibility, and support for ACID properties. Example: Microsoft SQL Server, MySQL, PostgreSQL, Oracle database \cite{editor-2024,foote-2023}.
@@ -17,9 +17,9 @@ A database in SQL Server is made up of a collection of tables that stores a spec
 \end{itemize}
 
 \subsection{Query Processing }
-A query is a request sent to a database for data retrieval. Specific conditions are passed in a query to match and retrieve relevant data. SQL (Structured Query Language) is used to write these queries to extract information from relational databases. The query process involves translating high-level queries into low-level expressions suitable for the file system, optimizing the query, and executing it to obtain the result. The steps involved in the execution of a query are as follows: \cite{wwwnaukricom-no-date}
+A query is a request sent to a database for data retrieval. Specific conditions are passed in a query to match and retrieve relevant data. Structured Query Language (SQL) is used to write these queries to extract information from relational databases. The query process involves translating high-level queries into low-level expressions suitable for the file system, optimizing the query, and executing it to obtain the result \cite{wwwnaukricom-no-date}.
 
-The process involves several key steps that ensure efficient data retrieval. It begins with query processing, where the user inputs the query into the systems. The compiler then translates this input into an initial query plan by consulting the catalog manager for metadata that aids in effective optimization. Next, the command processor executes the optimized plan, interacting with the data manager to get the necessary data from the database. Finally, the processed data is compiled into a query result, which is returned to the user. The details are discussed briefly below.
+The process involves several key steps that ensure efficient data retrieval. It begins with query processing, where the user inputs the query into the systems. The compiler then translates this input into an initial query plan by consulting the catalogue manager for metadata that aids in effective optimization. Next, the command processor executes the optimized plan, interacting with the data manager to get the necessary data from the database. Finally, the processed data is compiled into a query result, which is returned to the user. The details are discussed briefly below.
 
 \begin{figure}[h]
     \centering
@@ -65,7 +65,7 @@ The process involves several key steps that ensure efficient data retrieval. It 
     
 \end{enumerate}
 
-\subsection{Query Optimization } When we write code, we aim for optimal logic in terms of both space and time complexity. Similarly, when we write database queries, we want them to be optimal in terms of their execution time and resource utilization. Query optimization is a crucial aspect of DBMS that seeks the most efficient way to execute a given query by considering a variety of query execution strategies. It minimizes the total cost or the total response time for the execution of a query. It is one of the factors that affect the application performance.\vspace{.4cm}
+\subsection{Query Optimization } Code is written with the goal of optimal logic in terms of both space and time complexity. Likewise, when database queries are written, they are desired to be optimal in terms of their execution time and resource utilization. Query optimization is a crucial aspect of DBMS that seeks the most efficient way to execute a given query by considering a variety of query execution strategies. It minimizes the total cost or the total response time for the execution of a query. It is one of the factors that affect the application performance.\vspace{.4cm}
 
 The result of a query is generated by processing the rows in a database in a way that yields the requested information. Since database structures are complex, in most cases, and especially for not very simple queries, the needed data for a query can be collected from a database by accessing it in different ways through different data structures and in different orders \cite{selinger-1979}. Each different way typically requires a different processing time. The processing time of the same query may have a large variance, from a fraction of a second to hours, depending on the chosen method. The purpose of query optimization is to find the way to process a given query in minimum time; the large possible variance in time justifies performing query optimization, though finding the exact optimal query plan among all possibilities is typically very complex, time-consuming by itself may be too costly, and often practically impossible. Thus, query optimization typically tries to approximate the optimum by comparing several common-sense alternatives to provide in a reasonable time.\vspace{.4cm}
 
@@ -110,7 +110,7 @@ Optimizing a query is critical for increasing database performance. There are va
 
 The motivation for using materialized views is to improve performance, but the overhead associated with materialized view management can become a significant system management problem. The common materialized view management activities include identifying which materialized view to create, indexing the materialized view, ensuring that all materialized views and materialized view indexes are refreshed properly each time the database is updated, checking which materialized views have been used, determining how effective each materialized view has been on workload performance; measuring the space being used by materialized views; determining which existing materialized views should be dropped,  archiving old detail and materialized view data that is no longer useful \cite{Ashadevi2008CostEA,1363763}.
 
-\subsubsection{Challenges in Query Optimization} Query optimization is a crucial aspect of database management, aiming to improve the performance and efficiency of SQL queries. Opta data gruppe, a company that specializing in healthcare data management, faces several challenges in query optimization within its MSSQL. Given the vast amount of patient and operational data they handle, inefficient queries can lead to slow response times and increased resource consumption \cite{Flipico-2024}. The following example scenario shows query challenges:\vspace{.4cm}
+\subsubsection{Challenges in Query Optimization} Query optimization is a crucial aspect of database management, aiming to improve the performance and efficiency of SQL queries. Opta data gruppe, a company that specialices in healthcare data management, faces several challenges in query optimization within its MSSQL. Given the vast amount of patient and operational data they handle, inefficient queries can lead to slow response times and increased resource consumption \cite{Flipico-2024}. The following example scenario shows query challenges:\vspace{.4cm}
 
 
 \input{SQL/challanges_scenario}
@@ -139,7 +139,7 @@ Expressed during optimization as a cost function. The common choice is to minimi
 \subsection{What is a View in SQL:}
 A view serves as a portion of a database that gives a certain client an impression of data while restricting access to the original database tables. Original tables in this context are referred to as view tables. A view can represent data from a database, allow a specific selection of data, or calculate fresh data, representing the contents of the base tables underlying it. In other words, in principle, every analytical operation derivable from the base table data traces its origin in a view table.\vspace{.4cm}
 
-A view in SQL is a virtual table that is generated by an SQL query. It does not store data physically but retrieves it from the underlying base table. Views are compiled at runtime, and they simplify the presentation of data from one or more tables without modifying the original data. It can be made over one or more database tables. Generally, we put those columns in view that we need to query again and again. Once we create a view, we can make an index, trigger the view, and query the view as a table. A view may act as a filter on certain tables being referenced in the view \cite{chauhan-2024, Rohan_Vats-2024}.\vspace{.4cm}
+A view in SQL is a virtual table that is generated by an SQL query. It does not store data physically but retrieves it from the underlying base table. Views are compiled at runtime, and they simplify the presentation of data from one or more tables without modifying the original data. It can be made over one or more database tables. Generally, those columns that need to be queried repeatedly are put into a view. Once the view is created, an index can be made, the view can be triggered, and the view can be queried as a table. A view may act as a filter on certain tables being referenced in the view \cite{chauhan-2024, Rohan_Vats-2024}.\vspace{.4cm}
 
 
 The following example explains the concept of view:
@@ -152,8 +152,8 @@ The following example explains the concept of view:
 
 There are two types of view in SQL server
 \begin{itemize}
-    \item \textbf{System defined view }: The system-defined views are predefined views that already exist in the master database of the SQL server, such as tempdb, master, and temp. Each of the databases has its properties and functions. These system views will be automatically attached to any user-defined database. It will expose the metadata of the database, and it can be used to get all possible information about the instance of the SQL server or database objects, columns, and contains. There are three types of System-defined views: Information Schema, Catalog View, and Dynamic Management View \cite{chauhan-2024}.
-    \item \textbf{User-defined view }: These are the types of views that the user defines. User-defined these views to meet their specific requirements. It can also be divided into three types: simple, complex, and materialized views \cite{javapoint-author-2024}.
+    \item \textbf{System defined view}: The system-defined views are predefined views that already exist in the master database of the SQL server, such as tempdb, master, and temp. Each of the databases has its properties and functions. These system views will be automatically attached to any user-defined database. It will expose the metadata of the database, and it can be used to get all possible information about the instance of the SQL server or database objects, columns, and contains. There are three types of System-defined views: Information Schema, Catalog View, and Dynamic Management View \cite{chauhan-2024}.
+    \item \textbf{User-defined view}: These are the types of views that the user defines. User-defined these views to meet their specific requirements. It can also be divided into three types: simple, complex, and materialized views \cite{javapoint-author-2024}.
 \end{itemize}
    
 \subsection{Materialized Views}
@@ -165,9 +165,9 @@ Materialized views in databases optimize query performance by pre-computing and 
 
 \end{definition}
 
-A materialized view (sometimes called a sorted, projected and materialized view or SPM view) is a view whose columns have been sorted, projected and materialized.\cite{IBM} In database systems, optimize query performance by pr-computing and storing the result of complex queries involving aggregations and joins. As they store the results physically in a table, re-computation of a query is not needed again. When the view is already materialized at any time, the same query is entered into the system. This reduces the computational load during the execution, significantly speeding up the response times.\vspace{.4cm}
+A materialized view (sometimes called a sorted, projected and materialized view or SPM view) is a view whose columns have been sorted, projected and materialized.\cite{IBM} In database systems, optimize query performance by pr-computing and storing the result of complex queries involving aggregations and joins. As they store the results physically in a table, re-computation of a query is not needed again. When the view is already materialized at any time, the same query is entered into the system. This reduces the computational load during the execution, significantly speeding up the response times. Here's how they work:\vspace{.4cm}
 
-Here's how they work:
+
 \begin{itemize}
     \item\textbf{Pre-computations:} It stores the results of queries that involve complex join and aggregations. These results are pre-computed and stored in the database, reducing the time needed to fetch the data when required.
     \item\textbf{Storage and retrieval:} The data in a materialized view is periodically refreshed to reflect changes in the underlying tables. The refresh can be scheduled or triggered by specific events, depending on the use case and requirements.
@@ -183,17 +183,17 @@ Here's how they work:
 Most of the time, the types of materialized views used are as follows:\vspace{.4cm}
 
 \begin{enumerate}[label=\alph*)]
-    \item \textbf{Materialized views with aggregates:} Materialized views with aggregates store the results of queries that perform aggregate calculations (e.g., SUM, COUNT, AVG, MIN, MAX) over large datasets. These views are particularly useful for optimizing query performance in scenarios that involve complex aggregations over vast amounts of data, such as reporting, analytics, and decision support systems. Example:\vspace{.4cm}
+    \item \textbf{Materialized views with aggregates:} Materialized views with aggregates store the results of queries that perform aggregate calculations (e.g., SUM, COUNT, AVG, MIN, MAX) over large datasets. These views are particularly useful for optimizing query performance in scenarios that involve complex aggregations over vast amounts of data, such as reporting, analytics, and decision support systems. The explanation is demonstrated with the following example:\vspace{.4cm}
     
     \input{SQL/Aggregation}
 
-    In this example, The materialized view ``salesSummary'' precomputes the Sum, AVG and COUNT for sales data grouped by ProductID, Region and CategoryID.
+    In this example, the materialized view ``salesSummary'' precomputes the Sum, AVG, and COUNT for sales data grouped by ProductID, Region, and CategoryID.
 
-    \item \textbf{Materialized views with join }: Materialized views with joins store the results of queries that involve multiple tables combined using join operations (e.g., INNER JOIN, LEFT JOIN, RIGHT JOIN). These types of materialized views can significantly speed up complex queries that frequently access multiple related tables. By precomputing the join results, the materialized view avoids the need to recompute them during every query execution. Example: \vspace{.4cm}
+    \item \textbf{Materialized views with join }: Materialized views with joins store the results of queries that involve multiple tables combined using join operations (e.g., INNER JOIN, LEFT JOIN, RIGHT JOIN). These types of materialized views can significantly speed up complex queries that frequently access multiple related tables. By precomputing the join results, the materialized view avoids the need to recompute them during every query execution. The explanation is made clear with the following example: \vspace{.4cm}
     
     \input{SQL/MV_Joins}
 
-    In this example, The materialized view ``CustomerOrderSummary''
+    In this example, the materialized view ``CustomerOrderSummary''
     stores the results of the joins between the customers, orders and products table.
     
     \item \textbf{Hybrid materialized views}: Hybrid materialized views combine features of both aggregates and join-based materialized views, optimizing performance for queries that require both aggregations and joins between multiple tables. They are designed to handle more complex queries efficiently, as they store pre-computed results that involve both aggregated data and joined tables. Hybrid materialized views are particularly useful in environments like data warehouses or reporting systems where queries often need to summarize and relate data from various sources. \vspace{.4cm}
@@ -206,12 +206,10 @@ This materialized view, ``ProductSalesSummary'' stores precomputed join results 
 
 \subsubsection{Materialized View vs Database View:} With the usual syntax of creating a view, we create a database view, which is different from the materialized view because a normal database view is just a virtual table that is defined by a SQL query. It is stored in the user database and can be accessed by users who have appropriate permissions. An MV view does not store any data itself; it is simply a way of presenting data from one or more tables in different ways. Materialized views are disk-based and are updated periodically based on the query definition \cite{Stackoverflow-author-08-2008}. Views are virtual and run the query definition each time they are accessed. Materialized views are useful when data is accessed frequently and updated infrequently.
 
-\subsection{Particle Swarm Optimization(PSO) Algorithm}
+\subsection{Particle Swarm Optimization Algorithm}
 Particle swarm optimization is a type of optimization algorithm that depends quite on the behavior of natural organisms, such as birds or fish, that move together to achieve a common goal. A group of particles navigates the problem solution space in search of the best possible solution. Each particle adjusts its position in accordance with its best-known solution (personal best) as well as the best solution discovered by the entire group (global best). This allows particles to converge on ideal solutions across iterations \cite{subhasis-2023}.\vspace{.4cm}
 
- In the case of query optimization, this makes use of all such aspects in order to optimize the configuration view, index, or query execution plan with minimum query response and resource usage in the database management systems. Here, PSO represents solution(s) as particles, for example, combinations of materialized views, which move through the solution space according to their own experiences and the swarm's experiences. By constantly changing the position of such particles, PSO iteratively finds the best optimal solution or near-optimum solution that has the best trade-off between query and costs of maintenance and hence becomes a very powerful means for database administrators keen on optimizing very complex database environments.\vspace{.4cm}
-
-Two main equations are involved in the process of PSO algorithm:
+ In the case of query optimization, this makes use of all such aspects in order to optimize the configuration view, index, or query execution plan with minimum query response and resource usage in the database management systems. Here, PSO represents solution(s) as particles, for example, combinations of materialized views, which move through the solution space according to their own experiences and the swarm's experiences. By constantly changing the position of such particles, PSO iteratively finds the best optimal solution or near-optimum solution that has the best trade-off between query and costs of maintenance and hence becomes a very powerful means for database administrators keen on optimizing very complex database environments. Two main equations are involved in the process of PSO algorithm:\vspace{.4cm}
 \begin{itemize}
     \item \textbf{Velocity update:} In this step, each particle in the swarm updates its velocity using the computed values of the individual and global best solutions and its current best position. The acceleration factor of the c1 and c2 coefficients is related to individual and social aspects. It determines how much confidence a particle has in itself and its neighbors to find an optimal solution \cite{baeldung2024pso}
 
@@ -223,10 +221,7 @@ Two main equations are involved in the process of PSO algorithm:
 
 \end{itemize} 
 
-\textbf{Example Scenario:}\\
-Consider a scenario where a company has a database with three tables: ``Patients'', ``Treatments'', and ``Billing''. They frequently run a complex query that joins these tables and applies a filter but does not know which materialized views can speed up the query. To solve this problem, they can use the PSO algorithm to determine the best combination. 
-
- Each particle represents a different combination of potential configurations of materialized views. For example:
+\textbf{Example Scenario:} Consider a scenario where a company has a database with three tables: ``Patients'', ``Treatments'', and ``Billing''. They frequently run a complex query that joins these tables and applies a filter but do not know which materialized views can speed up the query. To solve this problem, they can use the PSO algorithm to determine the best combination. Each particle represents a different combination of potential configurations of materialized views. For example:
 
  \begin{itemize}
      \item Particle 1: [0,1,0] - Materialized view for total patients by doctor.
@@ -244,3 +239,12 @@ Each particle's fitness is evaluated by running the query based on the execution
  
 After several iterations, each particle updates its velocity and position based on its personal and global best solution until convergence criteria are met. Suppose the best solution found is [1,0,1], which means MV for average billing per treatment type is the optimal solution, resulting in the lowest query execution time.
 
+\subsubsection{Why PSO Algorithm is Unique:} The PSO algorithm is highly effective for optimizing query performance because it can dynamically explore multiple configurations, adapt to changing environments, and manage complex query positions. The following are the key reasons why PSO stands out for this specific task:
+
+\begin{itemize}
+    \item \textbf{Population-based search mechanism:} PSO employs a swarm of particles that explore the solution space concurrently. For n candidate views, there are $2{^n}$ possible combinations. Unlike exhaustive search, PSO evaluates only a subset of solutions but still converges to optimal solutions \cite{Kennedy_Eberhart}.
+    
+    \item \textbf{Fitness driven optimizations:} PSO can directly evaluate the performance of each particle using a fitness function based on real execution times, allowing it to adapt to the database's actual performance behavior \cite{Maurice_Clerc-no-date}.
+    
+    \item \textbf{Scalability and adaptability:} Databases often involve hundreds or thousands of queries and candidate materialized views. Particle Swarm Optimization (PSO) is iterative and flexible, making it easy to scale well with the number of variables in workloads without requiring extensive reconfiguration \cite{van2014swarm}.
+\end{itemize}
