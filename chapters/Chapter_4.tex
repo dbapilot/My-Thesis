@@ -13,7 +13,9 @@ This section describes a step-by-step process for effectively deploying material
 
 \subsection{Practical Implementation}
 \subsubsection{Test Environment Setup:}
-\subsubsection{Understand/ Design Query Design} Analyzing the query workload to identify frequently used sub-queries, aggregation (Queries with GROUP BY, SUM, AVG)s, or frequently joins between tables. This is a very important part of identifying the frequent queries that need to be optimized.
+\subsubsection{Identify Complex Queries} Analyzing the query workload to identify frequently used sub-queries, aggregation (Queries with GROUP BY, SUM, AVG)s, or frequently joins between tables. This is a very important part of identifying the frequent queries that need to be optimized. SQL server management studio can be used to analyze execution logs and identify the frequently executed and resource-intensive queries. For example, The following query to identify long-running queries:
+
+\input{SQL/Query_identify}
 
 \subsubsection{ Create Candidate Materialized Views:} It is important to prepare the input data to get the best outcome. The following factors should be considered for the preparation. 
 
@@ -28,12 +30,12 @@ This section describes a step-by-step process for effectively deploying material
 \subsubsection{Implement the PSO algorithm:}
  The following Python code illustrates the implementation of the PSO algorithm for multivariate analysis. It evaluates various combinations of these parameters and selects the one that yields the best query response time.\vspace{.4cm}
 
+\textbf{Example 1}
 
-  \input{SQL/PSO_Best_Response}
-  \vspace{.4cm}
+  \input{SQL/PSO_Best_Response}\vspace{.4cm}
 
 \textbf{Example 2}
-  \input{SQL/PSO_python}
+  \input{SQL/PSO_python}\vspace{.4cm}
   
 \subsubsection{Apply the Selected  Materialized Views in MSSQL:}
 

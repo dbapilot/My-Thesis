@@ -50,11 +50,11 @@ Materialized views are a great optimization method. However, there is a cost ass
 
   Suppose opta data Gruppe runs a complex query with a materialized view, which takes 1 ms to execute, compared to 5 ms without MV. If it runs 100 times per day, the total savings would be:
   
-   (5-1)x100=400ms which valued \$400 per day.\\
+  (5-1)x100=400ms, which is valued \$400 per day.\\
    Maintenance cost for refreshing = \$50 \\
-   Storage cost for keeping MV =\$20\\
-   Estimated correction cost=\$10 \\
-   Total cost={400-(50+20+10)}=\$320 which means net benefit for using MV is \$320
+   Storage cost for keeping MV = \$20\\
+   Estimated correction cost= \$10 \\
+   Total cost={400-(50+20+10)}= \$320 which means net benefit for using MV is \$320
 
  
   
@@ -63,11 +63,11 @@ Materialized views are a great optimization method. However, there is a cost ass
 
 
 
-\subsection{ Static vs Dynamic View Selection } The selection process for materialized views in query optimization can be classified into static and dynamic. Both alternatives are designed to improve query performance but differ in their timing, adaptivity, and resource management. Below is the static and dynamic selection process breakdown:
+\subsection{ Static vs Dynamic View Selection } The selection process for materialized views in query optimization can be classified into static and dynamic. Both alternatives are designed to improve query performance but differ in timing, adaptivity, and resource management. Below is the static and dynamic selection process breakdown:
 \begin{enumerate}
-        \item \textbf{Static View Selection:} Before execution of any query, the process of selecting the static view would involve the materialized views that were selected in either the design or the setup phase of a database. Whether or not to create and keep particular materialized views is dependent on what has been analyzed historically, workload patterns, and domain knowledge. The views are predefined and fixed until the database reconfiguration is done manually.\vspace{.4cm}
+        \item \textbf{Static View Selection:} Before executing any query, the process of selecting the static view would involve the materialized views that were selected in the design or setup phase of a database. Whether or not to create and keep particular materialized views is dependent on what has been analyzed historically, workload patterns, and domain knowledge. Views are predefined and fixed until the database reconfiguration is done manually.\vspace{.4cm}
     
-    \textbf{Key Characteristics:} In this case, the fixed view predetermines materialized views at the design stage, generally deriving the predetermined set from historical analysis of expected workloads. Once chosen, these remain set unless some manual alteration is applied. This is suitable for the predictable nature of stable workloads where queries are not so prone to changes over time-such as data warehouse environments or environments that perform online analytical processing (OLAP). By saving time spent on choices, static view selection becomes quite easy to implement and run. It has an inherent limitation because any considerable shift in the workload would entail manual intervention in the set of materialized views \cite{lohman2000selftuning,mamoulis2012survey,gupta2002selftuning}.
+    \textbf{Key Characteristics:} In this case, the fixed view predetermines materialized views at the design stage, generally deriving the set predetermined from historical analysis of expected workloads. Once chosen, these remain set unless some manual alteration is applied. This is suitable for the predictable nature of stable workloads where queries are not so prone to changes over time, such as data warehouse environments or environments that perform online analytical processing (OLAP). By saving time spent on choices, static view selection becomes quite easy to implement and run. It has an inherent limitation because any considerable shift in the workload would entail manual intervention in the set of materialized views \cite{lohman2000selftuning,mamoulis2012survey,gupta2002selftuning}.
     \item \textbf{Dynamic View Selection:} Dynamic View Selection is the selection of dynamic materialized views at execution time or the adaptation of a set of materialized views to changing workload patterns. This is thus a continuous process consisting of monitoring query patterns and data modification in conjunction with cost-benefit considerations to decide whether to add a materialized view, maintain one, or remove it.\vspace{.4cm}
     
     \textbf{Key Characteristics:} On the contrary, dynamic view selection automatically selects, creates, and keeps materialized views updated according to the real-time analysis of workload. This monitoring approach continuously studies the pattern of incoming queries and applies a sophisticated algorithm to decide which view should either be created, dropped, or modified. Consequently, it is well-suited to environments with unpredictable or rapidly changing workloads, such as in transactional databases or mixed workloads requiring both operational and analytical capabilities. Dynamic nature is what makes this technique effective in response to workload shifts, with selected materialized views being optimized for current usage patterns. On the contrary, real-time adaptability comes with complexity in implementation and increased maintenance overhead because it requires continuous monitoring and decision-making processes. Dynamic view selection necessitates a lot of cost trade-offs for computation of maintaining and refreshing views against the benefits it would have accrued in processing query performance \cite{lohman2000selftuning,mamoulis2012survey,gupta2002selftuning}.
@@ -124,7 +124,7 @@ To effectively utilize the materialized views, certain conditions must be fulfil
     
     \item \textbf{Syntax and structural requirements:} The view must be created using the schema binding options to ensure schema consistency. A unique clustered index is mandatory to materialize the view. Insert, update, and delete operations on base tables must not violate the constraints of the view.
     
-    \item \textbf{Sufficient storage and permission:} Adequate storage and permission must be available for the user to 
+    \item \textbf{Sufficient storage and permission:} Adequate storage and permission must be available for the user to accommodate the data stored in materialized views.
     \item \textbf{Effective refresh Strategies:} A clear strategy for refreshing materialized views is necessary to ensure data accuracy while avoiding excessive maintenance overhead.
     \item \textbf{Assessment:} It is essential to periodically evaluate materialized views (MVs) to keep them accurate and aligned with the evolving needs of database systems. Clear documentation should be maintained for each materialized view, detailing its purpose, structure, and refresh policies.
 \end{enumerate}
