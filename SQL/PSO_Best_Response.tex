@@ -1,76 +1,106 @@
-\begin{lstlisting}[style=python, caption={Python Code Example}]
-import pyodbc
-import random
+\begin{lstlisting}[style=pythonstyle, label={lst:example} caption={Python Code Example}]
+
+import pyodbc # A python  library for interacting with ODBC databases like MSSQL that helps to manage database connection
+import random #It helps to generate random numbers and choice used to initialize particle positions and velocities
 import time
 
-# Connect to MSSQL database
-conn = pyodbc.connect('DRIVER={SQL Server};SERVER=localhost;DATABASE=QueryOptimizationDB;Trusted_Connection=yes;')
-cursor = conn.cursor()
+# Connection parameters
+server = 'T915-TEST-DB'  # server name that used to get data 
+database = 'AccessAuditDB'  # Database name
+driver_name = 'ODBC Driver 17 for SQL Server'  # ODBC  driver from pyodbc.drivers()
+# Uncomment and add these if using SQL Server Authentication
+# username = 'm.islam'
+# password = 'your_password'
 
-# Define complex queries with corresponding materialized views
-queries = [
-    "SELECT * FROM TotalSalesByCustomer;",
-    "SELECT * FROM TotalQuantityByProduct;",
-    "SELECT * FROM MonthlySales;"
-]
+try:
+    # Establish connection
+    conn = pyodbc.connect(
+        f'DRIVER={{{driver_name}}};'
+        f'SERVER={server};'
+        f'DATABASE={database};'
+        'Trusted_Connection=yes;'  # Indicates that Windows Authentication used for Authentication
+        # Uncomment these lines for SQL Authentication
+        # f'UID={username};'
+        # f'PWD={password};'
+    )
+    cursor = conn.cursor()
+    print("Connection established!")
 
-# Cost function to evaluate query response time
-def cost_function(selected_views):
-    total_time = 0
-    for i, view in enumerate(selected_views):
-        if view == 1:  # Execute only selected views
-            start_time = time.time()
-            cursor.execute(queries[i])
-            cursor.fetchall()
-            total_time += time.time() - start_time
-    return total_time
+    #  A list of Queries corresponding to materialized views
+    queries = [
+        "SELECT * FROM TotalSalesByCustomer;",
+        "SELECT * FROM TotalQuantityByProduct;",
+        "SELECT * FROM MonthlySales;"
+    ]
 
-# PSO Parameters
-num_particles = 5
-num_iterations = 10
-num_queries = len(queries)
+    # Cost function: Measure total query execution time for a set of materialized views 
+    def cost_function(selected_views):
+        total_time = 0
+        if not any(selected_views):  # No views selected
+            return float('inf')  # High cost for no selection
+        for i, view in enumerate(selected_views):
+            if view == 1:  # If view is selected
+                start_time = time.time()
+                cursor.execute(queries[i]) # Executes the SQL query for the selected view
+                cursor.fetchall()
+                total_time += time.time() - start_time # Total query execution time 
+        return total_time
 
-# Initialize particles
-particles = [{'position': [random.choice([0, 1]) for _ in range(num_queries)],
-              'velocity': [random.uniform(-1, 1) for _ in range(num_queries)],
-              'best_position': None,
-              'best_cost': float('inf')} for _ in range(num_particles)]
+    # PSO parameters
+    num_particles = 5 # Number of particles in the swarm 
+    num_iterations = 10 #The number of iterations the algorithm will run
+    num_queries = len(queries) #The number of queries (materialized views) to optimize.
+    W = 0.5  # Inertia weight Controls the impact of the previous velocity on the current velocity.
 
-global_best_position = None
-global_best_cost = float('inf')
+    c1, c2 = 1.5, 1.5 # Encourages particles to move toward the personal/global best position.
 
-# Run PSO
-for iteration in range(num_iterations):
-    for particle in particles:
-        # Evaluate the cost for the particle's current position
-        cost = cost_function(particle['position'])
+    # Initialize particles
+    particles = [{'position': [random.choice([0, 1]) for _ in range(num_queries)], #Represents a particle's selected views (1 = selected, 0 = not selected).
+                  'velocity': [random.uniform(-1, 1) for _ in range(num_queries)], #Represents the rate of change for each view selection.
+                  'best_position': None,
+                  'best_cost': float('inf')} for _ in range(num_particles)] #The lowest cost (execution time) encountered by the particle.
 
-        # Update particle's best position
-        if cost < particle['best_cost']:
-            particle['best_position'] = particle['position'][:]
-            particle['best_cost'] = cost
+    global_best_position = None  
+    global_best_cost = float('inf')
 
-        # Update global best position
-        if cost < global_best_cost:
-            global_best_position = particle['position'][:]
-            global_best_cost = cost
+    # PSO algorithm
+    for iteration in range(num_iterations):
+        for particle in particles:
+            # Evaluate cost
+            cost = cost_function(particle['position'])
+            print(f"Particle position: {particle['position']}, Cost: {cost:.4f}")
 
-        # Update velocity and position
-        inertia = 0.5
-        cognitive = 2.0
-        social = 2.0
-        for i in range(num_queries):
-            r1, r2 = random.random(), random.random()
-            particle['velocity'][i] = (inertia * particle['velocity'][i] +
-                                       cognitive * r1 * (particle['best_position'][i] - particle['position'][i]) +
-                                       social * r2 * (global_best_position[i] - particle['position'][i]))
-            particle['position'][i] = 1 if random.random() < abs(particle['velocity'][i]) else 0
+            # Update personal best
+            if cost < particle['best_cost']:
+                particle['best_position'] = particle['position'][:]
+                particle['best_cost'] = cost
 
-    print(f"Iteration {iteration + 1}: Best Cost = {global_best_cost}")
+            # Update global best
+            if cost < global_best_cost:
+                global_best_position = particle['position'][:]
+                global_best_cost = cost
 
-print("Best Materialized View Selection:", global_best_position)
+            # Update velocity and position using PSO formula 
+            for i in range(num_queries):
+                r1, r2 = random.random(), random.random()
+                particle['velocity'][i] = (W * particle['velocity'][i] +
+                                           c1 * r1 * (particle['best_position'][i] - particle['position'][i]) +
+                                           c2 * r2 * (global_best_position[i] - particle['position'][i]))
+                particle['position'][i] = 1 if random.random() < abs(particle['velocity'][i]) else 0
 
-# Close connection
-conn.close()
+        print(f"Iteration {iteration + 1}: Best Cost = {global_best_cost:.4f}")
+
+    print("Optimal Materialized Views:", global_best_position)
+
+except pyodbc.Error as e:
+    print("Error connecting to SQL Server:", e) # Catches and displays database connection errors.
+
+
+finally:
+    if 'conn' in locals() and conn:
+        conn.close()
+        print("Connection closed.")  #Ensures the database connection is closed after the script execution.
+
+
 
 \end{lstlisting}

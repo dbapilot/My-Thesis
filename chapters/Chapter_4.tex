@@ -1,6 +1,25 @@
 %\chapter{Implementaion}
 \section{Implementation}
-This section describes a step-by-step process for effectively deploying materialized views to reduce query execution time, minimize computational overhead, and enhance overall performance based on the earlier theoretical foundations. 
+This section describes a step-by-step process for effectively deploying materialized views, based on the earlier theoretical foundations, to reduce query execution time, minimize computational overhead, and enhance overall performance.
+
+\subsection{Used Software and Tools}
+\subsubsection{SQL Server Management Studio:}SQL Server Management Studio is actually an integrated environment that can maintain the SQL server infrastructure. It is used to manage the schema, tables, and materialized views of the database. In addition, it monitors the performance of the query using execution plans and statistics, and it helps to debug SQL queries and optimize their execution.
+
+\subsubsection{Visual Studio Code:} Microsoft created this open-source integrated development environment (IDE) for web browsers, Linux, macOS, and Windows. It is used to write Python scripts for automation (e.g., measuring query performance), integrate MSSQL queries with Python using extensions, and debug Python and SQL scripts.
+
+\subsubsection{Overleaf:} Overleaf is an open-source online, real-time collaborative LaTeX editor that simplifies the process of creating, editing, and collaborating on LaTeX documents.
+
+\subsubsection{Microsoft SQL Server:} Microsoft SQL server is a relational database that provides a wide range of features for storing, processing, and securing data.
+
+
+\subsubsection{Python:} Python is a high-level interpreted programming language known for its simplicity and readability. It was created by Guido van Rossum and released in 1991 \cite{martin2023stam,wijanarko2020prediksi} . It has become one of the most popular programming languages worldwide. The structure of the language and its object-oriented approach help programmers to write logical and clear code for small and large projects. Python libraries (packages) effectively simplify many important processes such as analysing and visualizing data, retrieving unstructured data from the web, image processing, building machine learning models, and textual information \cite{Samira_Gholizadeh2022}. Here, it has been used to implement the PSO algorithm to optimize query performance and execute and analyze the database programmatically.
+
+\subsubsection{pyodbc:} Pyodbc is an open-source Python module that makes accessing ODBC databases simple. It implements the DB API 2.0 specification but is packed with even more Pythonic convenience.
+
+\subsubsection{pandas:} The pandas constitute an open-source data manipulation and analysis tool that is fast, powerful, flexible, and easy to use. It is built entirely on the Python programming language. Pandas organizes and processes query performance data for further analysis. It is built entirely on the basis of the Python programming language. Panda Organizes and processes query performance data for further analysis.
+
+\subsubsection{matplotlib:} Matplotlib is a comprehensive library for creating static, animated, and interactive visualizations in Python. Matplotlib makes easy things easy and hard things possible \cite{matplotlib}. It has been used to visualize performance improvements in different charts and tables. 
+\subsubsection{Git:} Git is a version control system that is used for tracking the changes made in the files and for enabling a collaborative software world. Flexsibility, speed, and enablement of almost any applied workflow contribute to the great popularity of Git. It is more like a standard for version control - about 90 per cent of developers' primary system-in-use around the world fall into this category. This enables one to have version control over changes in Python and latex scripts and even multiple collaboration by users.
 \subsection{Experimental Setup}
 \subsection{Database System Selection}
 %\subsection{Test Environment Setup }
@@ -13,7 +32,7 @@ This section describes a step-by-step process for effectively deploying material
 
 \subsection{Practical Implementation}
 \subsubsection{Test Environment Setup:}
-\subsubsection{Identify Complex Queries} Analyzing the query workload to identify frequently used sub-queries, aggregation (Queries with GROUP BY, SUM, AVG)s, or frequently joins between tables. This is a very important part of identifying the frequent queries that need to be optimized. SQL server management studio can be used to analyze execution logs and identify the frequently executed and resource-intensive queries. For example, The following query to identify long-running queries:
+\subsubsection{Identify Complex Queries} Analyzing the query workload to identify frequently used sub-queries, aggregation (Queries with GROUP BY, SUM, AVG)s, or frequently joins between tables. This is a very important part of identifying the frequent queries that need to be optimized. SQL server management studio can be used to analyze execution logs and identify the frequently executed and resource-intensive queries. For example, the following query to identify long-running queries:
 
 \input{SQL/Query_identify}
 
@@ -26,6 +45,8 @@ This section describes a step-by-step process for effectively deploying material
   \end{itemize}
 
   \input{SQL/Create_Views}
+
+  \input{ta}
   
 \subsubsection{Implement the PSO algorithm:}
  The following Python code illustrates the implementation of the PSO algorithm for multivariate analysis. It evaluates various combinations of these parameters and selects the one that yields the best query response time.\vspace{.4cm}
@@ -42,6 +63,7 @@ This section describes a step-by-step process for effectively deploying material
 \begin{enumerate}
     \item \textbf{Identify optimal views:} After running the PSO algorithm, we have to select the views to create MV based on the output.
     \item \textbf{ Create MV on MSSQL :} Create MV in MSSQL using the following SQL commands.
+    
    \input{SQL/Create_MSSQL}
     
 \end{enumerate}
@@ -55,3 +77,5 @@ This section describes a step-by-step process for effectively deploying material
 \subsubsection{Performance Testing and Data Analysis}
 
 \textbf{......\textbf{Work on Progress}..........}       
+
+% Test Test Test Test---------------------------------Test 

@@ -14,6 +14,8 @@
 %\usepackage{chapterbib}
 
 \usepackage{natbib}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
 %----From --- %%%%
 \usepackage[linguistics]{forest}
 \usepackage[utf8]{inputenc}
@@ -45,11 +47,11 @@
 }
 %%
 \usepackage{scrlayer}
-  % Optional, for coloring code
+  % Optional for coloring code
 \usepackage[colorlinks=true]{hyperref}
 %Enumerations
-\usepackage{enumerate}
-\usepackage{placeins}
+%\usepackage{enumerate}
+%\usepackage{placeins}
 \usepackage{enumitem}
 \usepackage{acronym}
 \usepackage{booktabs, tabularx}
@@ -73,17 +75,24 @@
 
 %-----Python code------
 \usepackage{minted}
-\lstdefinestyle{python}{
+\lstdefinestyle{pythonstyle}{
     language=Python,
     basicstyle=\ttfamily\footnotesize,
     keywordstyle=\color{blue},
-    stringstyle=\color{green!60!black},
-    commentstyle=\color{red!60!black},
-    frame=lines,
+    stringstyle=\color{red},
+    commentstyle=\color{green!50!black},
+    backgroundcolor=\color{gray!10},
+    showstringspaces=false,
     numbers=left,
     numberstyle=\tiny\color{gray},
-    breaklines=true
+    stepnumber=1,
+    breaklines=true,
+    frame=single,
+    captionpos=b,
+    tabsize=4,
+    morekeywords={self, None},
 }
+
 
 \lstdefinestyle{sql}{
     language=SQL,
