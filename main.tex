@@ -13,6 +13,7 @@
 \usepackage{amsmath}
 %\usepackage{chapterbib}
 
+
 \usepackage{natbib}
 \usepackage{pgfplots}
 \pgfplotsset{compat=1.18}
@@ -50,8 +51,8 @@
   % Optional for coloring code
 \usepackage[colorlinks=true]{hyperref}
 %Enumerations
-%\usepackage{enumerate}
-%\usepackage{placeins}
+\usepackage{enumerate}
+\usepackage{placeins}
 \usepackage{enumitem}
 \usepackage{acronym}
 \usepackage{booktabs, tabularx}
@@ -114,15 +115,21 @@
 
 \usepackage{listings}
 
-\lstset{style=mystyle}
-\usepackage[colorlinks=true, urlcolor=blue, linkcolor=blue, citecolor=blue]{hyperref}
 %-------
 %\usepackage[table, dvipsnames]{xcolor}  % Include all the options you need
 %\usepackage{amsthm}
 %\usepackage{float}
 %Hyperlinks
 %\theoremstyle{definition}
+\lstset{style=mystyle}
+\usepackage[colorlinks=true, urlcolor=blue, linkcolor=blue, citecolor=blue]{hyperref}
 
+
+
+
+\usepackage{array}
+\usepackage[table,xcdraw]{xcolor} % For table colors
+\usepackage{booktabs} % For professional table styling
 \begin{document}
   \author{Md Nazmul Islam}
  \title{Optimizing Query Performance In Database System}
@@ -164,6 +171,4 @@
  %%bibliography
  \bibliography{other_pages/Bibliography} % print the bibliography, using the .bib-file "bib_filename.bib"
 \end{document}
-
-
 

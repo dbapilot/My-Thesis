@@ -46,7 +46,9 @@ This section describes a step-by-step process for effectively deploying material
 
   \input{SQL/Create_Views}
 
-  \input{ta}
+   \input{Table/Response_time_comparion}
+
+
   
 \subsubsection{Implement the PSO algorithm:}
  The following Python code illustrates the implementation of the PSO algorithm for multivariate analysis. It evaluates various combinations of these parameters and selects the one that yields the best query response time.\vspace{.4cm}
@@ -76,6 +78,61 @@ This section describes a step-by-step process for effectively deploying material
 
 \subsubsection{Performance Testing and Data Analysis}
 
-\textbf{......\textbf{Work on Progress}..........}       
+\textbf{......\textbf{Work on Progress}..........}     
+ \input{Table/Response_time_comparion}
 
 % Test Test Test Test---------------------------------Test 
+\begin{tikzpicture}
+    \begin{axis}[
+        width=12cm, height=8cm,
+        ybar=0.5pt, % Bar style
+        bar width=15pt,
+        symbolic x coords={Query 1, Query 2, Query 3},
+        xtick=data,
+        ymin=0, ymax=5,
+        ylabel={Execution Time (seconds)},
+        xlabel={Queries},
+        legend style={at={(0.5,-0.2)}, anchor=north, legend columns=-1},
+        nodes near coords, % Show data labels
+        enlarge x limits=0.25
+    ]
+        % Without Materialized View Data
+        \addplot coordinates {(Query 1,2.35) (Query 2,3.78) (Query 3,4.21)};
+        % With Materialized View Data
+        \addplot coordinates {(Query 1,0.45) (Query 2,0.62) (Query 3,0.87)};
+        
+        \legend{Without Materialized View, With Materialized View}
+    \end{axis}
+\end{tikzpicture}
+
+\begin{table}[h!]
+    \centering
+    \begin{tabular}{@{}lccc@{}}
+        \toprule
+        \textbf{Query} & \textbf{Without MV (s)} & \textbf{With MV (s)} & \textbf{Difference (\%)} \\ \midrule
+        Query 1        & 2.35                   & 0.45                 & 80.85                   \\
+        Query 2        & 3.78                   & 0.62                 & 83.61                   \\
+        Query 3        & 4.21                   & 0.87                 & 79.34                   \\ \bottomrule
+    \end{tabular}
+    \caption{Execution Time Difference Between Queries With and Without Materialized Views}
+    \label{tab:performance}
+\end{table}
+
+
+\begin{table}[h!]
+    \centering
+    \begin{tabular}{@{}lccc@{}}
+        \toprule
+        \textbf{Query} & \textbf{Without MV (s)} & \textbf{With MV (s)} & \textbf{Difference (\%)} \\ \midrule
+        Query 1        & 2.35                   & 0.45                 & 80.85                   \\
+        Query 2        & 3.78                   & 0.62                 & 83.61                   \\
+        Query 3        & 4.21                   & 0.87                 & 79.34                   \\ \bottomrule
+    \end{tabular}
+    \caption{Performance Comparison for Queries With and Without Materialized Views}
+    \label{tab:performance}
+\end{table}
+
+For example, the percentage difference for Query 1 is calculated as:
+\[
+\text{Difference (\%)} = \frac{\text{Without MV} - \text{With MV}}{\text{Without MV}} \times 100 = \frac{2.35 - 0.45}{2.35} \times 100 \approx 80.85\%
+\]

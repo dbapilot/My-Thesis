@@ -1,0 +1,21 @@
+\begin{table}[h!]
+\centering
+\caption{Performance Comparison}
+\renewcommand{\arraystretch}{1.2} % Adjust row height
+\setlength{\tabcolsep}{8pt}       % Adjust column width
+\resizebox{\textwidth}{!}{ % Resizes the table to fit the page width
+\begin{tabular}{|c|>{\columncolor[HTML]{D9EAF1}}c|>{\columncolor[HTML]{D9EAF1}}c|>{\columncolor[HTML]{D9EAF1}}c|}
+\hline
+\rowcolor[HTML]{276B7A} 
+\textbf{Run} & \textbf{\textcolor{white}{Direct SELECT Aggregation (ms)}} & \textbf{\textcolor{white}{Indexed View Query (ms)}} & \textbf{\textcolor{white}{Materialized View (ms)}} \\ \hline
+Run 1        & 177                                                        & 15                                                & 5                                                \\ \hline
+Run 2        & 40                                                         & 14                                                & 3                                                \\ \hline
+Run 3        & 36                                                         & 16                                                & 3                                                \\ \hline
+Run 4        & 40                                                         & 14                                                & 6                                                \\ \hline
+Run 5        & 40                                                         & 15                                                & 7                                                \\ \hline
+\rowcolor[HTML]{BFDDE5} 
+\textbf{Average} & \textbf{66.6}                                           & \textbf{14.8}                                     & \textbf{5}                                       \\ \hline
+\end{tabular}
+} % End of \resizebox
+\label{table:performance_comparison}
+\end{table}

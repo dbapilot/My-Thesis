@@ -180,16 +180,18 @@ A materialized view (sometimes called a sorted, projected and materialized view 
     \end{itemize}
 \end{itemize}\vspace{.4cm}
 
-Most of the time, the types of materialized views used are as follows:\vspace{.4cm}
+Most of the time, the types of materialized views used are as follows:
+
+\vspace{.4cm}
 
 \begin{enumerate}[label=\alph*)]
-    \item \textbf{Materialized views with aggregates:} Materialized views with aggregates store the results of queries that perform aggregate calculations (e.g., SUM, COUNT, AVG, MIN, MAX) over large datasets. These views are particularly useful for optimizing query performance in scenarios that involve complex aggregations over vast amounts of data, such as reporting, analytics, and decision support systems. The explanation is demonstrated with the following example:\vspace{.4cm}
+ \item\textbf{ Materialized views with aggregates:} Materialized views with aggregates store the results of queries that perform aggregate calculations (e.g., SUM, COUNT, AVG, MIN, MAX) over large datasets. These views are particularly useful for optimizing query performance in scenarios that involve complex aggregations over vast amounts of data, such as reporting, analytics, and decision support systems. The explanation is demonstrated with the following example:\vspace{.4cm}
     
     \input{SQL/Aggregation}
 
     In this example, the materialized view ``salesSummary'' precomputes the Sum, AVG, and COUNT for sales data grouped by ProductID, Region, and CategoryID.
 
-    \item \textbf{Materialized views with join }: Materialized views with joins store the results of queries that involve multiple tables combined using join operations (e.g., INNER JOIN, LEFT JOIN, RIGHT JOIN). These types of materialized views can significantly speed up complex queries that frequently access multiple related tables. By precomputing the join results, the materialized view avoids the need to recompute them during every query execution. The explanation is made clear with the following example: \vspace{.4cm}
+    \item\textbf{Materialized views with join }: Materialized views with joins store the results of queries that involve multiple tables combined using join operations (e.g., INNER JOIN, LEFT JOIN, RIGHT JOIN). These types of materialized views can significantly speed up complex queries that frequently access multiple related tables. By precomputing the join results, the materialized view avoids the need to recompute them during every query execution. The explanation is made clear with the following example: \vspace{.4cm}
     
     \input{SQL/MV_Joins}
 
