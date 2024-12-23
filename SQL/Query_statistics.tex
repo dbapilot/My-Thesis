@@ -21,13 +21,7 @@
   xleftmargin =1em
 }
          \begin{lstlisting}
-SELECT TOP 10
-total_elapsed_time / 1000 AS ExecutionTime_ms,
-execution_count,
-query_hash,
-st.text AS sql_text
-FROM sys.dm_exec_query_stats
-CROSS APPLY sys.dm_exec_sql_text(sql_handle) st
-ORDER BY total_elapsed_time DESC;
+SET STATISTICS TIME ON;
+
 
         \end{lstlisting}

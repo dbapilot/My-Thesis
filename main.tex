@@ -13,7 +13,8 @@
 \usepackage{amsmath}
 %\usepackage{chapterbib}
 
-
+%\usepackage{geometry} % Adjust page margins
+%\geometry{a4paper, margin=1in} % Set margins to fit A4 size
 \usepackage{natbib}
 \usepackage{pgfplots}
 \pgfplotsset{compat=1.18}
@@ -75,6 +76,8 @@
 \urlstyle{same}
 
 %-----Python code------
+\usepackage{listings}
+\usepackage{tcolorbox}
 \usepackage{minted}
 \lstdefinestyle{pythonstyle}{
     language=Python,
@@ -83,15 +86,19 @@
     stringstyle=\color{red},
     commentstyle=\color{green!50!black},
     backgroundcolor=\color{gray!10},
-    showstringspaces=false,
     numbers=left,
     numberstyle=\tiny\color{gray},
     stepnumber=1,
     breaklines=true,
     frame=single,
+    breaklines=true,
     captionpos=b,
     tabsize=4,
     morekeywords={self, None},
+    breakatwhitespace=true, % Break lines at whitespace
+    showstringspaces=false, % Do not display spaces in strings
+    xleftmargin=15pt, % Left margin for better alignment
+    xrightmargin=15pt % Right margin for better alignment
 }
 
 
@@ -114,9 +121,8 @@
 \definecolor{backcolour}{rgb}{0.95,0.95,0.92}
 
 \usepackage{listings}
-
 %-------
-%\usepackage[table, dvipsnames]{xcolor}  % Include all the options you need
+\usepackage[table, dvipsnames]{xcolor}  % Include all the options you need
 %\usepackage{amsthm}
 %\usepackage{float}
 %Hyperlinks
@@ -125,7 +131,8 @@
 \usepackage[colorlinks=true, urlcolor=blue, linkcolor=blue, citecolor=blue]{hyperref}
 
 
-
+\usepackage{caption}
+\captionsetup[lstlisting]{labelfont=bf, labelsep=colon}
 
 \usepackage{array}
 \usepackage[table,xcdraw]{xcolor} % For table colors

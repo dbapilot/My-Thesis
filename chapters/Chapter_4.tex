@@ -36,7 +36,7 @@ This section describes a step-by-step process for effectively deploying material
 
 \input{SQL/Query_identify}
 
-\subsubsection{ Create Candidate Materialized Views:} It is important to prepare the input data to get the best outcome. The following factors should be considered for the preparation. 
+\subsubsection{ Create Candidate Materialized Views (Indexed Views):} It is important to prepare the input data to get the best outcome. The following factors should be considered for the preparation. 
 
   \begin{itemize}
       \item \textbf{Create views}
@@ -44,31 +44,48 @@ This section describes a step-by-step process for effectively deploying material
       \item \textbf{Query logs}
   \end{itemize}
 
+  \input{SQL/Create_MSSQL}
   \input{SQL/Create_Views}
+  
+\subsubsection{Query Response Time:} Once materialized views are created, SQL queries are used to enable query statistics in SSMS:
 
+   \input{SQL/Query_statistics}
+
+\begin{itemize}
+    \item \textbf{Queries without materialized views:}
+    \item \textbf{Queries with materialized views:}
+\end{itemize}
+
+After running each query, note the elapsed time in the "Messages" tab in SSMS
    \input{Table/Response_time_comparion}
 
+For example, the percentage difference for Query 1 is calculated as:
+\[
+\text{Difference (\%)} = \frac{\text{Without MV} - \text{With MV}}{\text{Without MV}} \times 100 = \frac{2.35 - 0.45}{2.35} \times 100 \approx 80.85\%
+\]
 
-  
-\subsubsection{Implement the PSO algorithm:}
- The following Python code illustrates the implementation of the PSO algorithm for multivariate analysis. It evaluates various combinations of these parameters and selects the one that yields the best query response time.\vspace{.4cm}
 
-\textbf{Example 1}
+\subsubsection{Automation with the PSO algorithm:}
+ The following Python code illustrates the implementation of the PSO algorithm for multiple values. It evaluates various combinations of these parameters and selects the one that yields the best query response time.\vspace{.4cm}
+ 
 
-  \input{SQL/PSO_Best_Response}\vspace{.4cm}
+
+\textbf{Code example to selecting the optimal view using PSO algorithm.}
+
+  \input{Python/PSO_Best_Response}\vspace{.4cm}
 
 \textbf{Example 2}
-  \input{SQL/PSO_python}\vspace{.4cm}
-  
-\subsubsection{Apply the Selected  Materialized Views in MSSQL:}
+  \input{Python/PSO_python}\vspace{.4cm}
 
-\begin{enumerate}
-    \item \textbf{Identify optimal views:} After running the PSO algorithm, we have to select the views to create MV based on the output.
-    \item \textbf{ Create MV on MSSQL :} Create MV in MSSQL using the following SQL commands.
-    
-   \input{SQL/Create_MSSQL}
-    
-\end{enumerate}
+  \textbf{Output from PSO automation } 
+
+  \input{Python/Python_output}
+  \input{Python/python_output2}
+
+
+ For each particle, the PSO algorithm evaluates the cost, updates personal and global best, and updates velocity and position. Finally, it prints the optimal combination of materialized views and the corresponding query response time.
+ [0, 1, 0] means the second materialized view is selected for optimal query performance.
+  
 
 
 \subsubsection{Materialized View Management \& Selection Approach}
@@ -78,7 +95,7 @@ This section describes a step-by-step process for effectively deploying material
 
 \subsubsection{Performance Testing and Data Analysis}
 
-\textbf{......\textbf{Work on Progress}..........}     
+
  \input{Table/Response_time_comparion}
 
 % Test Test Test Test---------------------------------Test 
