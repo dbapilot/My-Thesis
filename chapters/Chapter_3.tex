@@ -16,7 +16,7 @@ This chapter will focus on the materialized view selection processes, implementa
 
       \input{SQL/MV_on_mssql}
 
-      \item\textbf{ Create a unique clustered index:} This step is very crucial for the SQL server to materialize it. It makes the view physically store data, transforming it into an MV. \vspace{0.4cm}
+      \item\textbf{ Create a unique clustered index:} This step is very crucial for the SQL server to materialize as it organizes and stores the sorted data of the materialized view based on the indexed column and transforms it into an MV. \vspace{0.4cm}
       
       \input{SQL/Clustered_view} 
 
@@ -35,7 +35,7 @@ This statement materializes the view and stores the result in a clustered index.
 
 
  \subsection{Cost Model}
-Materialized views are a great optimization method. However, there is a cost associated with the jobs that maintain them. This section will discuss the cost model of Materialized view.\vspace{.4cm}
+There is a cost associated with the jobs that maintain them. This section will discuss the cost model of Materialized view.\vspace{.4cm}
 
  \begin{enumerate}[label=\alph*)]
     \item \textbf{Computing cost :} Computing cost mostly depends on the workload and data size. Query processing and data transferring, there are refresh mechanisms to stay accurate. All these procedures are costly. Both the initial creation and subsequent refreshes of materialized views consume compute resources.
@@ -48,7 +48,7 @@ Materialized views are a great optimization method. However, there is a cost ass
 
     \input{Math/Total_cost}
 
-  Suppose opta data Gruppe runs a complex query with a materialized view, which takes 1 ms to execute, compared to 5 ms without MV. If it runs 100 times per day, the total savings would be:
+  Suppose opta data Group runs a complex query with a materialized view, which takes 1 ms to execute, compared to 5 ms without MV. If it runs 100 times per day, the total savings would be:
   
   (5-1)x100=400ms, which is valued \$400 per day.\\
    Maintenance cost for refreshing = \$50 \\

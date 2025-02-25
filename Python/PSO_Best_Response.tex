@@ -1,11 +1,12 @@
 
 \begin{lstlisting}[style=pythonstyle, caption={Python script to automate optimal view.}, label={lst:pso_query_optimization}]
 
+# 
 import pyodbc # A python  library for interacting with ODBC databases like MSSQL that helps to manage database connection
 import random #It helps to generate random numbers and choice used to initialize particle positions and velocities
 import time
 
-# Connection parameters (Establish a connection to the MSSQL server using pyodbc)
+# Connection parameters
 server = 'T915-TEST-DB'  # server name that used to get data 
 database = 'AccessAuditDB'  # Database name
 driver_name = 'ODBC Driver 17 for SQL Server'  # ODBC  driver from pyodbc.drivers()
@@ -49,7 +50,7 @@ try:
 
     # PSO parameters
     num_particles = 5 # Number of particles in the swarm 
-    num_iterations = 10 #The number of iterations the algorithm will run
+    num_iterations = 5 #The number of iterations the algorithm will run
     num_queries = len(queries) #The number of queries (materialized views) to optimize.
     W = 0.5  # Inertia weight Controls the impact of the previous velocity on the current velocity.
 
@@ -101,6 +102,8 @@ finally:
     if 'conn' in locals() and conn:
         conn.close()
         print("Connection closed.")  #Ensures the database connection is closed after the script execution.
+
+
 
 
 

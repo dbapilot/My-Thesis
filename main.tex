@@ -56,9 +56,15 @@
 \usepackage{placeins}
 \usepackage{enumitem}
 \usepackage{acronym}
+\usepackage{glossaries}
 \usepackage{booktabs, tabularx}
 \usepackage{amsmath}
-\newtheorem{definition}{Definitions}
+\usepackage{amsthm}
+\theoremstyle{definition}
+\newcommand{\definition}[1]{\vspace{20pt}\noindent\textit{#1}\vspace{20pt}}
+
+
+%\newtheorem{definition}{Definitions}
 %Hyperlinks
 \usepackage{hyperref}
 \hypersetup{
@@ -139,7 +145,7 @@
 \usepackage{booktabs} % For professional table styling
 \begin{document}
   \author{Md Nazmul Islam}
- \title{Optimizing Query Performance In Database System}
+ \title{Optimizing Query Performance In a Database System}
  \matrno{Matriculation Number: 3072770}
  \course{Computer Engineering, ISE, Vert. Software Engineering }
 

@@ -1,6 +1,6 @@
 
 \begin{equation}
-v_i(t+1) = W \cdot v_i(t) + c_1 \cdot r_1 \cdot (pBest_i - x_i(t)) + c_2 \cdot r_2 \cdot (gBest - x_i(t))
+v_i(t+1) = W \cdot v_i(t) + c_1 \cdot r_1 \cdot (P_Best_i - x_i(t)) + c_2 \cdot r_2 \cdot (G_Best - x_i(t))
 \end{equation}
 
 \textbf{Where:}
@@ -9,10 +9,10 @@ v_i(t+1) = W \cdot v_i(t) + c_1 \cdot r_1 \cdot (pBest_i - x_i(t)) + c_2 \cdot r
     \item \( W \): Inertia weight that controls the influence of the previous velocity on the current velocity.
     \item \( c_1 \): Cognitive coefficient representing the weight given to the particle's own experience (personal best).
     \item \( r_1 \): A random number uniformly distributed between 0 and 1, introducing stochastic behavior.
-    \item \( pBest_i \): The personal best position that particle \( i \) has encountered so far.
+    \item \( G_ Best_i \): The personal best position that particle \( i \) has encountered so far.
     \item \( x_i(t) \): Current position of particle \( i \) at time \( t \).
     \item \( c_2 \): Social coefficient representing the weight given to the global best position found by any particle in the swarm.
     \item \( r_2 \): Another random number uniformly distributed between 0 and 1.
-    \item \( gBest \): The global best position found by any particle in the swarm.
+    \item \( P_Best \): The global best position found by any particle in the swarm.
 \end{itemize}
 
