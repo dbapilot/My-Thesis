@@ -5,7 +5,7 @@ This chapter describes the most significant parts and fully grasps the fundament
 
 %some basics of the Database particularly distributed database.Then an overview of materialized view as query processing technique. later,we will discuss various methods and algorithms to about materialized view and Finally we discuss related work.
 \subsection{ Database System}
-\noindent\textit{A database is an organized collection of structured data or information, typically stored electronically in a computer system managed by a database management system (DBMS). It is designed to facilitate efficient storage, retrieval, and manage data for various applications, ensuring data integrity, security, and accessibility.}
+\noindent\textit{A database is an organized collection of structured data or information, typically stored electronically in a computer system managed by a database management system (DBMS). It is designed to facilitate efficient storage, retrieval, and manage data for various applications, ensuring data integrity, security, and accessibility.}\vspace{.4cm}
 
 A database in SQL Server is made up of a collection of tables that stores a specific set of structured data. A table contains a collection of rows, also referred to as records or tuples, and columns, also referred to as attributes. Each column in the table is designed to store a certain type of information, for example, dates, names, dollars, and numbers \cite{williamdassafmsft-2024}. Scalability, security, high availability, Network latency, and fault tolerance are the key characteristics of databases. There are two distinct types of databases: Relational and NoSQL databases. Some detailed context in the following: 
 
@@ -16,9 +16,9 @@ A database in SQL Server is made up of a collection of tables that stores a spec
 \end{itemize}
 
 \subsection{Query Processing }
-\noindent\textit{A query is a request sent to a database for data retrieval. Specific conditions are passed in a query to match and retrieve relevant data. Structured Query Language (SQL) is used to write these queries to extract information from relational databases. The query process involves translating high-level queries into low-level expressions suitable for the file system, optimizing the query, and executing it to obtain the result \cite{wwwnaukricom-no-date}.}
+\noindent\textit{A query is a request sent to a database for data retrieval. Specific conditions are passed in a query to match and retrieve relevant data. Structured Query Language (SQL) is used to write these queries to extract information from relational databases. The query process involves translating high-level queries into low-level expressions suitable for the file system, optimizing the query, and executing it to obtain the result \cite{wwwnaukricom-no-date}.}\vspace{.4cm}
 
-The process involves several key steps that ensure efficient data retrieval. It begins with query processing, where the user inputs the query into the systems. The compiler then translates this input into an initial query plan by consulting the catalog manager for metadata that aids in effective optimization. Next, the command processor executes the optimized plan, interacting with the data manager to get the necessary data from the database. Finally, the processed data is compiled into a query result, which is returned to the user. The details are discussed briefly below.
+As shown in the following flowchart, the process involves several key steps that ensure efficient data retrieval. It begins with query processing, where the user inputs the query into the systems. The compiler then translates this input into an initial query plan by consulting the catalog manager for metadata that aids in effective optimization. Next, the command processor executes the optimized plan, interacting with the data manager to get the necessary data from the database. Finally, the processed data is compiled into a query result, which is returned to the user. The important processes are discussed briefly below.
 
 \begin{figure}[h]
     \centering
@@ -29,10 +29,10 @@ The process involves several key steps that ensure efficient data retrieval. It 
     \label{fig:my_image} 
 \end{figure}
 \begin{enumerate}
-\item \textbf{Parser:} Query parsing is the first step in query processing. In this step, the database performs the following checks- Syntax, semantic, and shared pool check, after converting the query into relational algebra \cite{wwwnaukricom-no-date}.
+\item \textbf{Parser:} Query parsing is the first step in query processing. In this step, the database analyzes and breaks down SQL queries by checking syntax and semantics before it is executed by the database engine\cite{wwwnaukricom-no-date}.
 
     \begin{enumerate}
-        \item \textbf{Syntax check:} A query is checked for syntax error. It concludes syntactic validity. Example:
+        \item \textbf{Syntax check:} Syntax validation is the process of validating the structure and format of a query to ensure its functionality and adherence to the SQL language rules before executing it. Here is a general example of a syntax error.
         \input{SQL/Query1}
         
           Here, the error of the wrong spelling of FROM is given by this check.\vspace{.4cm}
@@ -41,13 +41,13 @@ The process involves several key steps that ensure efficient data retrieval. It 
         
         \input{SQL/Query2}
         
-        A syntactically correct statement can fail a semantic check, as shown in the following example of a query of a nonexistent table \cite{Oracle}.\vspace{.4cm}
+        A syntactically correct statement can fail a semantic check, as shown in the above example of a query of a nonexistent table \cite{Oracle}.\vspace{.4cm}
         
         \item \textbf{Shared pool check:} During the parse, the database performs a shared pool check to determine whether it can skip (hash code)\footnote{The hashCode() method is used to generate the hash values of objects.} resource-intensive steps of statement processing. Every query possesses a hash code.\vspace{.4cm}
         
         \input{SQL/Query3}
         
-        In this example, When the \textbf{SELECT} statement is executed, the SQL server checks the plan cache to see if an execution plan for this identical query already exists. If a matching execution plan is found in the cache (a ``cache hit''), SQL Server reuses it, allowing for quicker execution without going through the parsing and optimization steps again.
+        In this example, When the \textbf{SELECT} statement is executed, the SQL server checks the plan cache to see if an execution plan for this identical query already exists. If a matching execution plan is found in the cache\footnote{A cache in SQL is a high-speed data storage layer that temporarily stores frequently accessed data to improve query performance and reduce database load} (a ``cache hit''), SQL server reuses it, allowing for quicker execution without going through the parsing and optimization steps again.
         
     \end{enumerate}
     
@@ -70,7 +70,7 @@ The result of a query is generated by processing the rows and columns in a datab
 
 There is a trade-off between the amount of time spent figuring out the best query plan and the quality of the choice, and the optimizer may not choose the best answer on its own. Database management systems have different qualities and ways of balancing these two. Cost-based query optimizes and evaluates the resource footprints of various query plans and uses this as the basis for plan selection. These assign an estimated cost to each possible query plan and choose the plan with the smallest cost. Cost is used to estimate the runtime cost of evaluating the query in terms of the number of I/O operations required, CPU path length, amount of disk buffer space, disk storage service time, and connection consumption between units of parallelism, and other factors identified from the data directory. The set of query strategies is formed by examining the possible access paths, e.g., primary index, secondary index access, full file scan, and various relational table join techniques, e.g., Merge join, has join, and Product join. The search space can become quite large depending on the complexity of the SQL query. There are two types of optimization. These consist of logical optimization, which generates a sequence of relational algebra to solve the query, and physical optimization, which is used to determine the means of carrying out each operation \cite{dremio-2024}.\vspace{.4cm}
 
-Query Optimization is essential for databases to improve efficiency and performance. It helps organizations significantly boost query speed, reduce data retrieval times, and minimize resource use. By doing so, it not only identifies and resolves issues like slow queries and bottlenecks but also ensures that the database runs at its best, providing faster and more reliable data processing. Ultimately, effective optimization leads to a better user experience and increased productivity across the organization \cite{team-2023, r-2024}.
+Query optimization is crucial for databases to enhance efficiency and performance. It enables organizations to significantly increase query speed, decrease data retrieval times, and minimize resource usage. By doing this, it not only identifies and addresses issues like slow queries and bottlenecks but also ensures that the database operates at its best, delivering faster and more reliable data processing. Ultimately, effective optimization results in a better user experience and heightened productivity throughout the organization\cite{team-2023, r-2024}.
 
 
 \subsubsection{Database Query Performance Metrics}
@@ -88,13 +88,14 @@ Optimizing a query is critical for increasing database performance. There are va
 
  \begin{itemize}
      \item \textbf{Indexing}: Indexing is a crucial technique for query optimization in databases. It's named indexing because of how an index works in a book. An index is a structure that holds the field the index is sorting and a pointer from each record to their corresponding record in the original table where data is actually stored \cite{tomar-2021,atlassian-no-date}.
-     \item \textbf{Query rewriting}: It is a technique used in query optimization to transform a given database query into an equivalent form that executes more efficiently. It is one of the initial phases of query processing, where the original query is parsed and translated into an internal representation. This method is particularly useful for complex queries, including those queries that have many sub-queries or many joins \cite{pitoura-2009,unknown-IBM-25-2024}.
+     \item \textbf{Query rewriting}: It is a technique used in query optimization to transform a given database query into an equivalent form that executes more efficiently. It is one of the initial phases of query processing, where the original query is parsed and translated into an internal representation. This method is particularly useful for complex queries, including those queries that have many sub-queries or many join \cite{pitoura-2009,unknown-IBM-25-2024}.
      
      \item \textbf{Partitioning}: This optimization method is especially effective for large databases. It involves splitting a large table or index into smaller segments to make the query more manageable pieces. Each partition acts as a separate entity that can be managed independently \cite{planck-2024}.
      
      \item \textbf{Caching:} It is a vital technique that involves storing cache results in RAM\footnote{ RAM is a form of electronic computer memory that can be read and changed in any order, typically used to store working data and machine code.} for ultra-fast access or on disk of frequently executed queries. This is particularly useful for queries that are executed across multiple requests \cite{Bit-Fetch-2024}.
      
-     \item \textbf{Materialized view}: Materialized views are a powerful tool for query optimization, which we will focus on. 
+     \item\textbf{Materialized view}: Materialized views are a powerful tool for query optimization. This paper has demonstrated the significant impact of materialized views on query optimization, highlighting their role as a crucial tool for improving database performance. A detailed explanation can be found in the \hyperref[term:materialized_views]{chapter 2.6}.\vspace{.4cm}
+     
  \end{itemize}
  
  \subsection{Reasons for Using Materialized View for Query Optimization}
@@ -109,14 +110,14 @@ Optimizing a query is critical for increasing database performance. There are va
     
 \end{itemize}\vspace{.4cm}
 
-The motivation for using materialized views is to improve performance, but the extra effort associated with materialized view management can become a significant system management concern. The common materialized view management activities include identifying which materialized view to generate, indexing the view, and ensuring that all materialized views and indexes are refreshed properly each time the database is updated. Examining which materialized views have been used and determining how effective each materialized view has been on workload performance, which comprises the common materialized view management tasks. Besides that, measuring the space being used by materialized views and deciding which existing materialized views should be dropped, archiving old detail and materialized view data that is no longer useful as well \cite{Ashadevi2008CostEA,1363763}.
+The motivation for using materialized views is to enhance performance. However, the additional effort involved in managing them can become a significant concern for system administration. Common management tasks for materialized views include identifying which views to generate, indexing them, and ensuring that all materialized views and indexes are refreshed properly whenever the database is updated. Standard management activities also involve reviewing which materialized views have been used and evaluating how effectively each view has impacted workload performance. It's also important to determine how much space materialized views occupy and which views should be removed. Outdated information should be archived, and materialized view data that is no longer useful should be deleted \cite{Ashadevi2008CostEA,1363763}.
 
-\subsubsection{Challenges in Query Optimization} Query optimization is a crucial aspect of database management, aiming to improve the performance and efficiency of SQL queries. Opta data Group, a company that specialices in healthcare data management, faces several challenges in query optimization within its MSSQL. Given the vast amount of patient and operational data they handle, inefficient queries can lead to slow response times and increased resource consumption \cite{Flipico-2024}. The following example scenario shows query challenges:\vspace{.4cm}
+\subsubsection{Challenges in Query Optimization} Query optimization is a crucial aspect of database management, aiming to improve the performance and efficiency of SQL queries. Opta data Group, a company specializing in healthcare data management, faces several challenges with query optimization in its MSSQL environment. Given the vast amount of patient and operational data they handle, inefficient queries can lead to slow response times and increased resource consumption \cite{Flipico-2024}. The following example scenario shows query challenges:\vspace{.4cm}
 
 
 \input{SQL/challanges_scenario}
 
-The join condition in the above query relates the two tables namely, `` Patients '' and `` Treatment''. Suppose the ``PatientID'' column in both the ``Patients'' and `` Treatment'' tables is not indexed properly. In that case, the database may perform a full table scan, and that might happen when only a few columns are required from a very big table, and this would cause very slow response times and a lot of resources consumed. Further details are discussed below:
+The join condition in the above query relates the two tables namely, `` Patients '' and `` Treatment ''. Suppose the `` PatientID '' column in both the ``Patients'' and `` Treatment'' tables is not indexed properly. In that case, the database may perform a full table scan, and that might happen when only a few columns are required from a very big table, and this would cause very slow response times and a lot of resources consumed. Further details are discussed below:
 
 \begin{itemize}
     \item\textbf{Data Fragmentation and Localization}: Dealing with how data is partitioned and distributed across multiple nodes. Data can be fragmented both horizontally and vertically and spread across nodes. Balancing between local execution and data transfer is also challenging. 
@@ -138,9 +139,9 @@ Expressed during optimization as a cost function. The common choice is to minimi
 
 
 \subsection{What is a View in SQL:}
-A view in SQL is a virtual table that is generated by an SQL query. It does not store data physically but retrieves it from the underlying base table. Views are compiled at runtime, and they simplify the presentation of data from one or more tables without modifying the original data. It can be made over one or more database tables. Generally, those columns that need to be queried repeatedly are put into a view. Once the view is created, an index can be made, the view can be triggered, and the view can be queried as a table. A view may act as a filter on certain tables being referenced in the view \cite{chauhan-2024, Rohan_Vats-2024}.\vspace{.4cm}
+A view in SQL is a virtual table that is generated by an SQL query. It does not store data physically but retrieves it from the underlying base table. Views are compiled at runtime, and they simplify the presentation of data from one or more tables without modifying the original data. It can be made over one or more database tables. Generally, those columns that need to be queried repeatedly are put into a view. Once the view is created, an index can be made, the view can be triggered, and the view can be queried as a table. The view can function as a filter for specific tables it references \cite{chauhan-2024, Rohan_Vats-2024}.\vspace{.4cm}
 
-A view serves as a portion of a database that gives a certain client an impression of data while restricting access to the original database tables. Original tables in this context are referred to as view tables. A view can represent data from a database, allow a specific selection of data, or calculate fresh data, representing the contents of the base tables underlying it. In other words, in principle, every analytical operation derivable from the base table data traces its origin in a view table.\vspace{.4cm}
+A view is a component of a database that provides a specific user with an impression of data while restricting access to the original database tables. In this context, the original tables are known as view tables. A view can represent data from a database, facilitate a specific selection of data, or compute new data that reflects the contents of the underlying base tables. In other words, every analytical operation derived from the base table data originates from a view table.\vspace{.4cm}
 
 
 
@@ -160,16 +161,17 @@ There are two types of view in SQL server
 \end{itemize}
    
 \subsection{Materialized Views}\label{term:materialized_views}
- A special type of view is materialized views. It refers to the fact that the contents of the view are stored in the form of a separate table in the database system. \acro{}{}{MV}MV is designed to the user's requirements. An MV definition includes aggregation functions like MIN, MAX, COUNT(DISTINCT), COUNT(*), SUM, and AVG, one or more tables joined together, and a GROUP BY operation on attributed and basic data definition language operation such as CREATE; ALTER and DROP may be applied on tables \cite{Kardel_Thakare}. MV is a decision support/ data warehousing system tool that can increase the speed of queries that access a large number of records by many orders of magnitude \cite{Kishan_Sainath_no_date}. Nevertheless, materialized views can also be stored as a file or a data structure in memory. In addition to that, a virtual view would be loaded from the base table when requested. While the on-demand idea behind virtual views is certainly desirable \cite{jan-no-date,ashadevi-2024}.
+\noindent\textit{Materialized views, also known as materialized tables or summary tables, are database objects that physically store the result of a query. Unlike regular views, which are virtual and compute their results on the fly, materialized views pre-compute and store the query results, allowing for faster retrieval and improved query performance.} \vspace{.3cm}
 
-\begin{definition}
-Materialized views, also known as materialized tables or summary tables, are database objects that physically store the result of a query. Unlike regular views, which are virtual and compute their results on the fly, materialized views pre-compute and store the query results, allowing for faster retrieval and improved query performance.\\
-Materialized views in databases optimize query performance by pre-computing and storing the results of complex queries involving aggregations and joins. This reduces the computational load during execution, significantly speeding up response times.
+Materialized views in databases optimize query performance by pre-computing and storing the results of complex queries involving aggregations and joins. This reduces the computational load during execution, significantly speeding up response times.\vspace{.4cm}
 
-\end{definition}
+ A special type of view is materialized views. It refers to the fact that the contents of the view are stored in the form of a separate table in the database system. MV is designed to the user's requirements. An MV definition includes aggregation functions like MIN\footnote{The MIN function returns the smallest value in a set of non-NULL values.}, MAX\footnote{The MAX function returns the largest value in a set of non-NULL values.}, COUNT(DISTINCT), COUNT(*)\footnote{COUNT returns the number of rows that match the specified criteria.}, SUM\footnote{SUM calculates the total of a set of values.}, and AVG\footnote{AVG computes the average value of a set of non-NULL values.}, one or more tables joined together, and a GROUP BY operation on attributed and basic data definition language operation such as CREATE; ALTER and DROP may be applied on tables \cite{Kardel_Thakare}. MV is a decision support/ data warehousing system tool that can increase the speed of queries that access a large number of records by many orders of magnitude \cite{Kishan_Sainath_no_date}. Nevertheless, materialized views can also be stored as a file or a data structure in memory. In addition to that, a virtual view would be loaded from the base table when requested. While the on-demand idea behind virtual views is certainly desirable \cite{jan-no-date,ashadevi-2024}.\vspace{.4cm}
 
-A materialized view (sometimes called a sorted, projected and materialized view or SPM view) is a view whose columns have been sorted, projected and materialized.\cite{IBM} In database systems, optimize query performance by pr-computing and storing the result of complex queries involving aggregations and joins. As they store the results physically in a table, re-computation of a query is not needed again. When the view is already materialized at any time, the same query is entered into the system. This reduces the computational load during the execution, significantly speeding up the response times. Here's how they work:\vspace{.4cm}
 
+
+A materialized view (sometimes called a sorted, projected and materialized view or SPM view) is a view whose columns have been sorted, projected and materialized.\cite{IBM} In database systems, optimize query performance by pr-computing and storing the result of complex queries involving aggregations and joins. As they store the results physically in a table, re-computation of a query is not needed again. When the view is already materialized at any time, the same query is entered into the system. This reduces the computational load during the execution, significantly speeding up the response times.\vspace{.4cm}
+
+The working principle of MV can be described as follows:
 
 \begin{itemize}
     \item\textbf{Pre-computations:} It stores the results of queries that involve complex join and aggregations. These results are pre-computed and stored in the database, reducing the time needed to fetch the data when required.
@@ -181,9 +183,12 @@ A materialized view (sometimes called a sorted, projected and materialized view 
         \item\textbf{Incremental Refresh:} Only the changes since the last refresh are applied.
         \item\textbf{On Demand Refresh:} Triggered by specific events or user requests.
     \end{itemize}
+
+    Materialized views require periodic refreshing to maintain consistency with the underlying data. This research employs the on-demand refresh mechanism, one of several available strategies. The on-demand refresh approach updates the materialized view in response to specific events or user requests. The on-demand refresh strategy is selected for this study due to its flexibility and resource efficiency, allowing for targeted updates when data accuracy is most critical.
+ 
 \end{itemize}\vspace{.4cm}
 
-Most of the time, the types of materialized views used are as follows:
+The most prevalent forms of materialized views in database management systems are:
 
 \vspace{.4cm}
 

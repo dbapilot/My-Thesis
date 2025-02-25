@@ -1,17 +1,19 @@
 % Total Cost Equation
 
 % Total Cost Equation
-\begin{align}
-\text{Total Cost} =\sum\big(\text{Query Execution Savings} - (&\text{Maintenance Cost} \nonumber \\
-&+ \text{Storage Cost} \nonumber \\
-&+ \text{Freshness Impact})\big)
-\end{align}
 
-% Explanation of Variables
-\begin{align}
-    \text{Execution Savings} &= \sum \Bigl( (\text{Base Query Cost} - \text{MV Cost}) \times \text{Query Frequency} \Bigr) \\
-    \text{Maintenance Cost} &= \text{Refresh Cost} \times \text{Refresh Frequency} \\
-    \text{Storage Cost} &= \text{MV Size} \times \text{Storage Unit Cost} \\
-    \text{Freshness Impact} &= \text{Staleness Penalty} \times \text{Query Frequency}
-\end{align}
+\begin{equation}
+C_{total} = \sum_{i=1}^{n} \left( S_{query,i} - (C_{maint,i} + C_{storage,i} + C_{fresh,i}) \right)
+\end{equation}
+
+\subsection*{Where:}
+\begin{itemize}
+    \item $C_{total}$: Total cost after considering all savings and expenses.
+    \item $S_{query,i}$: Query execution savings for the $i^{th}$ query.
+    \item $C_{maint,i}$: Maintenance cost for the $i^{th}$ query.
+    \item $C_{storage,i}$: Storage cost for the $i^{th}$ query.
+    \item $C_{fresh,i}$: Freshness impact cost for the $i^{th}$ query.
+    \item $i$: Index representing each query or instance.
+    \item $n$: Total number of queries or instances.
+\end{itemize}
 

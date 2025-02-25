@@ -44,19 +44,13 @@ There is a cost associated with the jobs that maintain them. This section will d
     
     \item \textbf{Storage cost}: Materialized views require additional disk space, particularly for large databases. The gain in query performance should offset the storage cost of MV. Disabled views still incur storage costs, even if they're not maintained or used for query optimization. As data volume grows, the storage costs for MV can increase significantly. This aspect should be considered when designing a long-term strategy for MV. 
      
-    \item \textbf{Usage cost:} Materialized views are great; however, there is a cost associated with the jobs that maintain them. We can calculate the cost using the following formula: \cite{10.1145/2206869.2206874}
+    \item \textbf{Usage cost:} Materialized views are great; however, there is a cost associated with the jobs that maintain them. We can calculate the cost using the following formula:\cite{10.1145/2206869.2206874}
 
     \input{Math/Total_cost}
 
   Suppose opta data Group runs a complex query with a materialized view, which takes 1 ms to execute, compared to 5 ms without MV. If it runs 100 times per day, the total savings would be:
-  
-  (5-1)x100=400ms, which is valued \$400 per day.\\
-   Maintenance cost for refreshing = \$50 \\
-   Storage cost for keeping MV = \$20\\
-   Estimated correction cost= \$10 \\
-   Total cost={400-(50+20+10)}= \$320 which means net benefit for using MV is \$320
 
- 
+  \input{Math/Cost_example}
   
 \end{enumerate}
 
