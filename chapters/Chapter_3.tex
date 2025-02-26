@@ -12,7 +12,7 @@ This chapter will focus on the materialized view selection processes, implementa
       \item\textbf{ Write the base query :} Begin by writing the base  SQL query that defines the materialized views. It should contain all necessary data, join, aggregation, or other complex operations that need to be optimized. \vspace{0.4cm}
       \input{SQL/Base_query}
       
-      \item\textbf{ Create the materialized view :} After writing the query, proceed to create a materialized view (indexed view) in SQL server using the `` with schemabinding'' clause starting with schema and view name. Schema binding options bind the view to the schema of the underlying tables, preventing changes to the base tables from affecting the view's definition \cite{risingwave2024}.\vspace{0.4cm}
+      \item\textbf{ Create the materialized view :} After writing the query, proceed to create a materialized view (indexed view) in SQL server using the `` with schemabinding'' clause starting with schema and view name. Schema binding options bind the view to the schema of the underlying tables, preventing changes to the base tables from affecting the view's definition. %\cite*{risingwave2024}.\vspace{0.4cm}
 
       \input{SQL/MV_on_mssql}
 
@@ -29,13 +29,13 @@ This statement materializes the view and stores the result in a clustered index.
 
 \end{enumerate}
 
-\subsection{Deciding When to Create a Materialized or a Regular View}There are some key factors to consider when deciding to create a materialized view or a regular view.
+\subsection{Deciding When to Create a Materialized or a Regular View}There are some key factors when designing and optimizing database systems. Two tools that can significantly impact this balance are regular views and materialized views. The following table highlights the key differences between regular views and materialized views, helping to guide the choice between these two approaches based on specific requirements and use cases.\vspace{.4cm}
 
 \input{Table/Regular_vs_MV_View}
 
 
  \subsection{Cost Model}
-There is a cost associated with the jobs that maintain them. This section will discuss the cost model of Materialized view.\vspace{.4cm}
+ There is a cost associated with the use of materialized views in database systems. The cost analysis helps in strategic decision-making for designing and maintaining MV, ensuring an optimal balance between performance and cost efficiency. This section will discuss the cost model of Materialized view.\vspace{.4cm}
 
  \begin{enumerate}[label=\alph*)]
     \item \textbf{Computing cost :} Computing cost mostly depends on the workload and data size. Query processing and data transferring, there are refresh mechanisms to stay accurate. All these procedures are costly. Both the initial creation and subsequent refreshes of materialized views consume compute resources.
@@ -44,7 +44,7 @@ There is a cost associated with the jobs that maintain them. This section will d
     
     \item \textbf{Storage cost}: Materialized views require additional disk space, particularly for large databases. The gain in query performance should offset the storage cost of MV. Disabled views still incur storage costs, even if they're not maintained or used for query optimization. As data volume grows, the storage costs for MV can increase significantly. This aspect should be considered when designing a long-term strategy for MV. 
      
-    \item \textbf{Usage cost:} Materialized views are great; however, there is a cost associated with the jobs that maintain them. We can calculate the cost using the following formula:\cite{10.1145/2206869.2206874}
+    \item \textbf{Usage cost:} Materialized views are great. However, there is a cost associated with the jobs that maintain them. We can calculate the cost using the following formula:\cite{10.1145/2206869.2206874}
 
     \input{Math/Total_cost}
 
@@ -54,6 +54,7 @@ There is a cost associated with the jobs that maintain them. This section will d
   
 \end{enumerate}
 
+This thesis primarily explores the use of materialized views and the PSO algorithm to improve query performance. It highlights the connection between computing costs and storage costs. Computing costs, which are affected by workload and data size, play a vital role in assessing the PSO algorithm's effectiveness in optimizing query execution plans. In contrast, storage costs are also significant, as materialized views require additional disk space, especially in large databases. The necessary trade-off between quicker query execution and increased storage needs is essential. By examining these factors, the thesis aims to illustrate how PSO can shift the balance toward enhanced overall query execution by weighing the advantages and disadvantages of materialized views.
 
 
 
@@ -64,8 +65,10 @@ There is a cost associated with the jobs that maintain them. This section will d
     \textbf{Key Characteristics:} In this case, the fixed view predetermines materialized views at the design stage, generally deriving the set predetermined from historical analysis of expected workloads. Once chosen, these remain set unless some manual alteration is applied. This is suitable for the predictable nature of stable workloads where queries are not so prone to changes over time, such as data warehouse environments or environments that perform online analytical processing (OLAP). By saving time spent on choices, static view selection becomes quite easy to implement and run. It has an inherent limitation because any considerable shift in the workload would entail manual intervention in the set of materialized views \cite{lohman2000selftuning,mamoulis2012survey,gupta2002selftuning}.
     \item \textbf{Dynamic View Selection:} Dynamic View Selection is the selection of dynamic materialized views at execution time or the adaptation of a set of materialized views to changing workload patterns. This is thus a continuous process consisting of monitoring query patterns and data modification in conjunction with cost-benefit considerations to decide whether to add a materialized view, maintain one, or remove it.\vspace{.4cm}
     
-    \textbf{Key Characteristics:} On the contrary, dynamic view selection automatically selects, creates, and keeps materialized views updated according to the real-time analysis of workload. This monitoring approach continuously studies the pattern of incoming queries and applies a sophisticated algorithm to decide which view should either be created, dropped, or modified. Consequently, it is well-suited to environments with unpredictable or rapidly changing workloads, such as in transactional databases or mixed workloads requiring both operational and analytical capabilities. Dynamic nature is what makes this technique effective in response to workload shifts, with selected materialized views being optimized for current usage patterns. On the contrary, real-time adaptability comes with complexity in implementation and increased maintenance overhead because it requires continuous monitoring and decision-making processes. Dynamic view selection necessitates a lot of cost trade-offs for computation of maintaining and refreshing views against the benefits it would have accrued in processing query performance \cite{lohman2000selftuning,mamoulis2012survey,gupta2002selftuning}.
+    \textbf{Key Characteristics:} On the contrary, dynamic view selection automatically identifies, creates, and updates materialized views based on real-time workload analysis. This monitoring method continuously examines the patterns of incoming queries and employs a sophisticated algorithm to determine which views should be created, dropped, or modified. As a result, it is well-suited for environments with unpredictable or rapidly changing workloads, such as transactional databases or mixed workloads that require both operational and analytical capabilities. Its dynamic nature is what makes this technique effective in responding to workload shifts, with the selected materialized views optimized for current usage patterns. However, real-time adaptability comes with implementation complexity and increased maintenance overhead, as it requires ongoing monitoring and decision-making processes. Dynamic view selection involves significant cost trade-offs between maintaining and refreshing views and the benefits gained in processing query performance \cite{lohman2000selftuning,mamoulis2012survey,gupta2002selftuning}.
 \end{enumerate}
+
+This paper examines static materialized views, emphasizing their efficiency and simplicity in contexts where the underlying data remains mostly unchanged. By reducing the necessity for constant updates, static views excel in scenarios that prioritize query performance over real-time accuracy. Utilizing static views optimizes query execution and decreases maintenance and storage costs, providing an effective solution for stable datasets.
 
 \subsection{ Materialized View Management and Selection Approach}
 
