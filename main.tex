@@ -6,6 +6,8 @@
 
 \bibliographystyle{achemso}
 \usepackage[utf8]{inputenc} % Ensures the document can use Unicode characters
+\usepackage{makeidx}
+\makeindex
 \usepackage[T1]{fontenc}    % Output font encoding for international characters
 \usepackage[dvipsnames]{xcolor}
 \usepackage{csquotes}
@@ -147,7 +149,7 @@
 \usepackage{booktabs} % For professional table styling
 \begin{document}
   \author{Md Nazmul Islam}
- \title{Optimizing Query Performance In a Database System}
+ \title{Optimizing Query Performance in a Database System}
  \matrno{Matriculation Number: 3072770}
  \course{Computer Engineering, ISE, Vert. Software Engineering }
 
@@ -185,5 +187,6 @@
     
  %%bibliography
  \bibliography{other_pages/Bibliography} % print the bibliography, using the .bib-file "bib_filename.bib"
+ \printindex  % Generates the index before appendices
 \end{document}
 

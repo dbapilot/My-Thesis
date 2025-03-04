@@ -1,9 +1,9 @@
 \section{Methodology}\vspace{.4cm}
-This chapter will focus on the materialized view selection processes, implementation strategies, and best practices for creating and maintaining MV. It ends with highlights of the performance improvements, such as query execution time and scalable systems, that make materialized views important in modern database systems.
+This chapter will focus on the materialized view selection processes, implementation strategies, and best practices for creating and maintaining MV. It will end with highlights of the performance improvements, such as query execution time and scalable systems, that make materialized views important in modern database systems.
 
  \subsection{How Materialized Views Work on MSSQL:} Not every database supports materialized views, and those that do each handle them a little differently, especially when it comes to the approach to view maintenance \cite{hattemer-2020}. Microsoft SQL Server supports materialized views. Still, they are called "indexed views" because a materialized view may be indexed in multiple ways, and a materialization step is a matter of creating an index on a regular view. A view is materialized by creating a unique clustered index on an existing view. Uniqueness implies that the view output must contain a unique key. An indexable view must be defined by a single-level SQL statement containing selections, inner joins, and optional group-by \cite{goldstein-2001}.\vspace{0.8cm}
 
- To create materialized views in mssql, we must follow a step-by-step creation procedure:
+ To create materialized views in MSSQL, a step-by-step creation procedure must be followed:
  \begin{enumerate}
      
 
@@ -44,7 +44,7 @@ This statement materializes the view and stores the result in a clustered index.
     
     \item \textbf{Storage cost}: Materialized views require additional disk space, particularly for large databases. The gain in query performance should offset the storage cost of MV. Disabled views still incur storage costs, even if they're not maintained or used for query optimization. As data volume grows, the storage costs for MV can increase significantly. This aspect should be considered when designing a long-term strategy for MV. 
      
-    \item \textbf{Usage cost:} Materialized views are great. However, there is a cost associated with the jobs that maintain them. We can calculate the cost using the following formula:\cite{10.1145/2206869.2206874}
+    \item \textbf{Usage cost:} Materialized views are great. However, there is a cost associated with the jobs that maintain them. The cost can be calculated using the following formula\cite{10.1145/2206869.2206874}:
 
     \input{Math/Total_cost}
 
@@ -54,8 +54,8 @@ This statement materializes the view and stores the result in a clustered index.
   
 \end{enumerate}
 
-This thesis primarily explores the use of materialized views and the PSO algorithm to improve query performance. It highlights the connection between computing costs and storage costs. Computing costs, which are affected by workload and data size, play a vital role in assessing the PSO algorithm's effectiveness in optimizing query execution plans. In contrast, storage costs are also significant, as materialized views require additional disk space, especially in large databases. The necessary trade-off between quicker query execution and increased storage needs is essential. By examining these factors, the thesis aims to illustrate how PSO can shift the balance toward enhanced overall query execution by weighing the advantages and disadvantages of materialized views.
-
+This thesis primarily explores the use of materialized views and the PSO algorithm to improve query performance. It highlights the connection between computing costs and storage costs. Computing costs, which are affected by workload and data size, play a vital role in assessing the PSO algorithm's effectiveness in optimizing query execution plans. On the other hand, storage is also costly as materialized views require additional space, most especially in large databases. The compromise needed between quicker query
+execution and growing storage requirements is critical. Through the analysis of these elements, the thesis is to demonstrate how PSO can shift towards better overall query execution by weighing the advantages and disadvantages of materialized views.
 
 
 \subsection{ Static vs Dynamic View Selection } The selection process for materialized views in query optimization can be classified into static and dynamic. Both alternatives are designed to improve query performance but differ in timing, adaptivity, and resource management. Below is the static and dynamic selection process breakdown:
@@ -79,7 +79,7 @@ A well-structured and systematic selection approach is needed to optimize query 
 \begin{enumerate}[label=\alph*)]
     \item \textbf{Query identification:} This is the first step in selecting materialized views to identify which queries are most frequently executed and resource intensive. The prime queries involve complex joins, aggregation, or large datasets.
     
-    \item \textbf{Analyze query patterns:} This step involves analysing execution logs to determine:
+    \item \textbf{Analyze query patterns:} This step involves analyzing execution logs to determine:
     
      \begin{itemize}
           \item How often specific queries are run.
@@ -90,24 +90,24 @@ A well-structured and systematic selection approach is needed to optimize query 
       
     \item \textbf{Storage management:} Access the storage requirements for maintaining materialized views, considering CPU time, I/O operations, and memory usage when determining which materialized views will provide the greatest performance benefit.
     
-    \item \textbf{Refresh Policies:} Once queries are identified, design and  Establish refresh policies based on data volatility or requirements.
+    \item \textbf{Refresh Policies:} Once queries are identified, design and establish refresh policies based on data volatility or requirements.
 \end{enumerate}
 \subsubsection{View Matching for Query Optimization }
 
-View matching is a critical process in query optimization that determines whether a query or sub-expression can be computed from existing materialized views. Since the objective of query optimization is to minimize the computational cost of query execution by taking advantage of precomputed results, this is an essential component. The view matching typically involves the following steps:\vspace{.4cm}
+View matching is an important step in query optimization that determines whether a query or sub-expression can be calculated from existing materialized views. Since the objective of query optimization is to minimize the computational cost of query execution by taking advantage of precomputed results, this is a fundamental component. The view matching typically involves the following steps:\vspace{.4cm}
 
   \begin{itemize}
-      \item \textbf{Query Decomposition:} The entering query is reviewed and broken down into its constituent elements, which include projection, selection, aggregation, and joins. This stage aids in determining the information required by the query and the components available in materialized views \cite{theodoratos2000decomposition}.
+      \item \textbf{Query decomposition:} The entering query is reviewed and broken down into its constituent elements, which include projection, selection, aggregation, and joins. This stage aids in determining the information required by the query and the components available in materialized views \cite{theodoratos2000decomposition}.
 
-      \item \textbf{Normalization and canonical form:} The incoming query and the materialized view definitions transform into a canonical form, facilitating a more straightforward comparison. This normalization aids in removing discrepancies in the expression of similar operations, thereby enhancing the efficiency of matching.
+      \item \textbf{Normalization and canonical form:} The incoming input query and the definitions of the materialized views are transformed into a canonical form, facilitating a more straightforward comparison. The normalization aids in removing inconsistency in representing similar operations, allowing it to be more efficient in matching.
 
-     \item \textbf{Checking coverage:} The attributes and conditions of the query are assessed against those present in the materialized view to ascertain if the view encompasses all required data. This procedure guarantees that the materialized view encompasses all necessary data as specified by the query. In instances where the query includes a WHERE condition, the materialized view must contain an equivalent condition or one that is more restrictive.
+     \item \textbf{Checking coverage:} The conditions and attributes of the query are assessed against those present in the materialized view to ascertain if the view encompasses all required data. This procedure guarantees that the materialized view contains all necessary data as specified by the query. When the query includes a WHERE condition, the materialized view must contain an equivalent condition or a more restricted one.
      
-      \item \textbf{Predicate Subsumption:} The predicates within the materialized view are evaluated to ascertain whether they subsume the predicates of the incoming query. The selection conditions in the query must be either encompassed by or more stringent than those in the materialized view. If the materialized view's predicates are more general, it remains applicable to the query by implementing further filtering as required \cite{adali1996query}.
+      \item \textbf{Predicate subsumption:} The predicates within the materialized view are evaluated to ascertain whether they subsume the predicates of the incoming query. The selection conditions in the query must be either encompassed by or more stringent than those in the materialized view. If the materialized view's predicates are more general, it remains applicable to the query by implementing further filtering as required \cite{adali1996query}.
 
-      \item \textbf{Query Rewriting:} Should the materialized view be determined to encompass the incoming query, the query is subsequently reformulated to utilize the materialized view rather than visiting the basis tables. This rewriting entails adjusting the original query to conform to the schema of the materialized view, sometimes incorporating supplementary filters or projections as necessary \cite{haldar2001query}.
+      \item \textbf{Query rewriting:} If the materialized view is discovered to encompass the incoming query, the query is subsequently rewritten to utilize the materialized view rather than navigating the basis tables. The rewriting entails restructuring the original query to conform to the schema of the materialized view, usually incorporating extra filters or projections where necessary \cite{haldar2001query}.
 
-         \item \textbf{Cost Evaluation:} If several materialized views correspond to the query, the query optimizer assesses the cost of utilizing each available view and chooses the one with the lowest predicted cost \cite{hulgeri2001cost}.
+         \item \textbf{Cost evaluation:} If there are several materialized views that match the query, the query optimizer computes the cost of using each possible view and picks the one with the lowest estimated cost \cite{hulgeri2001cost}.
 This stage guarantees the selection of the most efficient execution plan, optimizing aspects such as I/O, memory use, and processing duration.
 
   \end{itemize}
@@ -135,8 +135,26 @@ To effectively utilize the materialized views, certain conditions must be fulfil
 %%\end{enumerate}
 
 %\subsubsection{Multiple View Processing Plans }
-%\subsubsection{Do All Required Rows Exist in the Views }
-\subsubsection{How Particle Swarm Optimization Algorithm Works on MV}
+\subsubsection{Do All Required Rows Exist in the Views }
+
+ The best approach to ensure all required rows exist is to use a combination of methods that balance accuracy, efficiency, and performance. Here's the best strategy tailored for academic writing:
+\begin{enumerate}
+    \item \textbf{Row count method}
+
+    \input{SQL/row_count}
+    "To ensure all required rows are present in the materialized view, a row count comparison is employed. This method verifies completeness by comparing the total row count between the base table and the materialized view under identical filter conditions. It provides an initial validation with minimal computational cost, making it suitable for frequent checks during the optimization process."
+    
+    \item \textbf{Except method for data completeness}
+
+    \input{SQL/except_operator}
+    \item \textbf{Tertiary Method: CHECKSUM for Data Integrity}
+
+    \input{SQL/checksum}
+\end{enumerate}
+ 
+"To ensure all required rows are present in the materialized view, a row count comparison is employed. This method verifies completeness by comparing the total row count between the base table and the materialized view under identical filter conditions. It provides an initial validation with minimal computational cost, making it suitable for frequent checks during the optimization process."
+
+%\subsubsection{How Particle Swarm Optimization Algorithm Works on MV}
 %\subsubsection{Maintenance of Existing Materialized Views }
 
 
