@@ -1,0 +1,31 @@
+
+% Define SQL style
+\lstdefinestyle{sql}{
+    language=SQL,
+    backgroundcolor=\color{white},
+    basicstyle=\ttfamily\footnotesize,
+    keywordstyle=\color{blue},
+    commentstyle=\color{green!40!black},
+    stringstyle=\color{red},
+    showstringspaces=false,
+    breaklines=true,
+    frame=single,
+    rulecolor=\color{black},
+    tabsize=2,
+    captionpos=b,
+    aboveskip=10pt,
+    belowskip=10pt
+}
+
+
+The following SQL query checks if the database \texttt{AccessAuditDB} exists and creates it if it does not:
+
+\begin{lstlisting}[style=sql, caption={SQL Query to Create Database}, label={lst:sql-create-db}]
+IF NOT EXISTS (SELECT * FROM sys.databases WHERE name = 'AccessAuditDB')
+BEGIN
+    CREATE DATABASE AccessAuditDB;
+END
+GO
+USE AccessAuditDB;
+\end{lstlisting}
+

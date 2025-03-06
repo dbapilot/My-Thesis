@@ -6,45 +6,47 @@ This section describes a step-by-step process for effectively deploying material
 Various software tools and technologies related to database management, query optimization, and technical documentation are used in this project. These tools collectively support database management, query optimization, data analysis, and technical documentation throughout the research and development process.
 
 \begin{enumerate}[label=(\roman*)]
-\item\textbf{SQL Server Management Studio :} SQL Server Management Studio(SSMS) is actually an integrated environment that can maintain the SQL Server infrastructure. It is used to access, manage, configure, administer, and develop all components of SQL Server. In addition,t is used to manage the schema, tables, access to SQL Server, and materialized views of the database. Also, it monitors the performance of the query using execution plans and statistics, and it helps to debug SQL queries and optimize their execution.
+\item\textbf{SQL Server Management Studio :} SQL Server Management Studio(SSMS) is actually an integrated environment that can maintain the SQL Server infrastructure. It is used to access, manage, configure, administer, and develop all components of SQL Server. In addition,t is used to manage the schema, tables, access to SQL Server, and materialized views of the database. Also, it monitors the performance of the query using execution plans and statistics, and it helps to debug SQL queries and optimize their execution. Here MSSQL is used to host the database, create tables, and define materialized views, enabling query execution and performance measurement.
 
 
-\item\textbf{{Visual Studio Code:}} Microsoft created this open-source integrated development environment (IDE) for web browsers, Linux, macOS, and Windows. It is used to write Python scripts for automation (e.g., measuring query performance), integrate MSSQL queries with Python using extensions, and debug Python and SQL scripts.
+\item\textbf{{Visual Studio Code:}} Microsoft created this open-source integrated development environment (IDE) for web browsers, Linux, macOS, and Windows. It is used to write Python scripts for automation (e.g., measuring query performance), integrate MSSQL queries with Python using extensions, and debug Python and SQL scripts. VS Code is used as the primary Integrated Development Environment (IDE) for writing, debugging, and running Python scripts that implement the PSO algorithm and interact with the SQL Server database.
 
-\item\textbf{Overleaf:} Overleaf is an open-source online, real-time collaborative LaTeX\footnote{LaTeX is a powerful typesetting system commonly used for academic and technical documents. It includes features designed for the production of technical and scientific documentation.} editor that simplifies the process of creating, editing, and collaborating on LaTeX documents.
+\item\textbf{Overleaf:} Overleaf is an open-source online, real-time collaborative LaTeX\footnote{LaTeX is a powerful typesetting system commonly used for academic and technical documents. It includes features designed for the production of technical and scientific documentation.} editor that simplifies the process of creating, editing, and collaborating on LaTeX documents. The whole project is written with the help of Overleaf.
 
-\item\textbf{Microsoft SQL Server:} Microsoft SQL Server is a relational database that provides a wide range of features for storing, processing, and securing data.
+\item\textbf{Microsoft SQL Server:} Microsoft SQL Server is a relational database that provides a wide range of features for storing, processing, and securing data. SQL Server hosts the database, stores the tables and materialized views, and executes the SQL queries, allowing the measurement and optimization of query performance using the PSO algorithm.
 
 
-\item\textbf{Python:} Python is a high-level interpreted programming language known for its simplicity and readability. It was created by Guido van Rossum and released in 1991 \cite{martin2023stam,wijanarko2020prediksi} . It has become one of the most popular programming languages worldwide. The structure of the language and its object-oriented approach help programmers to write logical and clear code for small and large projects. Python libraries (packages) effectively simplify many important processes such as analysing and visualizing data, retrieving unstructured data from the web, image processing, building machine learning models, and textual information \cite{Samira_Gholizadeh2022}. Here, it has been used to implement the PSO algorithm to optimize query performance and execute and analyze the database programmatically.
+\item\textbf{Python:} Python is a high-level interpreted programming language known for its simplicity and readability. It was created by Guido van Rossum and released in 1991 \cite{martin2023stam,wijanarko2020prediksi} . It has become one of the most popular programming languages worldwide. The structure of the language and its object-oriented approach help programmers to write logical and clear code for small and large projects. Python libraries (packages) effectively simplify many important processes such as analysing and visualizing data, retrieving unstructured data from the web, image processing, building machine learning models, and textual information \cite{Samira_Gholizadeh2022}. Here, it has been used to implement the PSO algorithm to optimize query performance, connects to the database using libraries like pyodbc, measures, executes, and analyzes the database programmatically.
 
-\item\textbf{pyodbc:} Pyodbc is an open-source Python module that makes accessing ODBC databases simple. It implements the DB API 2.0 specification but is packed with even more Pythonic convenience.
+\item\textbf{pyodbc:} Pyodbc is an open-source Python module that makes accessing ODBC\footnote{Open Database Connectivity (ODBC) is a standardized application programming interface (API) for accessing databases.} databases simple. It implements the DB API\footnote{An Application Programming Interface (API) is a set of protocols, tools, and definitions that allow different software applications to communicate with each other.} 2.0 specification but is packed with even more Pythonic convenience. The pyodbc library connects Python to MSSQL, allowing programmatic execution of SQL queries and retrieval of results.
 
-\item\textbf{pandas:} The pandas constitute an open-source data manipulation and analysis tool that is fast, powerful, flexible, and easy to use. It provides data structures like DataFrames and Series, which are particularly useful for working with structured data. It is built entirely on the Python programming language.
+\item\textbf{pandas:} The pandas constitute an open-source data manipulation and analysis tool that is fast, powerful, flexible, and easy to use. It provides data structures like DataFrames and Series, which are particularly useful for working with structured data. It is built entirely on the Python programming language. Pandas is used to analyze query performance data, such as execution times and storage costs, for better insights.
 
-\item\textbf{matplotlib:} Matplotlib is a comprehensive library for creating static, animated, and interactive visualizations in Python. Matplotlib makes easy things easy and hard things possible \cite{matplotlib}. It has been used to visualize performance improvements in different charts and tables. 
+\item\textbf{matplotlib:} Matplotlib is a comprehensive library for creating static, animated, and interactive visualizations in Python. \enquote{Matplotlib makes easy things easy and hard things possible} \cite{matplotlib}. It has been used to visualize query performance metrics and PSO convergence, making results easier to interpret.
 
-\item\textbf{Git:} Git is a version control system that is used for tracking the changes made in the files and for enabling a collaborative software world. Flexibility, speed, and enablement of almost any applied workflow contribute to the great popularity of Git. It is more like a standard for version control - about 90 per cent of developers' primary system-in-use around the world fall into this category. This enables one to have version control over changes in Python and LaTeX scripts and even multiple collaborations by users.
+\item\textbf{Git:} Git is a version control system that is used for tracking the changes made in the files and for enabling a collaborative software world. Git is incredibly popular due to its flexibility, speed, and ability to support almost any workflow. It has become the go-to standard for version control, with around 90 per cent of developers worldwide using it as their primary system. Git is used to track changes in Python scripts, LaTeX documents, and SQL files, making it an essential tool for collaboration and version control during thesis development.
 
 \end{enumerate}
 
-\subsection{Experimental Setup}
-\subsection{Database System Selection}
-%\subsection{Test Environment Setup }
+\clearpage
 
-
-
+\subsection{Practical Implementation }
  \begin{center}
-     \textbf{.................Test Implementation ... Running ...........}
+     \textbf{.................Test Implementation.
+     Experimental Setup
+     .. Running ...........}
  \end{center}
+\subsubsection{Database Creation}
 
-\subsection{Practical Implementation}
-\subsubsection{Test Environment Setup:}
-\subsubsection{Identify Complex Queries} Analyzing the query workload to identify frequently used sub-queries, aggregation (Queries with GROUP BY, SUM, AVG)s, or frequently joins between tables. This is a very important part of identifying the frequent queries that need to be optimized. SQL server management studio can be used to analyze execution logs and identify the frequently executed and resource-intensive queries. For example, the following query to identify long-running queries:
+
+\input{SQL/Create_database}
+
+\subsubsection{Identify Complex Queries} Analyzing the query workload to identify frequently used sub-queries, aggregation (Queries with GROUP BY, SUM, AVG)s, or frequently joins between tables. This is a very important part of identifying the frequent queries that need to be optimized. SQL Server Management Studio can be used to analyze execution logs and identify the frequently executed and resource-intensive queries. For example, the following query to identify long-running queries:
 
 \input{SQL/Query_identify}
 
-\subsubsection{ Create Candidate Materialized Views (Indexed Views):} It is important to prepare the input data to get the best outcome. The following factors should be considered for the preparation. 
+
+\subsubsection{ Materialized views Creation (Indexed Views):} It is important to prepare the input data to get the best outcome. The following factors should be considered for the preparation. 
 
   \begin{itemize}
       \item \textbf{Create views}
@@ -54,8 +56,9 @@ Various software tools and technologies related to database management, query op
 
   \input{SQL/Create_MSSQL}
   \input{SQL/Create_Views}
+
   
-\subsubsection{Query Response Time:} Once materialized views are created, SQL queries are used to enable query statistics in SSMS:
+\subsubsection{Testing and Evaluation} Once materialized views are created, SQL queries are used to enable query statistics in SSMS:
 
    \input{SQL/Query_statistics}
 

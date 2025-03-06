@@ -3,11 +3,19 @@
 
 \documentclass[language=en,degree=bachelor, 12pt, book]{./other_pages/mfithesis} % options: language=[de|en], degree=[bachelor|master], [natbib|biblatex], [bibtex|biber]
 %\newtheorem{definition}{Definition}[Section]
+\usepackage[utf8]{inputenc}
 
+\usepackage{microtype}
 \bibliographystyle{achemso}
 \usepackage[utf8]{inputenc} % Ensures the document can use Unicode characters
-\usepackage{makeidx}
-\makeindex
+%index
+\usepackage{imakeidx}
+\usepackage{etoolbox}
+\usepackage{imakeidx}   % Best indexing package
+\usepackage{idxlayout}  % Ensures better formatting
+\makeindex[title=Index, columns=2, options=-s mystyle.ist]
+\usepackage[totoc, initsep=15pt, font=small, unbalanced=true]{idxlayout}
+%End Index
 \usepackage[T1]{fontenc}    % Output font encoding for international characters
 \usepackage[dvipsnames]{xcolor}
 \usepackage{csquotes}
@@ -22,9 +30,7 @@
 \usepackage{natbib}
 \usepackage{pgfplots}
 \pgfplotsset{compat=1.18}
-%----From --- %%%%
 \usepackage[linguistics]{forest}
-\usepackage[utf8]{inputenc}
 \usepackage{rotating}
 \usepackage{listings}
 \usepackage{xcolor}
@@ -70,7 +76,7 @@
 
 %\newtheorem{definition}{Definitions}
 %Hyperlinks
-\usepackage{hyperref}
+\usepackage[hidelinks,bookmarksopen,bookmarksnumbered,breaklinks]{hyperref}
 \hypersetup{
     colorlinks=true,
     linkcolor=black ,
@@ -139,8 +145,6 @@
 %\theoremstyle{definition}
 \lstset{style=mystyle}
 \usepackage[colorlinks=true, urlcolor=blue, linkcolor=blue, citecolor=blue]{hyperref}
-
-
 \usepackage{caption}
 \captionsetup[lstlisting]{labelfont=bf, labelsep=colon}
 
@@ -187,6 +191,10 @@
     
  %%bibliography
  \bibliography{other_pages/Bibliography} % print the bibliography, using the .bib-file "bib_filename.bib"
- \printindex  % Generates the index before appendices
+ \clearpage
+ 
+\renewcommand{\indexname}{Alphabetical Index}
+\idxlayout{columns=3} % Ensure two-column layout
+\printindex  
 \end{document}
 
