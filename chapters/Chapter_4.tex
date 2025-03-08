@@ -1,9 +1,9 @@
 %\chapter{Implementaion}
 \section{Implementations}
-This section describes a step-by-step process for effectively deploying materialized views, based on the earlier theoretical foundations, to reduce query execution time, minimize computational overhead, and enhance overall performance.
+This section describes a step-by-step process for effectively deploying materialized views, and PSO algorithm based on the earlier theoretical foundations, to reduce query execution time, minimize computational overhead, and enhance overall performance. The implementation begins with an overview of the tools and technologies utilized in this project, providing essential context before delving into the optimization process.
 
 \subsection{Used Software and Tools}
-Various software tools and technologies related to database management, query optimization, and technical documentation are used in this project. These tools collectively support database management, query optimization, data analysis, and technical documentation throughout the research and development process.
+This project uses some software tools and technologies related to database management, query optimization, and technical documentation. Collectively, these tools support database management, query optimization, data analysis, and technical documentation throughout the research and development process.
 
 \begin{enumerate}[label=(\roman*)]
 \item\textbf{SQL Server Management Studio :} SQL Server Management Studio(SSMS) is actually an integrated environment that can maintain the SQL Server infrastructure. It is used to access, manage, configure, administer, and develop all components of SQL Server. In addition,t is used to manage the schema, tables, access to SQL Server, and materialized views of the database. Also, it monitors the performance of the query using execution plans and statistics, and it helps to debug SQL queries and optimize their execution. Here MSSQL is used to host the database, create tables, and define materialized views, enabling query execution and performance measurement.
@@ -37,46 +37,24 @@ Various software tools and technologies related to database management, query op
      .. Running ...........}
  \end{center}
 \subsubsection{Database Creation}
+Choosing a database or creating one if not available is the initial step of the implementation. For the demonstration purpose, one database called \texttt{AccessAuditDB} is created. The database was populated with tables and sample data to simulate a real-world environment. Relationships between tables are defined using primary keys and foreign keys to ensure data integrity and enable efficient querying, enabling the testing and optimization of queries using materialized views and the PSO algorithm.
 
+The following SQL query checks if the database \texttt{AccessAuditDB} exists and creates it if it does not:
 
 \input{SQL/Create_database}
 
-\subsubsection{Identify Complex Queries} Analyzing the query workload to identify frequently used sub-queries, aggregation (Queries with GROUP BY, SUM, AVG)s, or frequently joins between tables. This is a very important part of identifying the frequent queries that need to be optimized. SQL Server Management Studio can be used to analyze execution logs and identify the frequently executed and resource-intensive queries. For example, the following query to identify long-running queries:
+\subsubsection{Identify Complex Queries} This is a very important part of identifying the frequent queries that need to be optimized. It refers to the process of analyzing a database workload to pinpoint queries that are resource-intensive, frequently executed, or critical to performance. SQL Server Management Studio or direct SQL query can be used to analyze execution logs and identify the frequently executed and resource-intensive queries. Also identify frequently used sub-queries, aggregation (Queries with GROUP BY, SUM, AVG)s, or frequently joins between tables. For example, the following query to identify long-running queries:
 
 \input{SQL/Query_identify}
 
+The above SQL query retrieves the top 10 most time-consuming queries from SQL Server by analyzing the \(\texttt{sys.dm\_exec\_query\_stats}\) Dynamic Management Views(DMV)\footnote{DMVs are system defined views for database administrators and developers to troubleshoot performance issues, identify missing indexes, analyze query performance, and monitor resource usage efficiently.}. It calculates the total elapsed time in milliseconds, counts the number of executions, and fetches the query text using \(\texttt{sys.dm\_exec\_sql\_text}\). The results are sorted by \(\texttt{total\_elapsed\_time}\) in descending order to highlight the slowest queries for performance tuning and optimization. These queries were then used to create materialized views, which were optimized using the PSO algorithm to improve overall query performance.
+\subsubsection{ Materialized views Creation (Indexed Views):} Once the top slow queries are sorted out, MVs(In MSSQL Server Mvs are implemented as Indexed views ) are created for each of these queries to store their precomputed results.\vspace{.4cm}
 
-\subsubsection{ Materialized views Creation (Indexed Views):} It is important to prepare the input data to get the best outcome. The following factors should be considered for the preparation. 
-
-  \begin{itemize}
-      \item \textbf{Create views}
-      \item \textbf{Storage budget}
-      \item \textbf{Query logs}
-  \end{itemize}
-
-  \input{SQL/Create_MSSQL}
+  %\input{SQL/Create_MSSQL}
   \input{SQL/Create_Views}
 
   
-\subsubsection{Testing and Evaluation} Once materialized views are created, SQL queries are used to enable query statistics in SSMS:
 
-   \input{SQL/Query_statistics}
-
-\begin{itemize}
-    \item \textbf{Queries without materialized views:}
-    \item \textbf{Queries with materialized views:}
-\end{itemize}
-
-After running each query, note the elapsed time in the "Messages" tab in SSMS
-For example, the percentage difference for Query 1 is calculated as:
-
-\input{Math/Differences}
-
-\begin{comment}\[
-\text{Difference (\%)} = \frac{\text{Without MV} - \text{With MV}}{\text{Without MV}} \times 100 = \frac{2.35 - 0.45}{2.35} \times 100 \approx 80.85\%
-\]
-\end{comment}
-\input{Table/Response_time_comparion}
 
 \subsubsection{Automation with the PSO algorithm:}
  The following Python code illustrates the implementation of the PSO algorithm for multiple values. It evaluates various combinations of these parameters and selects the one that yields the best query response time.\vspace{.4cm}
@@ -87,10 +65,11 @@ For example, the percentage difference for Query 1 is calculated as:
 
   \input{Python/PSO_Best_Response}\vspace{.4cm}
 
-\textbf{Example 2}
-  \input{Python/PSO_python}\vspace{.4cm}
+ 
 
-  \textbf{Output from PSO automation } 
+\textbf{Example 2}
+
+\textbf{Output from PSO automation } 
 
   \input{Python/Python_output}
   \input{Python/python_output2}
@@ -106,63 +85,51 @@ For example, the percentage difference for Query 1 is calculated as:
 
 \input{SQL/Refresh_config}
 
-\subsubsection{Performance Testing and Data Analysis}
+\subsubsection{Performance Testing and Data Analysis} After creating the materialized views, performance metrics were collected using SQL query statistics. Query execution times are recorded using built-in database monitoring tools, such as Dynamic Management Views (DMVs) or with the help of SQL queries like. 
 
+ \input{SQL/Query_statistics}
 
- \input{Table/Response_time_comparion}
+\begin{itemize}
+    \item \textbf{Queries without materialized views:}
+    \item \textbf{Queries with materialized views:}
+\end{itemize}
 
-% Test Test Test Test---------------------------------Test 
-\begin{tikzpicture}
-    \begin{axis}[
-        width=12cm, height=8cm,
-        ybar=0.5pt, % Bar style
-        bar width=15pt,
-        symbolic x coords={Query 1, Query 2, Query 3},
-        xtick=data,
-        ymin=0, ymax=5,
-        ylabel={Execution Time (seconds)},
-        xlabel={Queries},
-        legend style={at={(0.5,-0.2)}, anchor=north, legend columns=-1},
-        nodes near coords, % Show data labels
-        enlarge x limits=0.25
-    ]
-        % Without Materialized View Data
-        \addplot coordinates {(Query 1,2.35) (Query 2,3.78) (Query 3,4.21)};
-        % With Materialized View Data
-        \addplot coordinates {(Query 1,0.45) (Query 2,0.62) (Query 3,0.87)};
-        
-        \legend{Without Materialized View, With Materialized View}
-    \end{axis}
-\end{tikzpicture}
+After running each query with and without materialized views, record the elapsed time in the "Messages" tab in SSMS. The effectiveness of the materialized views was assessed using the Percentage Difference formula.
 
-\begin{table}[h!]
-    \centering
-    \begin{tabular}{@{}lccc@{}}
-        \toprule
-        \textbf{Query} & \textbf{Without MV (s)} & \textbf{With MV (s)} & \textbf{Difference (\%)} \\ \midrule
-        Query 1        & 2.35                   & 0.45                 & 80.85                   \\
-        Query 2        & 3.78                   & 0.62                 & 83.61                   \\
-        Query 3        & 4.21                   & 0.87                 & 79.34                   \\ \bottomrule
-    \end{tabular}
-    \caption{Execution Time Difference Between Queries With and Without Materialized Views}
-    \label{tab:performance}
-\end{table}
+\input{Math/Differences}
 
-
-\begin{table}[h!]
-    \centering
-    \begin{tabular}{@{}lccc@{}}
-        \toprule
-        \textbf{Query} & \textbf{Without MV (s)} & \textbf{With MV (s)} & \textbf{Difference (\%)} \\ \midrule
-        Query 1        & 2.35                   & 0.45                 & 80.85                   \\
-        Query 2        & 3.78                   & 0.62                 & 83.61                   \\
-        Query 3        & 4.21                   & 0.87                 & 79.34                   \\ \bottomrule
-    \end{tabular}
-    \caption{Performance Comparison for Queries With and Without Materialized Views}
-    \label{tab:performance}
-\end{table}
-
-For example, the percentage difference for Query 1 is calculated as:
-\[
+\begin{comment}\[
 \text{Difference (\%)} = \frac{\text{Without MV} - \text{With MV}}{\text{Without MV}} \times 100 = \frac{2.35 - 0.45}{2.35} \times 100 \approx 80.85\%
 \]
+\end{comment}
+
+The output indicates an 80.85\% improvement in performance. Here, \( W = 2.35 \) represents the initial execution time (without optimization), and \( M = 0.45 \) represents the improved execution time (with optimization). This significant reduction in execution time demonstrates the effectiveness of the optimization technique, as it reduces the query processing time by approximately 80.85\%, leading to faster and more efficient database operations.
+
+\clearpage
+Table to show the differences :
+ 
+ \input{Table/Response_time_comparion}
+
+ The table presents a performance comparison of query execution times using three different approaches: \textbf{Direct SELECT Aggregation}, \textbf{Indexed View Query}, and \textbf{Materialized View}. The results show that the \textbf{Materialized View} approach consistently outperforms the other methods, with an average execution time of \textbf{5 ms}, compared to \textbf{14.8 ms} for Indexed View Query and \textbf{66.6 ms} for Direct SELECT Aggregation. This demonstrates that materialized views significantly reduce query execution times, providing a \textbf{92.5\% improvement} over direct aggregation and a \textbf{66.2\% improvement} over indexed views. The consistent performance across multiple runs highlights the reliability and efficiency of materialized views in optimizing database queries.
+ 
+
+\textbf{Barchart}
+
+
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{Figure/Bar_chart.png} % Replace with your image file name
+\caption{Comparison of query execution time} % Caption for the screenshot
+\label{fig:execution-plan} % Label for referencing
+\end{figure}
+
+As shown in Figure \ref{fig:execution-plan}, the execution time demonstrates the optimization achieved by using materialized views.
+
+\input{Table/bar_chart}
+
+
+
+
+
+

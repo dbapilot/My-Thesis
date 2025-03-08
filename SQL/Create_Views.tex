@@ -1,60 +1,99 @@
+% Define colors
+\definecolor{codegreen}{rgb}{0,0.6,0}  % ✅ Green for comments
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}  % ✅ Gray for numbers
+\definecolor{codepurple}{rgb}{0.58,0,0.82}  % ✅ Purple for strings
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}  % ✅ Light gray background
+\definecolor{bordercolor}{rgb}{0.7,0.7,0.7}  % ✅ Left border color (gray)
+\definecolor{codeblue}{rgb}{0,0,0.8}  % ✅ Blue for SQL keywords
 
-\definecolor{dkgreen}{rgb}{0,0.6,0}
-\definecolor{gray}{rgb}{0.5,0.5,0.5}
-\definecolor{mauve}{rgb}{0.58,0,0.82}
-\lstset{language=SQL,
-  basicstyle={\small\ttfamily},
-  belowskip=3mm,
-  breakatwhitespace=true,
-  breaklines=true,
-  classoffset=0,
-  columns=flexible,
-  commentstyle=\color{dkgreen},
-  framexleftmargin=0.25em,
-  frameshape={}{yy}{}{}, %To remove to vertical lines on left, set `frameshape={}{}{}{}`
-  keywordstyle=\color{blue},
-  numbers=none, %If you want line numbers, set `numbers=left`
-  numberstyle=\tiny\color{gray},
-  showstringspaces=false,
-  stringstyle=\color{mauve},
-  tabsize=3,
-  xleftmargin =1em
+% ✅ Define SQL language with correct comment handling
+\lstdefinelanguage{MySQL}{
+    keywords={SELECT, FROM, WHERE, JOIN, ON, INNER, OUTER, LEFT, RIGHT, FULL, GROUP, BY, ORDER, ASC, DESC, AS, COUNT, SUM, AVG, MAX, MIN, DISTINCT, INSERT, INTO, VALUES, UPDATE, SET, DELETE, CREATE, TABLE, PRIMARY, FOREIGN, KEY, DEFAULT, NULL, NOT, CHECK, CONSTRAINT, INDEX, VIEW, MATERIALIZED, PROCEDURE, FUNCTION, TRIGGER, DATABASE, ALTER, DROP, EXEC, IF, EXISTS, UNION, ALL, CASE, WHEN, THEN, ELSE, END, CAST, CONVERT, LIKE, IN, BETWEEN, AND, OR, HAVING, LIMIT, OFFSET},
+    sensitive=false,
+    morestring=[b]',  % ✅ Strings in single quotes
+    morestring=[b]",  % ✅ Strings in double quotes
+    morecomment=[l][\color{codegreen}]{--}  % ✅ Ensures full line comment in green
 }
-         \begin{lstlisting}
--- Materialized View for Query 1
-CREATE VIEW TotalSalesByCustomer
-WITH SCHEMABINDING
+
+\lstdefinestyle{sqlstyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},  % ✅ Comments in green
+    keywordstyle=\bfseries\color{codeblue},  % ✅ SQL Keywords in Blue & Bold
+    numberstyle=\scriptsize\color{codegray},  % ✅ Row numbers in gray
+    stringstyle=\color{codepurple},  % ✅ Strings in purple
+    basicstyle=\ttfamily\footnotesize,
+    breaklines=true,
+    captionpos=b,
+    numbers=left,      % ✅ Enables row numbers on the left
+    stepnumber=1,      % ✅ Row numbers increment by 1
+    firstnumber=1,     % ✅ Starts numbering at 1
+    numbersep=8pt,     % ✅ Increases space between numbers and SQL code
+    xleftmargin=3em,   % ✅ Ensures space inside the left border
+    frame=single,      % ✅ Keeps a single border (left-aligned)
+    framesep=5pt,      % ✅ Ensures space inside the frame
+    rulesepcolor=\color{bordercolor},  % ✅ Matches row numbers with left border
+    rulecolor=\color{bordercolor},  % ✅ Sets left border color
+    language=MySQL  % ✅ Uses SQL keyword highlighting
+}
+  
+\begin{lstlisting}[style=sqlstyle, caption={Materialized view creation},]
+--Materialized View for Query 1: Total Sales by Customer
+
+CREATE VIEW totalsalesbycustomer
+WITH schemabinding
 AS
-SELECT CustomerID, SUM(TotalAmount) AS TotalSales
-FROM dbo.Orders
-GROUP BY CustomerID;
-GO
+  SELECT customerid,
+         Sum(totalamount) AS TotalSales
+  FROM   dbo.orders
+  GROUP  BY customerid;
 
-CREATE UNIQUE CLUSTERED INDEX IX_TotalSalesByCustomer ON TotalSalesByCustomer (CustomerID);
-GO
+go
 
--- Materialized View for Query 2
-CREATE VIEW TotalQuantityByProduct
-WITH SCHEMABINDING
+CREATE UNIQUE CLUSTERED INDEX ix_totalsalesbycustomer
+  ON totalsalesbycustomer (customerid);
+
+go 
+
+-- This view calculates the total sales amount for each customer by aggregating the TotalAmount column from the Orders table.
+
+--Materialized View for Query 2: Total Quantity by Product
+
+
+CREATE VIEW totalquantitybyproduct
+WITH schemabinding
 AS
-SELECT ProductID, SUM(Quantity) AS TotalQuantity
-FROM dbo.OrderDetails
-GROUP BY ProductID;
-GO
+  SELECT productid,
+         Sum(quantity) AS TotalQuantity
+  FROM   dbo.orderdetails
+  GROUP  BY productid;
 
-CREATE UNIQUE CLUSTERED INDEX IX_TotalQuantityByProduct ON TotalQuantityByProduct (ProductID);
-GO
+go
 
--- Materialized View for Query 3
-CREATE VIEW MonthlySales
-WITH SCHEMABINDING
+CREATE UNIQUE CLUSTERED INDEX ix_totalquantitybyproduct
+  ON totalquantitybyproduct (productid);
+
+go 
+
+-- This view calculates the total quantity sold for each product by aggregating the Quantity column from the OrderDetails table.
+
+--Materialized View for Query 3: Monthly Sales
+
+CREATE VIEW monthlysales
+WITH schemabinding
 AS
-SELECT YEAR(OrderDate) AS SalesYear, MONTH(OrderDate) AS SalesMonth, SUM(TotalAmount) AS MonthlySales
-FROM dbo.Orders
-GROUP BY YEAR(OrderDate), MONTH(OrderDate);
-GO
+  SELECT Year(orderdate)  AS SalesYear,
+         Month(orderdate) AS SalesMonth,
+         Sum(totalamount) AS MonthlySales
+  FROM   dbo.orders
+  GROUP  BY Year(orderdate),
+            Month(orderdate);
 
-CREATE UNIQUE CLUSTERED INDEX IX_MonthlySales ON MonthlySales (SalesYear, SalesMonth);
-GO
+go
 
-        \end{lstlisting}
+CREATE UNIQUE CLUSTERED INDEX ix_monthlysales
+  ON monthlysales (salesyear, salesmonth);
+
+go 
+
+-- This view calculates the total sales amount for each month by aggregating the TotalAmount column from the Orders table, grouped by year and month.
+\end{lstlisting}

@@ -137,26 +137,32 @@ To effectively utilize the materialized views, certain conditions must be fulfil
 %\subsubsection{Multiple View Processing Plans }
 \subsubsection{Do All Required Rows Exist in the Views }
 
- The best approach to ensure all required rows exist is to use a combination of methods that balance accuracy, efficiency, and performance. Here's the best strategy tailored for academic writing:
+ The best approach to ensure all required rows exist or to get the expected values without compromising the base table is to use a combination of methods that guarantee accuracy, efficiency, and performance. Here's the best strategy tailored for academic writing:
 \begin{enumerate}
     \item \textbf{Row count method}
 
     \input{SQL/row_count}
-    "To ensure all required rows are present in the materialized view, a row count comparison is employed. This method verifies completeness by comparing the total row count between the base table and the materialized view under identical filter conditions. It provides an initial validation with minimal computational cost, making it suitable for frequent checks during the optimization process."
+    
+Row count comparison confirms that the materialized view holds all required rows. Using the same filter conditions, this step ensures completeness by comparing the total row count of the base table and materialized view. It is suitable for periodic checks under optimization with the advantage of initial verification at minimal computational costs.
     
     \item \textbf{Except method for data completeness}
 
     \input{SQL/except_operator}
-    \item \textbf{Tertiary Method: CHECKSUM for Data Integrity}
 
+The query retrieves all data from the base table, and then subtracts all data from the views. If the result is an empty set, it means all rows in the base table exist in MVs. If the result contains rows, those rows are missing from the views. 
+    
+    \item \textbf{Tertiary Method: CHECKSUM for Data Integrity}
+    
     \input{SQL/checksum}
+    
+    By comparing the two checksums (\texttt{BaseTable\_Checksum} and \texttt{MV\_Checksum}), this query determines if the data in the materialized view matches the base table. If the checksums differ, it indicates a discrepancy in the data.
 \end{enumerate}
  
-"To ensure all required rows are present in the materialized view, a row count comparison is employed. This method verifies completeness by comparing the total row count between the base table and the materialized view under identical filter conditions. It provides an initial validation with minimal computational cost, making it suitable for frequent checks during the optimization process."
+
 
 %\subsubsection{How Particle Swarm Optimization Algorithm Works on MV}
 %\subsubsection{Maintenance of Existing Materialized Views }
 
 
-\textbf{......\textbf{Work on Progress}..........}       
+%\textbf{......\textbf{Work on Progress}..........}       
  

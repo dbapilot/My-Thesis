@@ -1,26 +1,42 @@
+% Define colors
+\definecolor{codegreen}{rgb}{0,0.6,0}  % ✅ Green for comments
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}  % ✅ Gray for numbers
+\definecolor{codepurple}{rgb}{0.58,0,0.82}  % ✅ Purple for strings
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}  % ✅ Light gray background
+\definecolor{bordercolor}{rgb}{0.7,0.7,0.7}  % ✅ Left border color (gray)
+\definecolor{codeblue}{rgb}{0,0,0.8}  % ✅ Blue for SQL keywords
 
-% Define SQL style
-\lstdefinestyle{sql}{
-    language=SQL,
-    backgroundcolor=\color{white},
-    basicstyle=\ttfamily\footnotesize,
-    keywordstyle=\color{blue},
-    commentstyle=\color{green!40!black},
-    stringstyle=\color{red},
-    showstringspaces=false,
-    breaklines=true,
-    frame=single,
-    rulecolor=\color{black},
-    tabsize=2,
-    captionpos=b,
-    aboveskip=10pt,
-    belowskip=10pt
+% ✅ Define SQL language with correct comment handling
+\lstdefinelanguage{MySQL}{
+    keywords={SELECT, FROM, WHERE, JOIN, ON, INNER, OUTER, LEFT, RIGHT, FULL, GROUP, BY, ORDER, ASC, DESC, AS, COUNT, SUM, AVG, MAX, MIN, DISTINCT, INSERT, INTO, VALUES, UPDATE, SET, DELETE, CREATE, TABLE, PRIMARY, FOREIGN, KEY, DEFAULT, NULL, NOT, CHECK, CONSTRAINT, INDEX, VIEW, MATERIALIZED, PROCEDURE, FUNCTION, TRIGGER, DATABASE, ALTER, DROP, EXEC, IF, EXISTS, UNION, ALL, CASE, WHEN, THEN, ELSE, END, CAST, CONVERT, LIKE, IN, BETWEEN, AND, OR, HAVING, LIMIT, OFFSET},
+    sensitive=false,
+    morestring=[b]',  % ✅ Strings in single quotes
+    morestring=[b]",  % ✅ Strings in double quotes
+    morecomment=[l][\color{codegreen}]{--}  % ✅ Ensures full line comment in green
 }
 
+\lstdefinestyle{sqlstyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},  % ✅ Comments in green
+    keywordstyle=\bfseries\color{codeblue},  % ✅ SQL Keywords in Blue & Bold
+    numberstyle=\scriptsize\color{codegray},  % ✅ Row numbers in gray
+    stringstyle=\color{codepurple},  % ✅ Strings in purple
+    basicstyle=\ttfamily\footnotesize,
+    breaklines=true,
+    captionpos=b,
+    numbers=left,      % ✅ Enables row numbers on the left
+    stepnumber=1,      % ✅ Row numbers increment by 1
+    firstnumber=1,     % ✅ Starts numbering at 1
+    numbersep=8pt,     % ✅ Increases space between numbers and SQL code
+    xleftmargin=3em,   % ✅ Ensures space inside the left border
+    frame=single,      % ✅ Keeps a single border (left-aligned)
+    framesep=5pt,      % ✅ Ensures space inside the frame
+    rulesepcolor=\color{bordercolor},  % ✅ Matches row numbers with left border
+    rulecolor=\color{bordercolor},  % ✅ Sets left border color
+    language=MySQL  % ✅ Uses SQL keyword highlighting
+}
 
-The following SQL query checks if the database \texttt{AccessAuditDB} exists and creates it if it does not:
-
-\begin{lstlisting}[style=sql, caption={SQL Query to Create Database}, label={lst:sql-create-db}]
+\begin{lstlisting}[style=sqlstyle, caption={SQL query to Create Database}]
 IF NOT EXISTS (SELECT * FROM sys.databases WHERE name = 'AccessAuditDB')
 BEGIN
     CREATE DATABASE AccessAuditDB;
@@ -28,4 +44,3 @@ END
 GO
 USE AccessAuditDB;
 \end{lstlisting}
-

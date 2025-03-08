@@ -1,5 +1,6 @@
-
 \begin{lstlisting}[style=pythonstyle, caption={Python script to automate optimal view.}, label={lst:pso_query_optimization}]
+
+
 
 # 
 import pyodbc # A python  library for interacting with ODBC databases like MSSQL that helps to manage database connection
@@ -86,8 +87,8 @@ try:
             for i in range(num_queries):
                 r1, r2 = random.random(), random.random()
                 particle['velocity'][i] = (W * particle['velocity'][i] +
-                                           c1 * r1 * (particle['best_position'][i] - particle['position'][i]) +
-                                           c2 * r2 * (global_best_position[i] - particle['position'][i]))
+                                c1 * r1 * (particle['best_position'][i] - particle['position'][i]) +
+                                c2 * r2 * (global_best_position[i] - particle['position'][i]))
                 particle['position'][i] = 1 if random.random() < abs(particle['velocity'][i]) else 0
 
         print(f"Iteration {iteration + 1}: Best Cost = {global_best_cost:.4f}")

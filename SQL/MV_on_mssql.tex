@@ -1,32 +1,42 @@
+\definecolor{codegreen}{rgb}{0,0.6,0}  % Green for comments
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}  % Gray for numbers
+\definecolor{codepurple}{rgb}{0.58,0,0.82}  % Purple for strings
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}  % Light gray background
+\definecolor{bordercolor}{rgb}{0.7,0.7,0.7}  % Left border color (gray)
+\definecolor{codeblue}{rgb}{0,0,0.8}  % Blue for SQL keywords
 
-\definecolor{dkgreen}{rgb}{0,0.6,0}
-\definecolor{gray}{rgb}{0.5,0.5,0.5}
-\definecolor{mauve}{rgb}{0.58,0,0.82}
-\lstset{language=SQL,
-  basicstyle={\small\ttfamily},
-  belowskip=3mm,
-  breakatwhitespace=true,
-  breaklines=true,
-  classoffset=0,
-  columns=flexible,
-  commentstyle=\color{dkgreen},
-  framexleftmargin=0.25em,
-  frameshape={}{yy}{}{}, %To remove to vertical lines on left, set `frameshape={}{}{}{}`
-  keywordstyle=\color{blue},
-  numbers=none, %If you want line numbers, set `numbers=left`
-  numberstyle=\tiny\color{gray},
-  showstringspaces=false,
-  stringstyle=\color{mauve},
-  tabsize=3,
-  xleftmargin =1em
+\lstdefinelanguage{MySQL}{
+    keywords={SELECT, FROM, WHERE, JOIN, ON, INNER, OUTER, LEFT, RIGHT, FULL, GROUP, BY, ORDER, ASC, DESC, AS, COUNT, SUM, AVG, MAX, MIN, DISTINCT, INSERT, INTO, VALUES, UPDATE, SET, DELETE, CREATE, TABLE, PRIMARY, FOREIGN, KEY, DEFAULT, NULL, NOT, CHECK, CONSTRAINT, INDEX, VIEW, MATERIALIZED, PROCEDURE, FUNCTION, TRIGGER, DATABASE, ALTER, DROP, EXEC, IF, EXISTS, UNION, ALL, CASE, WHEN, THEN, ELSE, END, CAST, CONVERT, LIKE, IN, BETWEEN, AND, OR, HAVING, LIMIT, OFFSET},
+    sensitive=false,
+    morestring=[b]',  % String in single quotes
+    morestring=[b]"   % String in double quotes
 }
-         \begin{lstlisting}
-CREATE VIEW schema_name.view_name
-WITH SCHEMABINDING
-AS
-SELECT [columns]
-FROM [tables]
-WHERE [conditions]
-GROUP BY [columns];
 
-        \end{lstlisting}
+\lstdefinestyle{sqlstyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},  % Comments in green
+    keywordstyle=\bfseries\color{codeblue},  % ✅ SQL Keywords in Blue & Bold
+    numberstyle=\scriptsize\color{codegray},  % Row numbers in gray
+    stringstyle=\color{codepurple},  % Strings in purple
+    basicstyle=\ttfamily\footnotesize,
+    breaklines=true,
+    captionpos=b,
+    numbers=left,      % ✅ Enables row numbers on the left
+    stepnumber=1,      % ✅ Row numbers increment by 1
+    firstnumber=1,     % ✅ Starts numbering at 1
+    numbersep=8pt,     % ✅ Increases space between numbers and SQL code
+    xleftmargin=3em,   % ✅ Ensures space inside the left border
+    frame=single,      % ✅ Keeps a single border (left-aligned)
+    framesep=5pt,      % ✅ Ensures space inside the frame
+    rulesepcolor=\color{bordercolor},  % ✅ Matches row numbers with left border
+    rulecolor=\color{bordercolor},  % ✅ Sets left border color
+    language=MySQL  % ✅ Uses SQL keyword highlighting
+}
+
+\begin{lstlisting}[style=sqlstyle, caption={Create materialized views}]
+CREATE VIEW schema_name.view_name WITH schemabinding AS
+SELECT   [columns]
+FROM     [tables]
+WHERE    [conditions]
+GROUP BY [columns];
+\end{lstlisting}

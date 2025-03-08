@@ -4,7 +4,7 @@
 \documentclass[language=en,degree=bachelor, 12pt, book]{./other_pages/mfithesis} % options: language=[de|en], degree=[bachelor|master], [natbib|biblatex], [bibtex|biber]
 %\newtheorem{definition}{Definition}[Section]
 \usepackage[utf8]{inputenc}
-
+\usepackage{appendix}
 \usepackage{microtype}
 \bibliographystyle{achemso}
 \usepackage[utf8]{inputenc} % Ensures the document can use Unicode characters
@@ -12,11 +12,11 @@
 \usepackage{imakeidx}
 \usepackage{etoolbox}
 \usepackage{imakeidx}   % Best indexing package
-\usepackage{idxlayout}  % Ensures better formatting
+%\usepackage{idxlayout}  % Ensures better formatting
 \makeindex[title=Index, columns=2, options=-s mystyle.ist]
 \usepackage[totoc, initsep=15pt, font=small, unbalanced=true]{idxlayout}
 %End Index
-\usepackage[T1]{fontenc}    % Output font encoding for international characters
+%\usepackage[T1]{fontenc}    % Output font encoding for international characters
 \usepackage[dvipsnames]{xcolor}
 \usepackage{csquotes}
 \usepackage{lipsum} % This package generates filler text for the example
@@ -95,6 +95,22 @@
 \usepackage{listings}
 \usepackage{tcolorbox}
 \usepackage{minted}
+\setminted{
+    bgcolor=white,
+    fontsize=\footnotesize,
+    frame=single,
+    rulecolor=black,
+    tabsize=2, 
+    breaklines=true,
+    escapeinside=||,
+    numbers=left, % Add line numbers
+    numberstyle=\tiny\color{gray},
+    keywordstyle=\color{blue},
+    commentstyle=\color{green!40!black},
+    stringstyle=\color{red}
+    }
+    
+\usepackage{caption} % For better captions
 \lstdefinestyle{pythonstyle}{
     language=Python,
     basicstyle=\ttfamily\footnotesize,
@@ -192,9 +208,15 @@
  %%bibliography
  \bibliography{other_pages/Bibliography} % print the bibliography, using the .bib-file "bib_filename.bib"
  \clearpage
- 
-\renewcommand{\indexname}{Alphabetical Index}
-\idxlayout{columns=3} % Ensure two-column layout
-\printindex  
+
+\section{Appendix} % Use a descriptive title
+\label{app:python_output} % Add a label for referencing
+
+
+\textbf{Test 2}
+\input{Python/PSO_python} % Include the external file
+%\renewcommand{\indexname}{Alphabetical Index}
+%\idxlayout{columns=3} % Ensure two-column layout
+%\printindex  
 \end{document}
 
