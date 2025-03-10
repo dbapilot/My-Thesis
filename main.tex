@@ -38,9 +38,8 @@
 \usepackage[caption=false]{subfig}
 \usepackage{url} 
 \usepackage[hyphens]{xurl}
-\usepackage[hidelinks, bookmarksopen, bookmarksnumbered]{hyperref}
+\usepackage[hidelinks,bookmarksopen,bookmarksnumbered,breaklinks]{hyperref}
 \usepackage{natbib}
-\usepackage[breaklinks]{hyperref}
 %\bibliographystyle{plainnat}
 \usepackage{float}
 \restylefloat{figure}
@@ -60,7 +59,6 @@
 %%
 \usepackage{scrlayer}
   % Optional for coloring code
-\usepackage[colorlinks=true]{hyperref}
 %Enumerations
 %\usepackage{enumerate}
 \usepackage{placeins}
@@ -76,7 +74,7 @@
 
 %\newtheorem{definition}{Definitions}
 %Hyperlinks
-\usepackage[hidelinks,bookmarksopen,bookmarksnumbered,breaklinks]{hyperref}
+
 \hypersetup{
     colorlinks=true,
     linkcolor=black ,
@@ -209,14 +207,10 @@
  \bibliography{other_pages/Bibliography} % print the bibliography, using the .bib-file "bib_filename.bib"
  \clearpage
 
-\section{Appendix} % Use a descriptive title
-\label{app:python_output} % Add a label for referencing
+%\section{Appendix} % Use a descriptive title
+%\label{app:python_output} % Add a label for referencing
 
 
-\textbf{Test 2}
-\input{Python/PSO_python} % Include the external file
-%\renewcommand{\indexname}{Alphabetical Index}
-%\idxlayout{columns=3} % Ensure two-column layout
-%\printindex  
+%\textbf{Test 2}
+%\input{Python/PSO_python} % Include the external file
 \end{document}
-

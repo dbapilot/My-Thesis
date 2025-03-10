@@ -48,6 +48,7 @@ The following SQL query checks if the database \texttt{AccessAuditDB} exists and
 \input{SQL/Query_identify}
 
 The above SQL query retrieves the top 10 most time-consuming queries from SQL Server by analyzing the \(\texttt{sys.dm\_exec\_query\_stats}\) Dynamic Management Views(DMV)\footnote{DMVs are system defined views for database administrators and developers to troubleshoot performance issues, identify missing indexes, analyze query performance, and monitor resource usage efficiently.}. It calculates the total elapsed time in milliseconds, counts the number of executions, and fetches the query text using \(\texttt{sys.dm\_exec\_sql\_text}\). The results are sorted by \(\texttt{total\_elapsed\_time}\) in descending order to highlight the slowest queries for performance tuning and optimization. These queries were then used to create materialized views, which were optimized using the PSO algorithm to improve overall query performance.
+
 \subsubsection{ Materialized views Creation (Indexed Views):} Once the top slow queries are sorted out, MVs(In MSSQL Server Mvs are implemented as Indexed views ) are created for each of these queries to store their precomputed results.\vspace{.4cm}
 
   %\input{SQL/Create_MSSQL}
@@ -67,7 +68,7 @@ The above SQL query retrieves the top 10 most time-consuming queries from SQL Se
 
  
 
-\textbf{Example 2}
+\textbf{One more example are given here } \hyperref[test:Test2]{\textcolor{blue}{Test 2}}.
 
 \textbf{Output from PSO automation } 
 
@@ -89,13 +90,25 @@ The above SQL query retrieves the top 10 most time-consuming queries from SQL Se
 
  \input{SQL/Query_statistics}
 
+\begin{enumerate}
+
+
+    \item \textbf{ Query response time comparison:}\\
+The tests were performed using \textit{MSSQL} on a system running \textit{Windows 10 Pro} with the following specifications:
 \begin{itemize}
-    \item \textbf{Queries without materialized views:}
-    \item \textbf{Queries with materialized views:}
+    \item \textbf{System Type}: 64-bit operating system, x64-based processor.
+    \item \textbf{Processor}: 12th Gen Intel(R) Core(TM) i7-1255U, 1.70 GHz.
+    \item \textbf{RAM}: 32 GB.
 \end{itemize}
+After executing each query several times, both with and without materialized views, the \textit{response time}\footnote{Time taken to execute queries} and \textit{CPU usage}\footnote{Percentage of CPU utilization during query execution and refresh processes.} were noted in the "Messages" tab in SSMS. The effectiveness of the materialized views was also evaluated using a comparison table and the percentage difference formula.
 
-After running each query with and without materialized views, record the elapsed time in the "Messages" tab in SSMS. The effectiveness of the materialized views was assessed using the Percentage Difference formula.
+\begin{itemize}
+\item\textbf{Differences between optimization methods:} The \hyperref[comparison_table]{table~\ref*{comparison_table}} presents a performance comparison of query execution times using three different approaches: \textit{Direct SELECT Aggregation}, \textit{Indexed View }, and \textit{Materialized View}. The results show that the MV approach consistently outperforms the other methods, with an average execution time of \textbf{5 ms}, compared to \textbf{14.8 ms} for indexed View query and \textbf{66.6 ms} for direct \textit{SELECT} aggregation. This demonstrates that materialized views significantly reduce query execution times, providing a \textbf{92.5\%} improvement over direct aggregation and a \textbf{66.2\%} improvement over indexed views. The consistent performance across multiple runs highlights the reliability and efficiency of materialized views in optimizing database queries.\vspace{.4cm}
+ 
+ \input{Table/Response_time_comparion}
 
+ \item\textbf{Analysis of Percentage Differences in Query Performance:}
+ 
 \input{Math/Differences}
 
 \begin{comment}\[
@@ -105,15 +118,7 @@ After running each query with and without materialized views, record the elapsed
 
 The output indicates an 80.85\% improvement in performance. Here, \( W = 2.35 \) represents the initial execution time (without optimization), and \( M = 0.45 \) represents the improved execution time (with optimization). This significant reduction in execution time demonstrates the effectiveness of the optimization technique, as it reduces the query processing time by approximately 80.85\%, leading to faster and more efficient database operations.
 
-\clearpage
-Table to show the differences :
- 
- \input{Table/Response_time_comparion}
-
- The table presents a performance comparison of query execution times using three different approaches: \textbf{Direct SELECT Aggregation}, \textbf{Indexed View Query}, and \textbf{Materialized View}. The results show that the \textbf{Materialized View} approach consistently outperforms the other methods, with an average execution time of \textbf{5 ms}, compared to \textbf{14.8 ms} for Indexed View Query and \textbf{66.6 ms} for Direct SELECT Aggregation. This demonstrates that materialized views significantly reduce query execution times, providing a \textbf{92.5\% improvement} over direct aggregation and a \textbf{66.2\% improvement} over indexed views. The consistent performance across multiple runs highlights the reliability and efficiency of materialized views in optimizing database queries.
- 
-
-\textbf{Barchart}
+\item \textbf{Bar Chart Comparison:} As shown in the %\hyperref[fig:execution-plan]{barchart}, the execution time demonstrates the optimization achieved by using materialized views. Direct select aggregation is the least efficient as it involves computing aggregation directly from the raw data during query execution, which is resource-intensive and time-consuming. On the other hand, a materialized view is the fastest one. Although the choice of method depends on the trade-off between query speed, storage requirements, and maintenance.
 
 
 
@@ -124,12 +129,53 @@ Table to show the differences :
 \label{fig:execution-plan} % Label for referencing
 \end{figure}
 
-As shown in Figure \ref{fig:execution-plan}, the execution time demonstrates the optimization achieved by using materialized views.
 
-\input{Table/bar_chart}
+\end{itemize}
 
+    \item \textbf{CPU performance analysis:}
 
+The following %\hyperref[fig:cpu_usage]{bar chart}% compares the average CPU usage for query execution \textit{before} and \textit{after} implementing materialized views (MV). The x-axis represents the two scenarios: \textit{Before MV} (without materialized views) and \textit{After MV} (with materialized views). The y-axis represents the average CPU usage in percentage (\%). As shown in the chart, the average CPU usage decreased significantly from \textbf{85\%} (before MV) to \textbf{30\%} (after MV), demonstrating the efficiency of materialized views in reducing CPU load during query execution. This reduction is attributed to the precomputation and storage of query results, which eliminates the need for real-time computation and thus lowers CPU usage.
 
+%\input{Table_chart/cpu_usage}
 
-
-
+\begin{figure}[h!] % Use the figure environment
+\begin{center}
+\begin{tikzpicture}
+    \begin{axis}[
+        ybar, 
+        symbolic x coords={Before MV, After MV}, % Labels for x-axis
+        xtick=data, 
+        ylabel={CPU Usage (\%)}, % Y-axis Label (updated to CPU Usage)
+        xlabel={Query Execution Type}, % X-axis Label
+        nodes near coords, % Shows values above bars
+        bar width=25pt, % Adjusted bar width
+        enlarge x limits=0.5, % Spacing between bars
+        ymin=0, ymax=100, % Y-axis limits
+        area legend, % Enables legend area
+        legend style={
+            at={(0.5,-0.25)}, % Position of the legend (below the chart)
+            anchor=north, % Anchors the legend to the north (top) of the point
+            yshift=-5pt, % Adds a small gap between xlabel and legend
+            font=\small, % Smaller font for legend
+        }, 
+        bar shift=0pt, % Aligns bars properly
+        ymajorgrids=true, % Adds horizontal grid lines
+        grid style={dashed, gray!30}, % Grid line style
+        ytick={0, 20, 40, 60, 80, 100}, % Custom Y-axis ticks
+        xticklabel style={font=\small}, % Smaller font for x-axis labels
+        yticklabel style={font=\small}, % Smaller font for y-axis labels
+        axis on top, % Places axis lines on top of the bars
+    ]
+    \addplot[
+        fill=blue!30, % Bar fill color
+        draw=blue, % Bar border color
+    ] coordinates {(Before MV, 85) (After MV, 30)}; % CPU Usage values
+    \legend{Avg CPU Usage per Query}
+    \end{axis}
+\end{tikzpicture}
+\caption{Comparison of CPU Usage Before and After Implementing Materialized Views}
+\label{fig:cpu_usage}
+\end{center}
+\end{figure}
+\end{enumerate}
+  
