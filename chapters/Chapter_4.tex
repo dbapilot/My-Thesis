@@ -32,24 +32,22 @@ This project uses some software tools and technologies related to database manag
 
 \subsection{Practical Implementation }
  \begin{center}
-     \textbf{.................Test Implementation.
-     Experimental Setup
-     .. Running ...........}
+     \textbf{..... Running ...........}
  \end{center}
 \subsubsection{Database Creation}
 Choosing a database or creating one if not available is the initial step of the implementation. For the demonstration purpose, one database called \texttt{AccessAuditDB} is created. The database was populated with tables and sample data to simulate a real-world environment. Relationships between tables are defined using primary keys and foreign keys to ensure data integrity and enable efficient querying, enabling the testing and optimization of queries using materialized views and the PSO algorithm.
 
-The following SQL query checks if the database \texttt{AccessAuditDB} exists and creates it if it does not:
+The following SQL query checks if the database \texttt{AccessAuditDB} exists and creates it if it does not: \vspace{.4cm}
 
 \input{SQL/Create_database}
 
-\subsubsection{Identify Complex Queries} This is a very important part of identifying the frequent queries that need to be optimized. It refers to the process of analyzing a database workload to pinpoint queries that are resource-intensive, frequently executed, or critical to performance. SQL Server Management Studio or direct SQL query can be used to analyze execution logs and identify the frequently executed and resource-intensive queries. Also identify frequently used sub-queries, aggregation (Queries with GROUP BY, SUM, AVG)s, or frequently joins between tables. For example, the following query to identify long-running queries:
+\subsubsection{Identify Complex Queries} This is a very important part of identifying the frequent queries that need to be optimized. It refers to the process of analyzing a database workload to pinpoint queries that are resource-intensive, frequently executed, or critical to performance. SQL Server Management Studio or direct SQL query can be used to analyze execution logs and identify the frequently executed and resource-intensive queries. Also identify frequently used sub-queries, aggregation (Queries with GROUP BY, SUM, AVG)s, or frequently joins between tables. For example, the following query to identify long-running queries: \vspace{.4cm}
 
 \input{SQL/Query_identify}
 
 The above SQL query retrieves the top 10 most time-consuming queries from SQL Server by analyzing the \(\texttt{sys.dm\_exec\_query\_stats}\) Dynamic Management Views(DMV)\footnote{DMVs are system defined views for database administrators and developers to troubleshoot performance issues, identify missing indexes, analyze query performance, and monitor resource usage efficiently.}. It calculates the total elapsed time in milliseconds, counts the number of executions, and fetches the query text using \(\texttt{sys.dm\_exec\_sql\_text}\). The results are sorted by \(\texttt{total\_elapsed\_time}\) in descending order to highlight the slowest queries for performance tuning and optimization. These queries were then used to create materialized views, which were optimized using the PSO algorithm to improve overall query performance.
 
-\subsubsection{ Materialized views Creation (Indexed Views):} Once the top slow queries are sorted out, MVs(In MSSQL Server Mvs are implemented as Indexed views ) are created for each of these queries to store their precomputed results.\vspace{.4cm}
+\subsubsection{ Materialized views Creation (Indexed Views):}\label{Query_decomposition} Once the top slow queries are sorted out, MVs(In MSSQL Server Mvs are implemented as Indexed views ) are created for each of these queries to store their precomputed results.\vspace{.4cm}
 
   %\input{SQL/Create_MSSQL}
   \input{SQL/Create_Views}
@@ -57,36 +55,37 @@ The above SQL query retrieves the top 10 most time-consuming queries from SQL Se
   
 
 
-\subsubsection{Automation with the PSO algorithm:}
+\subsubsection{Automation with the PSO algorithm:} \label{Cost_evaluation}
  The following Python code illustrates the implementation of the PSO algorithm for multiple values. It evaluates various combinations of these parameters and selects the one that yields the best query response time.\vspace{.4cm}
  
 
 
-\textbf{Code example to selecting the optimal view using PSO algorithm.}
+\textbf{Code example to selecting the optimal view using PSO algorithm.} \vspace{.4cm}
 
-  \input{Python/PSO_Best_Response}\vspace{.4cm}
+  \input{Python/PSO_Best_Response} \vspace{.4cm}
 
- 
 
-\textbf{One more example are given here } \hyperref[test:Test2]{\textcolor{blue}{Test 2}}.
 
-\textbf{Output from PSO automation } 
 
-  \input{Python/Python_output}
-  \input{Python/python_output2}
 
+\textbf{Output from PSO automation }  The PSO algorithm is implemented to solve the optimization problem. Upon execution, the algorithm produced the following output: \vspace{.4cm}
+
+  \input{Python/Python_output} \vspace{.4cm}
+  
+  \input{Python/python_output2} \vspace{.4cm}
 
  For each particle, the PSO algorithm evaluates the cost, updates personal and global best, and updates velocity and position. Finally, it prints the optimal combination of materialized views and the corresponding query response time.
- [0, 1, 0] means the second materialized view is selected for optimal query performance.
+ [0, 1, 0] means the second materialized view is selected for optimal query performance.\vspace{.4cm}
   
 
+\textbf{One more example are given here } \hyperref[test:Test2]{\textcolor{blue}{Test 2}}. \vspace{.4cm}
 
-\subsubsection{Materialized View Management \& Selection Approach}
-\subsubsection{View Maintenance and Refresh Strategies:} Manual or automatic refresh strategies can be set up according to the requirements query to create a scheduled job:
+%\subsubsection{Materialized View Management \& Selection Approach}
+\subsubsection{View Maintenance and Refresh Strategies:}\label{View_maintainance} Manual or automatic refresh strategies can be set up according to the requirements query to create a scheduled job: \vspace{.4cm}
 
 \input{SQL/Refresh_config}
 
-\subsubsection{Performance Testing and Data Analysis} After creating the materialized views, performance metrics were collected using SQL query statistics. Query execution times are recorded using built-in database monitoring tools, such as Dynamic Management Views (DMVs) or with the help of SQL queries like. 
+\subsubsection{Performance Testing and Data Analysis} After creating the materialized views, performance metrics were collected using SQL query statistics. Query execution times and CPU usages are recorded using built-in database monitoring tools, such as Dynamic Management Views (DMVs) or with the help of SQL queries like. 
 
  \input{SQL/Query_statistics}
 
@@ -99,15 +98,16 @@ The tests were performed using \textit{MSSQL} on a system running \textit{Window
     \item \textbf{System Type}: 64-bit operating system, x64-based processor.
     \item \textbf{Processor}: 12th Gen Intel(R) Core(TM) i7-1255U, 1.70 GHz.
     \item \textbf{RAM}: 32 GB.
-\end{itemize}
+\end{itemize}\vspace{.4cm}
 After executing each query several times, both with and without materialized views, the \textit{response time}\footnote{Time taken to execute queries} and \textit{CPU usage}\footnote{Percentage of CPU utilization during query execution and refresh processes.} were noted in the "Messages" tab in SSMS. The effectiveness of the materialized views was also evaluated using a comparison table and the percentage difference formula.
 
 \begin{itemize}
 \item\textbf{Differences between optimization methods:} The \hyperref[comparison_table]{table~\ref*{comparison_table}} presents a performance comparison of query execution times using three different approaches: \textit{Direct SELECT Aggregation}, \textit{Indexed View }, and \textit{Materialized View}. The results show that the MV approach consistently outperforms the other methods, with an average execution time of \textbf{5 ms}, compared to \textbf{14.8 ms} for indexed View query and \textbf{66.6 ms} for direct \textit{SELECT} aggregation. This demonstrates that materialized views significantly reduce query execution times, providing a \textbf{92.5\%} improvement over direct aggregation and a \textbf{66.2\%} improvement over indexed views. The consistent performance across multiple runs highlights the reliability and efficiency of materialized views in optimizing database queries.\vspace{.4cm}
  
- \input{Table/Response_time_comparion}
+ \input{Table/Response_time_comparion}\vspace{.4cm
+ }
 
- \item\textbf{Analysis of Percentage Differences in Query Performance:}
+ \item\textbf{Analysis of percentage differences in query performance:}
  
 \input{Math/Differences}
 
@@ -116,25 +116,44 @@ After executing each query several times, both with and without materialized vie
 \]
 \end{comment}
 
-The output indicates an 80.85\% improvement in performance. Here, \( W = 2.35 \) represents the initial execution time (without optimization), and \( M = 0.45 \) represents the improved execution time (with optimization). This significant reduction in execution time demonstrates the effectiveness of the optimization technique, as it reduces the query processing time by approximately 80.85\%, leading to faster and more efficient database operations.
+The output indicates an 80.85\% improvement in performance. Here, \( W = 2.35 \) represents the initial execution time (without optimization), and \( M = 0.45 \) represents the improved execution time (with optimization). This significant reduction in execution time demonstrates the effectiveness of the optimization technique, as it reduces the query processing time by approximately 80.85\%, leading to faster and more efficient database operations.\vspace{.4cm}
 
-\item \textbf{Bar Chart Comparison:} As shown in the %\hyperref[fig:execution-plan]{barchart}, the execution time demonstrates the optimization achieved by using materialized views. Direct select aggregation is the least efficient as it involves computing aggregation directly from the raw data during query execution, which is resource-intensive and time-consuming. On the other hand, a materialized view is the fastest one. Although the choice of method depends on the trade-off between query speed, storage requirements, and maintenance.
+\item \textbf{Impact of MV on query execution time:} The performance of queries with and without materialized views (MV) is compared in \hyperref[tab:performance]{Table~\ref*{tab:performance}}. The table shows the execution times for three queries without materialized views and with materialized views, along with the percentage difference in performance. As evident from the results, the use of materialized views significantly reduces query execution time, with improvements ranging from **79.34\%** to **83.61\%**.
+
+\begin{table}[h!]
+    \centering
+    \caption{Performance Comparison}
+    \label{tab:performance}
+    \rowcolors{2}{gray!10}{white} % Alternate row colors
+    \begin{tabular}{lccc}
+        \toprule
+        \rowcolor{blue!10} % Header row color
+        \textbf{Query} & \textbf{Without MV (s)} & \textbf{With MV (s)} & \textbf{Difference (\%)} \\
+        \midrule
+        Query 1 & 2.35 & 0.45 & \cellcolor{white!20}80.85 \\
+        Query 2 & 3.78 & 0.62 & \cellcolor{gray!10}83.61 \\
+        Query 3 & 4.21 & 0.87 & \cellcolor{white!20}79.34 \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+%\item \textbf{Bar Chart Comparison:} As shown in the \hyperref[fig:execution-plan]{barchart}, the execution time demonstrates the optimization achieved by using materialized views. Direct select aggregation is the least efficient as it involves computing aggregation directly from the raw data during query execution, which is resource-intensive and time-consuming. On the other hand, a materialized view is the fastest one. Although the choice of method depends on the trade-off between query speed, storage requirements, and maintenance.
 
 
 
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.8\textwidth]{Figure/Bar_chart.png} % Replace with your image file name
-\caption{Comparison of query execution time} % Caption for the screenshot
-\label{fig:execution-plan} % Label for referencing
-\end{figure}
+%\begin{figure}[H]
+%\centering
+%\includegraphics[width=0.8\textwidth]{Figure/Bar_chart.png} % Replace with your image file name
+%\caption{Comparison of query execution time} % Caption for the screenshot
+%\label{fig:execution-plan} % Label for referencing
+%\end{figure}
 
 
-\end{itemize}
+\end{itemize} \vspace{.4cm}
 
     \item \textbf{CPU performance analysis:}
 
-The following %\hyperref[fig:cpu_usage]{bar chart}% compares the average CPU usage for query execution \textit{before} and \textit{after} implementing materialized views (MV). The x-axis represents the two scenarios: \textit{Before MV} (without materialized views) and \textit{After MV} (with materialized views). The y-axis represents the average CPU usage in percentage (\%). As shown in the chart, the average CPU usage decreased significantly from \textbf{85\%} (before MV) to \textbf{30\%} (after MV), demonstrating the efficiency of materialized views in reducing CPU load during query execution. This reduction is attributed to the precomputation and storage of query results, which eliminates the need for real-time computation and thus lowers CPU usage.
+The following \hyperref[fig:cpu_usage]{bar chart} compares the average CPU usage for query execution \textit{before} and \textit{after} implementing materialized views (MV). The x-axis represents the two scenarios: \textit{Before MV} (without materialized views) and \textit{After MV} (with materialized views). The y-axis represents the average CPU usage in percentage (\%). As shown in the chart, the average CPU usage decreased significantly from \textbf{85\%} (before MV) to \textbf{30\%} (after MV), demonstrating the efficiency of materialized views in reducing CPU load during query execution. This reduction is attributed to the precomputation and storage of query results, which eliminates the need for real-time computation and thus lowers CPU usage.
 
 %\input{Table_chart/cpu_usage}
 
@@ -173,7 +192,7 @@ The following %\hyperref[fig:cpu_usage]{bar chart}% compares the average CPU usa
     \legend{Avg CPU Usage per Query}
     \end{axis}
 \end{tikzpicture}
-\caption{Comparison of CPU Usage Before and After Implementing Materialized Views}
+\caption{Comparison of CPU Usage}
 \label{fig:cpu_usage}
 \end{center}
 \end{figure}

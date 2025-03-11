@@ -60,7 +60,7 @@
 \usepackage{scrlayer}
   % Optional for coloring code
 %Enumerations
-%\usepackage{enumerate}
+\usepackage{enumerate}
 \usepackage{placeins}
 \usepackage{enumitem}
 \usepackage{acronym}
@@ -102,11 +102,9 @@
     breaklines=true,
     escapeinside=||,
     numbers=left, % Add line numbers
-    numberstyle=\tiny\color{gray},
-    keywordstyle=\color{blue},
-    commentstyle=\color{green!40!black},
-    stringstyle=\color{red}
-    }
+    linenos, % Enable line numbers
+    numbersep=5pt, % Space between line numbers and code
+}
     
 \usepackage{caption} % For better captions
 \lstdefinestyle{pythonstyle}{
@@ -153,18 +151,18 @@
 \usepackage{listings}
 %-------
 \usepackage[table, dvipsnames]{xcolor}  % Include all the options you need
-%\usepackage{amsthm}
-%\usepackage{float}
+\usepackage{amsthm}
+\usepackage{float}
 %Hyperlinks
 %\theoremstyle{definition}
-\lstset{style=mystyle}
+%\lstset{style=mystyle}
 \usepackage[colorlinks=true, urlcolor=blue, linkcolor=blue, citecolor=blue]{hyperref}
 \usepackage{caption}
 \captionsetup[lstlisting]{labelfont=bf, labelsep=colon}
-
 \usepackage{array}
 \usepackage[table,xcdraw]{xcolor} % For table colors
 \usepackage{booktabs} % For professional table styling
+
 \begin{document}
   \author{Md Nazmul Islam}
  \title{Optimizing Query Performance in a Database System}
