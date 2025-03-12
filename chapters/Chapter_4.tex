@@ -1,4 +1,7 @@
 %\chapter{Implementaion}
+\begin{center}
+    --Running--
+\end{center}
 \section{Implementations}
 This section describes a step-by-step process for effectively deploying materialized views, and PSO algorithm based on the earlier theoretical foundations, to reduce query execution time, minimize computational overhead, and enhance overall performance. The implementation begins with an overview of the tools and technologies utilized in this project, providing essential context before delving into the optimization process.
 
@@ -60,19 +63,210 @@ The above SQL query retrieves the top 10 most time-consuming queries from SQL Se
  
 
 
-\textbf{Code example to selecting the optimal view using PSO algorithm.} \vspace{.4cm}
+
+\section*{\textbf{Code example to selecting the optimal view using PSO algorithm.} \vspace{.4cm}}
+
 
   \input{Python/PSO_Best_Response} \vspace{.4cm}
 
 
 
+The Particle Swarm Optimization (PSO) algorithm is implemented to optimize the selection of materialized views in a database system. The goal is to minimize query execution time and CPU cost by selecting the most beneficial views to materialize. The following sections provide a detailed explanation of each function in the implementation.
+
+% Define block styles
+
+
+
+
+% Define colors
+% Define custom colors
+\definecolor{userColor}{RGB}{173, 216, 230}  % Light blue for User
+\definecolor{mainColor}{RGB}{144, 238, 144}  % Light green for Main Function
+\definecolor{dbColor}{RGB}{255, 182, 193}    % Light pink for SQL Server
+\definecolor{psoColor}{RGB}{255, 223, 186}   % Light orange for PSO Algorithm
+
+
+\begin{center}
+\resizebox{0.95\textwidth}{!}{ % Ensures it stays within page width
+\begin{sequencediagram}
+
+    % Participants with colors
+    \newinst[1]{User}{\colorbox{userColor}{User}}
+    \newinst[2]{Main}{\colorbox{mainColor}{Main Function}}
+    \newinst[2]{DB}{\colorbox{dbColor}{SQL Server}}
+    \newinst[2]{PSO}{\colorbox{psoColor}{PSO Algorithm}}
+
+    % Sequence Flow
+    \begin{call}{User}{Run Script}{Main}{}
+        
+        % Step 1: Create Connection
+        \begin{call}{Main}{Create Connection}{DB}{}
+            \mess[0]{DB}{Connection Established}{Main}[above, near end, text=blue]
+        \end{call}
+
+        % Step 2: Initialize Queries
+        \begin{call}{Main}{Initialize Queries}{DB}{}
+            \mess[0]{DB}{Queries Ready}{Main}[above, near end, text=blue]
+        \end{call}
+
+        % Step 3: Start PSO Optimization
+        \begin{call}{Main}{Start PSO Optimization}{PSO}{}
+            
+            % Step 3.1: Evaluate Cost Function
+            \begin{call}{PSO}{Evaluate Cost Function}{DB}{}
+                \mess[0]{DB}{Query Execution Time}{PSO}[above, near end, text=blue]
+                \mess[0]{DB}{CPU Cost}{PSO}[above, near end, text=blue]
+            \end{call}
+
+            % Step 3.2: Update Best Positions
+            \begin{call}{PSO}{Update Best Positions}{PSO}{}
+                \mess[0]{PSO}{Updated Global Best}{PSO}[above, near end, text=blue]
+            \end{call}
+
+            % Step 3.3: Optimization Complete
+            \mess[0]{PSO}{Optimization Complete}{Main}[above, near end, text=blue]
+        \end{call}
+
+        % Step 4: Select Optimal Views
+        \begin{call}{Main}{Select Optimal Views}{DB}{}
+            \mess[0]{DB}{Optimal Views Selected}{Main}[above, near end, text=blue]
+        \end{call}
+
+        % Step 5: Close Connection
+        \begin{call}{Main}{Close Connection}{DB}{}
+            \mess[0]{DB}{Connection Closed}{Main}[above, near end, text=blue]
+        \end{call}
+
+        % Step 6: Output Results
+        \mess[0]{Main}{Output Results}{User}[above, near end, text=blue]
+    \end{call}
+
+    % Notes and Annotations
+    \node[below=1.5cm of User, align=center, text width=5cm] (note1) {
+        \textbf{Note 1}: The User initiates the script.\\
+        \textbf{Note 2}: The Main Function manages the workflow.
+    };
+
+    \node[below=1.5cm of DB, align=center, text width=5cm] (note2) {
+        \textbf{Note 3}: SQL Server handles database operations.\\
+        \textbf{Note 4}: PSO Algorithm optimizes view selection.
+    };
+
+\end{sequencediagram}
+} % End of resizebox
+\end{center}
+
+\definecolor{userColor}{RGB}{173, 216, 230}  % Light blue
+\definecolor{mainColor}{RGB}{144, 238, 144}  % Light green
+\definecolor{dbColor}{RGB}{255, 182, 193}    % Light pink
+\definecolor{psoColor}{RGB}{255, 223, 186}   % Light orange
+
+
+
+\begin{center}
+\resizebox{0.85\textwidth}{!}{ % ✅ Ensures the diagram fits within the page
+\begin{sequencediagram}
+
+    % Participants with modern formatting
+    \newinst[1]{User}{\fcolorbox{black}{userColor}{User}}
+    \newinst[2]{Main}{\fcolorbox{black}{mainColor}{Main Function}}
+    \newinst[2]{DB}{\fcolorbox{black}{dbColor}{SQL Server}}
+    \newinst[2]{PSO}{\fcolorbox{black}{psoColor}{PSO Algorithm}}
+
+    % Execution Flow
+    \begin{call}{User}{Run Script}{Main}{}
+        
+        \begin{call}{Main}{Create Connection}{DB}{}
+            \mess[0]{DB}{Connection Established}{Main}[above, near start]
+        \end{call}
+
+        \begin{call}{Main}{Initialize Queries}{DB}{}
+            \mess[0]{DB}{Queries Ready}{Main}[above, near start]
+        \end{call}
+
+        \begin{call}{Main}{Start PSO Optimization}{PSO}{}
+            
+            \begin{call}{PSO}{Evaluate Cost Function}{DB}{}
+                \mess[0]{DB}{Query Execution Time}{PSO}[above, near start]
+                \mess[0]{DB}{CPU Cost}{PSO}[above, near start]
+            \end{call}
+
+            \begin{call}{PSO}{Update Best Positions}{PSO}{}
+                \mess[2]{PSO}{Updated Global Best}{PSO}[below, near start]
+            \end{call}
+
+            \mess[0]{PSO}{Optimization Complete}{Main}[above, near start]
+        \end{call}
+
+        \begin{call}{Main}{Select Optimal Views}{DB}{}
+            \mess[0]{DB}{Optimal Views Selected}{Main}[above, near start]
+        \end{call}
+
+        \begin{call}{Main}{Close Connection}{DB}{}
+            \mess[0]{DB}{Connection Closed}{Main}[above, near start]
+        \end{call}
+
+        \mess[0]{Main}{Output Results}{User}[above, near start]
+    \end{call}
+
+\end{sequencediagram}
+} % ✅ End of resizebox
+\end{center}
+
+
+\begin{sequencediagram}
+    \newthread{main}{Main Function}
+    \newinst{pso}{PSO Function}
+    \newinst{cost}{Cost Function}
+    \newinst{db}{Database}
+
+    \begin{call}{main}{Initialize PSO}{pso}{}
+    \end{call}
+
+    \begin{call}{pso}{Evaluate Cost}{cost}{}
+        \begin{call}{cost}{Execute Query}{db}{Query Results}
+        \end{call}
+    \end{call}
+
+    \begin{call}{pso}{Update Particles}{pso}{}
+    \end{call}
+
+    \begin{call}{pso}{Check Stopping Condition}{pso}{}
+    \end{call}
+
+    \begin{call}{pso}{Return Results}{main}{Optimal Views}
+    \end{call}
+\end{sequencediagram}
+
+
+\section*{Function Explanations}
+
+\subsection*{create\_connection}
+The \texttt{create\_connection} function establishes a connection to the SQL Server database using the provided connection parameters. It uses the \texttt{pyodbc} library to connect to the database and logs the connection status. If the connection fails, an error message is logged, and the function returns \texttt{None}. This function ensures that the database connection is properly initialized before any queries are executed.
+
+\subsection*{cost\_function}
+The \texttt{cost\_function} evaluates the cost of selecting a specific set of materialized views. It calculates the total query execution time and CPU cost for the selected views. The CPU cost is estimated based on the execution time and the complexity of the queries, measured by the number of joins. If no views are selected, the function returns a high cost to discourage empty selections. The total cost is computed as a weighted sum of execution time and CPU cost, prioritizing execution time with a weight of 0.7 and CPU cost with a weight of 0.3.
+
+\subsection*{pso}
+The \texttt{pso} function implements the Particle Swarm Optimization algorithm with simulated annealing. It initializes a swarm of particles, each representing a potential solution (a set of materialized views). The algorithm iteratively updates the particles' positions and velocities based on their personal best positions and the global best position. Simulated annealing is used to escape local optima by allowing occasional acceptance of worse solutions. The function returns the global best position, representing the optimal set of materialized views, and the corresponding cost.
+
+\subsection*{main}
+The \texttt{main} function orchestrates the execution of the PSO algorithm. It establishes a database connection, initializes the list of queries, and sets the PSO parameters (number of particles and iterations). The \texttt{pso} function is called to find the optimal materialized views, and the results are logged. Finally, the database connection is closed. This function serves as the entry point for the program and ensures that all components are executed in the correct order.
+
 
 
 \textbf{Output from PSO automation }  The PSO algorithm is implemented to solve the optimization problem. Upon execution, the algorithm produced the following output: \vspace{.4cm}
 
+
+
   \input{Python/Python_output} \vspace{.4cm}
   
+
   \input{Python/python_output2} \vspace{.4cm}
+
+
+
+
 
  For each particle, the PSO algorithm evaluates the cost, updates personal and global best, and updates velocity and position. Finally, it prints the optimal combination of materialized views and the corresponding query response time.
  [0, 1, 0] means the second materialized view is selected for optimal query performance.\vspace{.4cm}
@@ -153,7 +347,7 @@ The output indicates an 80.85\% improvement in performance. Here, \( W = 2.35 \)
 
     \item \textbf{CPU performance analysis:}
 
-The following \hyperref[fig:cpu_usage]{bar chart} compares the average CPU usage for query execution \textit{before} and \textit{after} implementing materialized views (MV). The x-axis represents the two scenarios: \textit{Before MV} (without materialized views) and \textit{After MV} (with materialized views). The y-axis represents the average CPU usage in percentage (\%). As shown in the chart, the average CPU usage decreased significantly from \textbf{85\%} (before MV) to \textbf{30\%} (after MV), demonstrating the efficiency of materialized views in reducing CPU load during query execution. This reduction is attributed to the precomputation and storage of query results, which eliminates the need for real-time computation and thus lowers CPU usage.
+The following \hyperref[fig:cpu_usage]{bar chart} illustrates the average CPU usage for query execution before and after materialized views (MVs) are implemented. The x-axis is used to represent two conditions: \textit{Before} MVs (without materialized views) and \textit{After} MVs (with materialized views). The y-axis is used to represent the average CPU usage as a percentage. As it is evident from the graph, the CPU utilization average went down significantly from \textbf{85\%} (before MVs) to \textbf{30\%} (after MVs), showcasing the effectiveness of materialized views in reducing CPU burden in query processing. The reduction can be accounted for due to precomputation and caching of query output, which reduces real-time computation and subsequently CPU consumption.
 
 %\input{Table_chart/cpu_usage}
 
@@ -186,10 +380,17 @@ The following \hyperref[fig:cpu_usage]{bar chart} compares the average CPU usage
         axis on top, % Places axis lines on top of the bars
     ]
     \addplot[
-        fill=blue!30, % Bar fill color
-        draw=blue, % Bar border color
-    ] coordinates {(Before MV, 85) (After MV, 30)}; % CPU Usage values
-    \legend{Avg CPU Usage per Query}
+        fill=red!30, % First bar fill color (red)
+        draw=red, % First bar border color (red)
+    ] coordinates {(Before MV, 85)(After MV, 30)}; % First bar value (Before MV)
+   % \addlegendentry{Before MV} % Legend entry for the first bar
+
+    \addplot[
+        fill=green!30, % Second bar fill color (green)
+        draw=green, % Second bar border color (green)
+    ] coordinates {(After MV, 30)(After MV, 30)}; % Second bar value (After MV)
+    %\addlegendentry{After MV} % Legend entry for the second bar
+
     \end{axis}
 \end{tikzpicture}
 \caption{Comparison of CPU Usage}
@@ -197,4 +398,83 @@ The following \hyperref[fig:cpu_usage]{bar chart} compares the average CPU usage
 \end{center}
 \end{figure}
 \end{enumerate}
-  
+
+
+ \textbf{Data will be updated once the final implementation is done}.
+
+% Create a data file for the heatmap
+\begin{filecontents*}{heatmap_data.csv}
+Query Type, Before MV, After MV
+Query 1, 85, 30
+Query 2, 75, 25
+Query 3, 90, 35
+Query 4, 80, 20
+Query 5, 70, 15
+\end{filecontents*}
+
+\begin{filecontents*}{heatmap_data.csv}
+Query Type, Before MV, After MV
+1, 85, 30
+2, 75, 25
+3, 90, 35
+4, 80, 20
+5, 70, 15
+\end{filecontents*}
+
+% Create a data file for the heatmap
+\begin{filecontents*}{heatmap_data.csv}
+Query Type, Before MV, After MV
+1, 85, 30
+2, 75, 25
+3, 90, 35
+4, 80, 20
+5, 70, 15
+\end{filecontents*}
+
+% Create a data file for the heatmap
+\begin{filecontents*}{heatmap_data.csv}
+Query Type, Before MV, After MV
+1, 85, 30
+2, 75, 25
+3, 90, 35
+4, 80, 20
+5, 70, 15
+\end{filecontents*}
+
+\begin{figure}[h!]
+\centering
+\begin{tikzpicture}
+    \begin{axis}[
+        colormap={cool}{rgb255=(0,0,255) rgb255=(0,255,255) rgb255=(0,255,0) rgb255=(255,255,0) rgb255=(255,0,0)}, % Custom colormap (blue to red)
+        colorbar, % Adds a colorbar
+        colorbar style={
+            ylabel={CPU Usage (\%)}, % Label for the colorbar
+            ytick={0, 20, 40, 60, 80, 100}, % Ticks for the colorbar
+        },
+        xlabel={Condition}, % X-axis label
+        ylabel={Query Type}, % Y-axis label
+        xtick={1, 2}, % X-axis ticks
+        xticklabels={Before MV, After MV}, % X-axis labels
+        ytick={1, 2, 3, 4, 5}, % Y-axis ticks
+        yticklabels={Query 1, Query 2, Query 3, Query 4, Query 5}, % Y-axis labels
+        enlargelimits=false, % Prevents axis limits from expanding
+        axis on top, % Places axis lines on top of the heatmap
+        point meta min=0, point meta max=100, % Sets the range for the colormap
+    ]
+        \addplot[
+            matrix plot*, % Creates a heatmap
+            mesh/cols=2, % Number of columns in the data
+            mesh/rows=5, % Number of rows in the data
+            shader=flat corner, % Flat shading for the heatmap
+        ] table[
+            x=Condition, % X-axis data
+            y=Query Type, % Y-axis data
+            meta=CPU Usage, % Data for the colormap
+            col sep=comma, % Separator in the data file
+        ] {heatmap_data.csv};
+    \end{axis}
+\end{tikzpicture}
+\caption{Heatmap of CPU Usage Before and After Materialized Views}
+\label{fig:heatmap}
+\end{figure}
+

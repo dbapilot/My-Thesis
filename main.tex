@@ -8,6 +8,29 @@
 \usepackage{microtype}
 \bibliographystyle{achemso}
 \usepackage[utf8]{inputenc} % Ensures the document can use Unicode characters
+%Flowchart
+\usepackage{pgf-umlsd}  % ✅ Package for sequence diagrams
+\usepackage{graphicx}   % ✅ Allows resizing to fit page
+\usepackage{pgf-umlsd} % ✅ Required for UML sequence diagrams
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric, arrows}
+\tikzstyle{startstop} = [rectangle, rounded corners, minimum width=3cm, minimum height=1cm,text centered, draw=black, fill=red!30]
+\tikzstyle{process} = [rectangle, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=blue!20]
+\tikzstyle{decision} = [diamond, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=yellow!30]
+\tikzstyle{arrow} = [thick,->,>=stealth]
+
+\tikzstyle{startstop} = [rectangle, rounded corners, minimum width=3cm, minimum height=1cm,text centered, draw=black, fill=red!30]
+\tikzstyle{process} = [rectangle, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=orange!30]
+\tikzstyle{decision} = [diamond, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=yellow!30]
+\tikzstyle{arrow} = [thick,->,>=stealth]
+
+%End Flow chart
+%heatmap
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18} % Ensure compatibility with the latest version
+\usepackage{filecontents} % For creating data files directly in the document
+%End Heatmap
+
 %index
 \usepackage{imakeidx}
 \usepackage{etoolbox}
@@ -69,7 +92,7 @@
 \usepackage{amsmath}
 \usepackage{amsthm}
 \theoremstyle{definition}
-\newcommand{\definition}[1]{\vspace{20pt}\noindent\textit{#1}\vspace{20pt}}
+\newcommand{\definition[1]{\vspace{20pt}\noindent\textit{#1}\vspace{20pt}}
 
 
 %\newtheorem{definition}{Definitions}
