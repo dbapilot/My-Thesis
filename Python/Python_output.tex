@@ -2,69 +2,69 @@
 
 \begin{lstlisting}[style=pythonstyle, caption={Output from python code }, label={lst:pso_query_optimization}]]
 
-Connection established!
-Particle position: [0, 0, 1], Cost: 0.1032
-Particle position: [1, 1, 0], Cost: 1.0327
-Particle position: [1, 1, 0], Cost: 1.0589
-Particle position: [1, 0, 0], Cost: 0.9493
-Particle position: [0, 0, 1], Cost: 0.0971
-Iteration 1: Best Cost = 0.0971
-Particle position: [0, 0, 0], Cost: inf
-Particle position: [0, 1, 0], Cost: 0.0557
-Particle position: [0, 1, 1], Cost: 0.1444
-Particle position: [1, 0, 0], Cost: 0.9553
-Particle position: [0, 0, 0], Cost: inf
-Iteration 2: Best Cost = 0.0557
-Particle position: [0, 0, 0], Cost: inf
-Particle position: [0, 0, 0], Cost: inf
-Particle position: [0, 1, 1], Cost: 0.1594
-Particle position: [1, 0, 0], Cost: 0.9662
-Particle position: [0, 1, 1], Cost: 0.1810
-Iteration 3: Best Cost = 0.0557
-Particle position: [0, 1, 1], Cost: 0.1647
-Particle position: [0, 1, 0], Cost: 0.0798
-Particle position: [1, 0, 0], Cost: 1.0208
-Particle position: [1, 1, 0], Cost: 1.0034
-Particle position: [0, 0, 0], Cost: inf
-Iteration 4: Best Cost = 0.0557
-Particle position: [0, 1, 0], Cost: 0.0561
-Particle position: [0, 1, 0], Cost: 0.0559
-Particle position: [1, 0, 0], Cost: 0.9442
-Particle position: [1, 0, 0], Cost: 0.9674
-Particle position: [0, 1, 0], Cost: 0.0596
-Iteration 5: Best Cost = 0.0557
-Particle position: [0, 0, 0], Cost: inf
-Particle position: [0, 1, 0], Cost: 0.0570
-Particle position: [1, 1, 1], Cost: 1.5417
-Particle position: [1, 1, 0], Cost: 1.3712
-Particle position: [1, 1, 0], Cost: 1.2235
-Iteration 6: Best Cost = 0.0557
-Particle position: [0, 1, 0], Cost: 0.0608
-Particle position: [0, 1, 0], Cost: 0.0683
-Particle position: [1, 1, 1], Cost: 1.0954
-Particle position: [1, 0, 0], Cost: 0.9783
-Particle position: [1, 0, 0], Cost: 0.9449
-Iteration 7: Best Cost = 0.0557
-Particle position: [0, 1, 0], Cost: 0.0551
-Particle position: [0, 0, 0], Cost: inf
-Particle position: [1, 0, 1], Cost: 1.4421
-Particle position: [1, 0, 0], Cost: 1.6453
-Particle position: [1, 1, 0], Cost: 1.6970
-Iteration 8: Best Cost = 0.0551
-Particle position: [0, 0, 0], Cost: inf
-Particle position: [0, 1, 0], Cost: 0.0563
-Particle position: [1, 1, 1], Cost: 1.3086
-Particle position: [1, 1, 0], Cost: 1.0292
-Particle position: [1, 1, 0], Cost: 1.3692
-Iteration 9: Best Cost = 0.0551
-Particle position: [0, 1, 0], Cost: 0.0733
-Particle position: [0, 1, 0], Cost: 0.0958
-Particle position: [1, 1, 1], Cost: 1.1579
-Particle position: [1, 1, 0], Cost: 1.5429
-Particle position: [1, 1, 0], Cost: 1.1164
-Iteration 10: Best Cost = 0.0551
-Optimal Materialized Views: [0, 1, 0]
-Connection closed.
+2025-03-17 16:58:11,620 - INFO - Connection established!
+2025-03-17 16:58:11,620 - INFO - Connected to database: AccessAuditDB on server: T915-TEST-DB
+2025-03-17 16:58:11,620 - INFO - Starting PSO algorithm...
+2025-03-17 16:58:11,620 - INFO - Number of particles: 5
+2025-03-17 16:58:11,620 - INFO - Number of iterations: 5
+2025-03-17 16:58:11,620 - INFO - Iteration 1 started.
+2025-03-17 16:58:11,621 - INFO - Executing query: SELECT * FROM TotalQuantityByProduct
+2025-03-17 16:58:11,741 - INFO - Executing query: SELECT * FROM MonthlySales
+2025-03-17 16:58:11,887 - INFO - Executing query: SELECT * FROM MonthlySales
+2025-03-17 16:58:12,016 - INFO - Executing query: SELECT * FROM TotalSalesByCustomer
+2025-03-17 16:58:16,463 - INFO - Executing query: SELECT * FROM TotalQuantityByProduct
+2025-03-17 16:58:17,029 - INFO - Executing query: SELECT * FROM MonthlySales
+2025-03-17 16:58:17,531 - INFO - Executing query: SELECT * FROM TotalSalesByCustomer
+2025-03-17 16:58:22,793 - INFO - Executing query: SELECT * FROM TotalQuantityByProduct
+2025-03-17 16:58:22,916 - INFO - Executing query: SELECT * FROM MonthlySales
+2025-03-17 16:58:23,083 - INFO - Executing query: SELECT * FROM TotalSalesByCustomer
+2025-03-17 16:58:25,112 - INFO - Executing query: SELECT * FROM TotalQuantityByProduct
+2025-03-17 16:58:25,197 - INFO - Executing query: SELECT * FROM MonthlySales
+2025-03-17 16:58:25,306 - INFO - Iteration 1: Best Cost = 0.1292, Execution Time = 0.1292, CPU Cost = 0.1292
+2025-03-17 16:58:25,306 - INFO - Iteration 2 started.
+2025-03-17 16:58:25,306 - INFO - Executing query: SELECT * FROM MonthlySales
+2025-03-17 16:58:25,406 - INFO - Executing query: SELECT * FROM TotalQuantityByProduct
+2025-03-17 16:58:25,487 - INFO - Executing query: SELECT * FROM TotalSalesByCustomer
+2025-03-17 16:58:27,227 - INFO - Executing query: SELECT * FROM MonthlySales
+2025-03-17 16:58:27,378 - INFO - Iteration 2: Best Cost = 0.0813, Execution Time = 0.0813, CPU Cost = 0.0813
+2025-03-17 16:58:27,378 - INFO - Iteration 3 started.
+2025-03-17 16:58:27,378 - INFO - Executing query: SELECT * FROM TotalQuantityByProduct
+2025-03-17 16:58:27,494 - INFO - Executing query: SELECT * FROM MonthlySales
+2025-03-17 16:58:27,618 - INFO - Executing query: SELECT * FROM TotalSalesByCustomer
+2025-03-17 16:58:28,910 - INFO - Executing query: SELECT * FROM MonthlySales
+2025-03-17 16:58:28,998 - INFO - Executing query: SELECT * FROM TotalSalesByCustomer
+2025-03-17 16:58:29,985 - INFO - Executing query: SELECT * FROM MonthlySales
+2025-03-17 16:58:30,080 - INFO - Executing query: SELECT * FROM TotalSalesByCustomer
+2025-03-17 16:58:32,420 - INFO - Executing query: SELECT * FROM TotalQuantityByProduct
+2025-03-17 16:58:32,484 - INFO - Executing query: SELECT * FROM TotalSalesByCustomer
+2025-03-17 16:58:35,111 - INFO - Executing query: SELECT * FROM TotalQuantityByProduct
+2025-03-17 16:58:35,467 - INFO - Iteration 3: Best Cost = 0.0813, Execution Time = 0.0813, CPU Cost = 0.0813
+2025-03-17 16:58:35,467 - INFO - Iteration 4 started.
+2025-03-17 16:58:35,467 - INFO - Executing query: SELECT * FROM TotalSalesByCustomer
+2025-03-17 16:58:40,846 - INFO - Executing query: SELECT * FROM TotalQuantityByProduct
+2025-03-17 16:58:41,379 - INFO - Executing query: SELECT * FROM TotalSalesByCustomer
+2025-03-17 16:58:43,526 - INFO - Executing query: SELECT * FROM TotalQuantityByProduct
+2025-03-17 16:58:43,596 - INFO - Executing query: SELECT * FROM TotalSalesByCustomer
+2025-03-17 16:58:45,083 - INFO - Executing query: SELECT * FROM TotalQuantityByProduct
+2025-03-17 16:58:45,205 - INFO - Executing query: SELECT * FROM MonthlySales
+2025-03-17 16:58:45,337 - INFO - Iteration 4: Best Cost = 0.0705, Execution Time = 0.0705, CPU Cost = 0.0705
+2025-03-17 16:58:45,337 - INFO - Iteration 5 started.
+2025-03-17 16:58:45,337 - INFO - Executing query: SELECT * FROM MonthlySales
+2025-03-17 16:58:45,439 - INFO - Executing query: SELECT * FROM TotalSalesByCustomer
+2025-03-17 16:58:46,835 - INFO - Executing query: SELECT * FROM TotalQuantityByProduct
+2025-03-17 16:58:46,899 - INFO - Executing query: SELECT * FROM TotalQuantityByProduct
+2025-03-17 16:58:46,958 - INFO - Executing query: SELECT * FROM MonthlySales
+2025-03-17 16:58:47,045 - INFO - Executing query: SELECT * FROM TotalSalesByCustomer
+2025-03-17 16:58:48,672 - INFO - Executing query: SELECT * FROM TotalQuantityByProduct
+2025-03-17 16:58:48,739 - INFO - Executing query: SELECT * FROM TotalQuantityByProduct
+2025-03-17 16:58:48,811 - INFO - Iteration 5: Best Cost = 0.0705, Execution Time = 0.0705, CPU Cost = 0.0705
+2025-03-17 16:58:48,812 - INFO - Optimal Materialized Views:
+2025-03-17 16:58:48,812 - INFO - - SELECT * FROM TotalQuantityByProduct
+2025-03-17 16:58:48,812 - INFO - Best Execution Time: 0.0705
+2025-03-17 16:58:48,812 - INFO - Best CPU Cost: 0.0705
+2025-03-17 16:58:48,916 - INFO - Connection closed.
+
+[Done] exited with code=0 in 38.476 seconds
 
 
 \end{lstlisting}

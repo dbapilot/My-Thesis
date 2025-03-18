@@ -1,95 +1,237 @@
-%\begin{lstlisting}[style=python, caption={Python Code Example}]
-\begin{minted}[frame=lines, linenos, bgcolor=gray!10, fontsize=\small, breaklines=true,]{python}
-import numpy as np
-import random
 
-# Define parameters
-NUM_PARTICLES = 30
-NUM_ITERATIONS = 50
-W = 0.5  # Inertia weight
-C1 = 1.5  # Cognitive coefficient
-C2 = 1.5  # Social coefficient
-STORAGE_BUDGET = 100  # Maximum storage allowed in MB
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
 
-# Sample input data: candidate materialized views
-views = [
-    {"id": 1, "response_time_savings": 50, "storage_cost": 20, "maintenance_cost": 10},
-    {"id": 2, "response_time_savings": 70, "storage_cost": 30, "maintenance_cost": 20},
-    {"id": 3, "response_time_savings": 40, "storage_cost": 15, "maintenance_cost": 5},
-    {"id": 4, "response_time_savings": 60, "storage_cost": 25, "maintenance_cost": 15},
-    # Add more views as needed
-]
-NUM_VIEWS = len(views)
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
 
-# Initialize particles
-particles = []
-velocities = []
-pbest_positions = []
-pbest_scores = []
-gbest_position = None
-gbest_score = float('-inf')
+\lstset{style=mystyle}
 
-# Initialize particles randomly
-for _ in range(NUM_PARTICLES):
-    particle = np.random.randint(0, 2, size=NUM_VIEWS)  # Binary vector (0 or 1)
-    velocity = np.random.uniform(-1, 1, size=NUM_VIEWS)
-    particles.append(particle)
-    velocities.append(velocity)
-    pbest_positions.append(particle)
-    pbest_scores.append(float('-inf'))
 
-# Define fitness function
-def fitness_function(particle):
-    total_savings = 0
-    total_storage_cost = 0
-    total_maintenance_cost = 0
 
-    for i, selected in enumerate(particle):
-        if selected == 1:
-            total_savings += views[i]["response_time_savings"]
-            total_storage_cost += views[i]["storage_cost"]
-            total_maintenance_cost += views[i]["maintenance_cost"]
+\subsection*{Python Code Explanation}
 
-    # Penalize solutions exceeding storage budget
-    if total_storage_cost > STORAGE_BUDGET:
-        return float('-inf')  # Invalid solution
+\subsubsection*{1. Importing Libraries}
+The following Python libraries are imported for the script:
+\begin{lstlisting}[language=Python]
+import pyodbc  # A Python library for interacting with ODBC databases like MSSQL.
+import random  # Used to generate random numbers for particle initialization.
+import time    # Used to measure execution time.
+import numpy as np  # Used for numerical computations.
+import logging  # Used for logging information, warnings, and errors.
+\end{lstlisting}\vspace{.4cm}
+The \texttt{pyodbc} library is used to connect to and interact with the SQL Server database. The \texttt{random} library is used to generate random numbers for initializing particle positions and velocities in the Particle Swarm Optimization (PSO) algorithm. \texttt{Time} library is used to determine the execution time of queries. The \texttt{numpy} library is used for numerical calculations, such as computing the sigmoid function. The \texttt{logging} library is used to log messages, warnings, and errors during the execution of the script.
 
-    return total_savings - (total_storage_cost + total_maintenance_cost)
+\subsubsection*{2. Configuring Logging}
+The logging system is configured to display messages with a timestamp, log level, and message:
+\begin{lstlisting}[language=Python]
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+\end{lstlisting}\vspace{.4cm}
 
-# PSO loop
-for iteration in range(NUM_ITERATIONS):
-    for i, particle in enumerate(particles):
-        # Calculate fitness
-        fitness = fitness_function(particle)
+This configuration ensures that all log messages are displayed with a timestamp, log level (e.g., INFO, ERROR), and the message itself. This helps in tracking the execution flow and debugging issues.
 
-        # Update personal best
-        if fitness > pbest_scores[i]:
-            pbest_scores[i] = fitness
-            pbest_positions[i] = particle
+\subsubsection*{3. Connection Parameters}
+The connection parameters for the SQL Server database are defined:
+\begin{lstlisting}[language=Python]
+server = 'T915-TEST-DB'  # Server name
+database = 'AccessAuditDB'  # Database name
+driver_name = 'ODBC Driver 17 for SQL Server'  # ODBC driver
+\end{lstlisting}\vspace{.4cm}
 
-        # Update global best
-        if fitness > gbest_score:
-            gbest_score = fitness
-            gbest_position = particle
+The \texttt{server} variable holds the name of the server, \texttt{database} specifies the database to connect to, and \texttt{driver\_name} specifies the ODBC driver to use for the connection. These parameters are used to establish a connection to the database.
 
-    # Update velocities and positions
-    for i, particle in enumerate(particles):
-        r1 = np.random.uniform(0, 1, size=NUM_VIEWS)
-        r2 = np.random.uniform(0, 1, size=NUM_VIEWS)
-        velocities[i] = (
-            W * velocities[i]
-            + C1 * r1 * (pbest_positions[i] - particle)
-            + C2 * r2 * (gbest_position - particle)
+\subsubsection*{4. Establishing a Database Connection}
+The \texttt{create\_connection} function establishes a connection to the database:
+\begin{lstlisting}[language=Python]
+def create_connection():
+    try:
+        conn = pyodbc.connect(
+            f'DRIVER={{{driver_name}}};'
+            f'SERVER={server};'
+            f'DATABASE={database};'
+            'Trusted_Connection=yes;'  # Windows Authentication
         )
-        # Update positions using sigmoid activation
-        particles[i] = np.where(np.random.uniform(0, 1, size=NUM_VIEWS) < sigmoid(velocities[i]), 1, 0)
+        logging.info("Connection established!")
+        logging.info(f"Connected to database: {database} on server: {server}")
+        return conn
+    except pyodbc.Error as e:
+        logging.error("Error connecting to SQL Server:", exc_info=True)
+        return None
+\end{lstlisting}\vspace{.4cm}
 
-# Sigmoid function for position update
-def sigmoid(x):
-    return 1 / (1 + np.exp(-x))
+This function attempts to establish a connection to the SQL Server database using the \texttt{pyodbc.connect} method. If the connection is successful, it logs a success message and returns the connection object. If an error occurs, it logs the error and returns \texttt{None}.
 
-# Output results
-print("Optimal Materialized Views:", gbest_position)
-print("Maximum Fitness:", gbest_score)
-\end{minted}
-%\end{listing}
+\subsubsection*{5. Cost Function}
+The \texttt{cost\_function} calculates the total cost of executing queries based on selected materialized views:
+\begin{lstlisting}[language=Python]
+def cost_function(selected_views, queries, conn):
+    total_time = 0
+    cpu_cost = 0
+
+    if not any(selected_views):  # No views selected
+        return float('inf'), 0, 0  # High cost for no selection
+
+    cursor = conn.cursor()  # Create a new cursor
+    for i, view in enumerate(selected_views):
+        if view == 1:  # If view is selected
+            start_time = time.time()
+            try:
+                logging.info(f"Executing query: {queries[i]}")
+                cursor.execute(queries[i])
+                cursor.fetchall()
+                execution_time = time.time() - start_time
+                total_time += execution_time
+
+                # Estimate CPU cost
+                query_complexity = queries[i].upper().count('JOIN') + 1
+                cpu_cost += execution_time * query_complexity
+
+            except pyodbc.Error as e:
+                logging.error(f"Error executing query {i}: {queries[i]}", exc_info=True)
+                return float('inf'), 0, 0  # High cost for query errors
+
+    # Weighted cost function
+    alpha, beta = 0.7, 0.3  # Weights for execution time and CPU cost
+    total_cost = alpha * total_time + beta * cpu_cost
+    return total_cost, total_time, cpu_cost
+\end{lstlisting}\vspace{.4cm}
+
+The \texttt{cost\_function} calculates the total cost of executing a set of queries based on the selected materialized views. It measures the execution time and estimates the CPU cost for each query. If no views are selected, it returns a high cost (\texttt{float('inf')}). The total cost is a weighted sum of execution time and CPU cost, where execution time contributes 70\% and CPU cost contributes 30\%.
+
+\subsubsection*{6. Advanced PSO Algorithm}
+The \texttt{pso} function implements the Particle Swarm Optimization (PSO) algorithm:
+\begin{lstlisting}[language=Python]
+def pso(num_particles, num_iterations, num_queries, queries, conn):
+    # PSO parameters
+    W_max = 0.9  # Maximum inertia weight
+    W_min = 0.4  # Minimum inertia weight
+    c1, c2 = 1.5, 1.5  # Cognitive and social factors
+    v_max = 6.0  # Maximum velocity for clamping
+
+    # Initialize particles
+    particles = [{'position': [random.choice([0, 1]) for _ in range(num_queries)],
+                 'velocity': [random.uniform(-1, 1) for _ in range(num_queries)],
+                 'best_position': None,
+                 'best_cost': float('inf')} for _ in range(num_particles)]
+
+    global_best_position = None
+    global_best_cost = float('inf')
+    global_best_time = 0
+    global_best_cpu_cost = 0
+
+    # PSO main loop
+    for iteration in range(num_iterations):
+        logging.info(f"Iteration {iteration + 1} started.")
+        
+        # Dynamic inertia weight
+        W = W_max - (W_max - W_min) * (iteration / num_iterations)
+
+        for particle in particles:
+            cost, execution_time, cpu_cost = cost_function(particle['position'], queries, conn)
+            particle['cost'] = cost
+
+            # Update personal best
+            if cost < particle['best_cost']:
+                particle['best_position'] = particle['position'][:]
+                particle['best_cost'] = cost
+
+            # Update global best
+            if cost < global_best_cost:
+                global_best_position = particle['position'][:]
+                global_best_cost = cost
+                global_best_time = execution_time
+                global_best_cpu_cost = cpu_cost
+
+        # Update velocity and position
+        for particle in particles:
+            for i in range(num_queries):
+                r1, r2 = random.random(), random.random()
+                # Update velocity
+                particle['velocity'][i] = (W * particle['velocity'][i] +
+                                          c1 * r1 * (particle['best_position'][i] - particle['position'][i]) +
+                                          c2 * r2 * (global_best_position[i] - particle['position'][i]))
+                # Clamp velocity
+                particle['velocity'][i] = max(min(particle['velocity'][i], v_max), -v_max)
+                # Update position using sigmoid function
+                sigmoid = 1 / (1 + np.exp(-particle['velocity'][i]))
+                particle['position'][i] = 1 if random.random() < sigmoid else 0
+
+        # Log iteration results
+        logging.info(f"Iteration {iteration + 1}: Best Cost = {global_best_cost:.4f}, Execution Time = {global_best_time:.4f}, CPU Cost = {global_best_cpu_cost:.4f}")
+
+    return global_best_position, global_best_cost, global_best_time, global_best_cpu_cost
+\end{lstlisting}\vspace{.4cm}
+
+The \texttt{pso} function implements the Particle Swarm Optimization (PSO) algorithm. It initializes particles with random positions and velocities. The algorithm iteratively updates the particles' positions and velocities based on their personal best and the global best. The inertia weight (\texttt{W}) decreases over time to balance exploration and exploitation. The algorithm logs the best cost, execution time, and CPU cost for each iteration.
+
+\subsubsection*{7. Main Function}
+The \texttt{main} function orchestrates the execution of the script:
+\begin{lstlisting}[language=Python]
+def main():
+    conn = create_connection()
+    if not conn:
+        return
+
+    # List of queries
+    queries = [
+        "SELECT * FROM TotalSalesByCustomer",  
+        "SELECT * FROM TotalQuantityByProduct",  
+        "SELECT * FROM MonthlySales"  
+    ]
+
+    # PSO parameters
+    num_particles = 5  # Number of particles
+    num_iterations = 5  # Number of iterations
+    num_queries = len(queries)  # Number of queries
+
+    # Run PSO
+    logging.info("Starting PSO algorithm...")
+    logging.info(f"Number of particles: {num_particles}")
+    logging.info(f"Number of iterations: {num_iterations}")
+    best_position, best_cost, best_time, best_cpu_cost = pso(num_particles, num_iterations, num_queries, queries, conn)
+
+    # Output optimal materialized views
+    optimal_views = [queries[i] for i, view in enumerate(best_position) if view == 1]
+    logging.info("Optimal Materialized Views:")
+    for view in optimal_views:
+        logging.info(f"- {view}")
+    logging.info(f"Best Execution Time: {best_time:.4f}")
+    logging.info(f"Best CPU Cost: {best_cpu_cost:.4f}")
+
+    # Close connection
+    conn.close()
+    logging.info("Connection closed.")
+
+if __name__ == "__main__":
+    main()
+\end{lstlisting}\vspace{.4cm}
+
+The \texttt{main} function orchestrates the execution of the script. It establishes a database connection, defines the queries to optimize, and sets the PSO parameters. It then runs the PSO algorithm and logs the optimal materialized views, execution time, and CPU cost. Finally, it closes the database connection.
+
+\subsubsection*{8. Execution}
+The script is executed when run directly:
+\begin{lstlisting}[language=Python]
+if __name__ == "__main__":
+    main()
+\end{lstlisting}\vspace{.4cm}
+
+This block ensures that the \texttt{main} function is executed only when the script is run directly, not when it is imported as a module.
+
