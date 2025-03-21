@@ -69,7 +69,7 @@ The above SQL query retrieves the top 10 most time-consuming queries from SQL Se
 
 \input{Python/PSO_python}\vspace{.4cm}
 
-A sequence diagram is included to provide a step-by-step visualisation of how this code operates, making it more understandable.
+A sequence diagram is included here to help better understand the workflow and interactions between the system's components. It provides a step-by-step visualisation of how this code operates, making it more understandable.
   
  % \input{Python/PSO_Best_Response} \vspace{.4cm}
 
@@ -93,7 +93,7 @@ A sequence diagram is included to provide a step-by-step visualisation of how th
 
 
 
-\subsubsection{Output from PSO automation }  Upon execution, the algorithm produced the following output: \vspace{.4cm}
+\subsubsection{Output from PSO automation }  Upon execution for a specified number of iterations, the code records the best combination of materialized views that minimize the total cost. It makes a list of the iteration-wise data, including the best execution time, CPU cost and the corresponding views for each iteration. Finally, it prints the overall best view according to their parameters. Below is the sample of the output from the python code: \vspace{.4cm}
 
 
 
@@ -102,17 +102,12 @@ A sequence diagram is included to provide a step-by-step visualisation of how th
 
   %\input{Python/python_output2} \vspace{.4cm}
 
-
-
-
-
- For each particle, the PSO algorithm evaluates the CPU cost and execution times, updates personal and global best, and updates velocity and position. Finally, it prints the optimal combination of materialized view and the corresponding cost and time.\vspace{.4cm}
   
 
 \textbf{For the full code and further test cases, please refer to the Appendix~\ref{fullcode:Fullcode}.}
 
 
-\subsection{Performance Testing and Data Analysis} After creating the materialized views, performance metrics were collected using SQL query statistics. Query execution times and CPU usages are recorded using built-in database monitoring tools, such as Dynamic Management Views (DMVs) or with the help of SQL queries like. 
+\subsection{Performance Testing and Data Analysis} After creating the materialized views, performance metrics were collected using SQL query statistics. Query execution times and CPU usages are recorded using built-in database monitoring tools, such as Dynamic Management Views (DMVs) or with the help of SQL queries. \vspace{.4cm}
 
  \input{SQL/Query_statistics}
 

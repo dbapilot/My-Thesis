@@ -41,12 +41,12 @@ import logging  # Used for logging information, warnings, and errors.
 The \texttt{pyodbc} library is used to connect to and interact with the SQL Server database. The \texttt{random} library is used to generate random numbers for initializing particle positions and velocities in the Particle Swarm Optimization (PSO) algorithm. \texttt{Time} library is used to determine the execution time of queries. The \texttt{numpy} library is used for numerical calculations, such as computing the sigmoid function. The \texttt{logging} library is used to log messages, warnings, and errors during the execution of the script.
 
 \subsubsection*{2. Configuring Logging}
-The logging system is configured to display messages with a timestamp, log level, and message:
+The logging system is configured to display messages along with a timestamp, log level, and message:
 \begin{lstlisting}[language=Python]
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 \end{lstlisting}\vspace{.4cm}
 
-This configuration ensures that all log messages are displayed with a timestamp, log level (e.g., INFO, ERROR), and the message itself. This helps in tracking the execution flow and debugging issues.
+This arrangement ensures that all log messages are displayed with a timestamp, log level (e.g., INFO, ERROR), and the message itself. This facilitates tracking of execution flow and debugging of problems.
 
 \subsubsection*{3. Connection Parameters}
 The connection parameters for the SQL Server database are defined:
@@ -56,182 +56,239 @@ database = 'AccessAuditDB'  # Database name
 driver_name = 'ODBC Driver 17 for SQL Server'  # ODBC driver
 \end{lstlisting}\vspace{.4cm}
 
-The \texttt{server} variable holds the name of the server, \texttt{database} specifies the database to connect to, and \texttt{driver\_name} specifies the ODBC driver to use for the connection. These parameters are used to establish a connection to the database.
+The \texttt{server} variable holds the name of the server, \texttt{database} specifies the database to connect to, and \texttt{driver\_name} indicates the ODBC driver to be used for the connection. These parameters help to establish a connection to the database.
 
 \subsubsection*{4. Establishing a Database Connection}
 The \texttt{create\_connection} function establishes a connection to the database:
 \begin{lstlisting}[language=Python]
 def create_connection():
     try:
+        # Create a connection string and connect to the database
         conn = pyodbc.connect(
-            f'DRIVER={{{driver_name}}};'
-            f'SERVER={server};'
-            f'DATABASE={database};'
-            'Trusted_Connection=yes;'  # Windows Authentication
+            f'DRIVER={{{driver_name}}};'  # Specify the ODBC driver
+            f'SERVER={server};'  # Specify the server name
+            f'DATABASE={database};'  # Specify the database name
+            'Trusted_Connection=yes;'  # Use Windows Authentication
         )
-        logging.info("Connection established!")
-        logging.info(f"Connected to database: {database} on server: {server}")
-        return conn
+        logging.info("Connection established!")  # Log success message
+        logging.info(f"Connected to database: {database} on server: {server}")  # Log connection details
+        return conn  # Return the connection object
     except pyodbc.Error as e:
-        logging.error("Error connecting to SQL Server:", exc_info=True)
-        return None
+        logging.error("Error connecting to SQL Server:", exc_info=True)  # Log error message
+        return None  # Return None if connection fails
 \end{lstlisting}\vspace{.4cm}
 
-This function attempts to establish a connection to the SQL Server database using the \texttt{pyodbc.connect} method. If the connection is successful, it logs a success message and returns the connection object. If an error occurs, it logs the error and returns \texttt{None}.
+This function tries to establish a connection to the SQL Server database using the \texttt{pyodbc.connect} method. Should the connection be successful, it returns a connection object noting a success object. If an error occurs, it logs the error and returns \texttt{None}.
 
 \subsubsection*{5. Cost Function}
 The \texttt{cost\_function} calculates the total cost of executing queries based on selected materialized views:
 \begin{lstlisting}[language=Python]
 def cost_function(selected_views, queries, conn):
-    total_time = 0
-    cpu_cost = 0
+    total_time = 0  # Initialize total execution time
+    cpu_cost = 0  # Initialize total CPU cost
 
-    if not any(selected_views):  # No views selected
-        return float('inf'), 0, 0  # High cost for no selection
+    # If no views are selected, return a high cost (infinite)
+    if not any(selected_views):
+        return float('inf'), 0, 0
 
-    cursor = conn.cursor()  # Create a new cursor
+    cursor = conn.cursor()  # Create a cursor object to execute queries
     for i, view in enumerate(selected_views):
-        if view == 1:  # If view is selected
+        if view == 1:  # If the view is selected
+            # Measure execution time
             start_time = time.time()
             try:
-                logging.info(f"Executing query: {queries[i]}")
-                cursor.execute(queries[i])
-                cursor.fetchall()
-                execution_time = time.time() - start_time
-                total_time += execution_time
+                logging.info(f"Executing query: {queries[i]}")  # Log the query being executed
+                cursor.execute(queries[i])  # Execute the query
+                cursor.fetchall()  # Fetch all results (to ensure the query runs completely)
+                execution_time = time.time() - start_time  # Calculate execution time
+                total_time += execution_time  # Add to total execution time
 
-                # Estimate CPU cost
-                query_complexity = queries[i].upper().count('JOIN') + 1
+                # Calculate query complexity based on multiple factors
+                query = queries[i].upper()  # Convert query to uppercase for case-insensitive matching
+
+                # Factor 1: Number of JOIN operations
+                join_count = query.count('JOIN')
+
+                # Factor 2: Number of tables (FROM clauses)
+                from_count = query.count('FROM')
+
+                # Factor 3: Number of subqueries or nested queries (SELECT clauses)
+                select_count = query.count('SELECT') - 1  # Subtract 1 for the main SELECT
+
+                # Factor 4: Query length (number of words)
+                query_length = len(query.split())
+
+                # Assign weights to each factor
+                weight_join = 0.4  # JOIN operations are highly complex
+                weight_from = 0.3  # Number of tables contributes to complexity
+                weight_select = 0.2  # Subqueries add complexity
+                weight_length = 0.1  # Longer queries might be more complex
+
+                # Calculate weighted complexity
+                query_complexity = (
+                    (join_count * weight_join) +
+                    (from_count * weight_from) +
+                    (select_count * weight_select) +
+                    (query_length * weight_length)
+                )
+
+                # Ensure minimum complexity is 1
+                query_complexity = max(query_complexity, 1)
+
+                # Calculate CPU cost
                 cpu_cost += execution_time * query_complexity
 
             except pyodbc.Error as e:
-                logging.error(f"Error executing query {i}: {queries[i]}", exc_info=True)
-                return float('inf'), 0, 0  # High cost for query errors
+                logging.error(f"Error executing query {i}: {queries[i]}", exc_info=True)  # Log query execution error
+                return float('inf'), 0, 0  # Return high cost for query errors
 
-    # Weighted cost function
-    alpha, beta = 0.7, 0.3  # Weights for execution time and CPU cost
-    total_cost = alpha * total_time + beta * cpu_cost
-    return total_cost, total_time, cpu_cost
+    # Weighted cost function (prioritize execution time and CPU cost)
+    alpha, beta = 0.7, 0.3   #alpha = 0.7 means execution time contributes 70% to the total cost.beta = 0.3 means CPU cost contributes 30% to the total cost.
+    total_cost = alpha * total_time + beta * cpu_cost  # Calculate total cost
+    return total_cost, total_time, cpu_cost  # Return total cost, execution time, and CPU cost
 \end{lstlisting}\vspace{.4cm}
 
-The \texttt{cost\_function} calculates the total cost of executing a set of queries based on the selected materialized views. It measures the execution time and estimates the CPU cost for each query. If no views are selected, it returns a high cost (\texttt{float('inf')}). The total cost is a weighted sum of execution time and CPU cost, where execution time contributes 70\% and CPU cost contributes 30\%.
+The \texttt{cost\_function} calculates the total cost of executing a set of queries based on the selected materialized views. It measures the execution time and estimates the CPU cost for each query. If no views are selected, it returns a high cost (\texttt{float('inf')}). The total cost is a weighted sum of CPU cost and execution time, where execution time accounts for 70\% and CPU cost for 30\%.
 
 \subsubsection*{6. Advanced PSO Algorithm}
 The \texttt{pso} function implements the Particle Swarm Optimization (PSO) algorithm:
+
 \begin{lstlisting}[language=Python]
 def pso(num_particles, num_iterations, num_queries, queries, conn):
     # PSO parameters
     W_max = 0.9  # Maximum inertia weight
     W_min = 0.4  # Minimum inertia weight
-    c1, c2 = 1.5, 1.5  # Cognitive and social factors
+    c1, c2 = 1.5, 1.5  # Cognitive and social parameters
     v_max = 6.0  # Maximum velocity for clamping
 
     # Initialize particles
-    particles = [{'position': [random.choice([0, 1]) for _ in range(num_queries)],
-                 'velocity': [random.uniform(-1, 1) for _ in range(num_queries)],
-                 'best_position': None,
-                 'best_cost': float('inf')} for _ in range(num_particles)]
+    particles = [{
+        'position': [random.choice([0, 1]) for _ in range(num_queries)],  # Randomly initialize position (0 or 1)
+        'velocity': [random.uniform(-1, 1) for _ in range(num_queries)],  # Randomly initialize velocity
+        'best_position': None,  # Initialize best position as None
+        'best_cost': float('inf')  # Initialize best cost as infinity
+    } for _ in range(num_particles)]
 
-    global_best_position = None
-    global_best_cost = float('inf')
-    global_best_time = 0
-    global_best_cpu_cost = 0
+    # Initialize best_position with the initial position
+    for particle in particles:
+        particle['best_position'] = particle['position'][:]  # Copy initial position
+
+    global_best_position = None  # Initialize global best position
+    global_best_cost = float('inf')  # Initialize global best cost as infinity
+    global_best_time = 0  # Initialize global best execution time
+    global_best_cpu_cost = 0  # Initialize global best CPU cost
+
+    # List to store iteration data
+    iteration_data = []
 
     # PSO main loop
     for iteration in range(num_iterations):
-        logging.info(f"Iteration {iteration + 1} started.")
-        
-        # Dynamic inertia weight
+        logging.info(f"Iteration {iteration + 1} started.")  # Log the start of the iteration
+
+        # Dynamic inertia weight (decreases over time)
         W = W_max - (W_max - W_min) * (iteration / num_iterations)
 
         for particle in particles:
+            # Calculate cost, execution time, and CPU cost for the particle's position
             cost, execution_time, cpu_cost = cost_function(particle['position'], queries, conn)
-            particle['cost'] = cost
+            particle['cost'] = cost  # Store the cost
 
-            # Update personal best
+            # Update personal best position and cost
             if cost < particle['best_cost']:
-                particle['best_position'] = particle['position'][:]
-                particle['best_cost'] = cost
+                particle['best_position'] = particle['position'][:]  # Update best position
+                particle['best_cost'] = cost  # Update best cost
 
-            # Update global best
+            # Update global best position and cost
             if cost < global_best_cost:
-                global_best_position = particle['position'][:]
-                global_best_cost = cost
-                global_best_time = execution_time
-                global_best_cpu_cost = cpu_cost
+                global_best_position = particle['position'][:]  # Update global best position
+                global_best_cost = cost  # Update global best cost
+                global_best_time = execution_time  # Update global best execution time
+                global_best_cpu_cost = cpu_cost  # Update global best CPU cost
 
-        # Update velocity and position
+        # Update velocity and position for each particle
         for particle in particles:
             for i in range(num_queries):
-                r1, r2 = random.random(), random.random()
+                r1, r2 = random.random(), random.random()  # Generate random numbers
                 # Update velocity
                 particle['velocity'][i] = (W * particle['velocity'][i] +
                                           c1 * r1 * (particle['best_position'][i] - particle['position'][i]) +
                                           c2 * r2 * (global_best_position[i] - particle['position'][i]))
-                # Clamp velocity
+                # Clamp velocity to avoid explosion
                 particle['velocity'][i] = max(min(particle['velocity'][i], v_max), -v_max)
                 # Update position using sigmoid function
-                sigmoid = 1 / (1 + np.exp(-particle['velocity'][i]))
-                particle['position'][i] = 1 if random.random() < sigmoid else 0
+                sigmoid = 1 / (1 + np.exp(-particle['velocity'][i]))  # Sigmoid function
+                particle['position'][i] = 1 if random.random() < sigmoid else 0  # Update position
 
         # Log iteration results
         logging.info(f"Iteration {iteration + 1}: Best Cost = {global_best_cost:.4f}, Execution Time = {global_best_time:.4f}, CPU Cost = {global_best_cpu_cost:.4f}")
 
-    return global_best_position, global_best_cost, global_best_time, global_best_cpu_cost
+        # Store iteration data
+        iteration_data.append({
+            'iteration': iteration + 1,  # Iteration number
+            'execution_time': global_best_time,  # Best execution time
+            'cpu_cost': global_best_cpu_cost,  # Best CPU cost
+            'best_view': [queries[i] for i, view in enumerate(global_best_position) if view == 1]  # Best view(s)
+        })
+
+    return global_best_position, global_best_cost, global_best_time, global_best_cpu_cost, iteration_data
 \end{lstlisting}\vspace{.4cm}
 
-The \texttt{pso} function implements the Particle Swarm Optimization (PSO) algorithm. It initializes particles with random positions and velocities. The algorithm iteratively updates the particles' positions and velocities based on their personal best and the global best. The inertia weight (\texttt{W}) decreases over time to balance exploration and exploitation. The algorithm logs the best cost, execution time, and CPU cost for each iteration.
+The Particle Swarm Optimization (PSO) algorithm is implemented using \texttt{pso} function. It initializes particles with random positions and velocities. Based on their personal best as well as the global best, the algorithm repeatedly changes the placements and velocities of the particles. The inertia weight (\texttt{W}) decreases over time to balance exploration and exploitation. The algorithm records the best CPU cost, execution time, and best overall cost for each iteration.
 
 \subsubsection*{7. Main Function}
 The \texttt{main} function orchestrates the execution of the script:
 \begin{lstlisting}[language=Python]
 def main():
-    conn = create_connection()
+    conn = create_connection()  # Establish database connection
     if not conn:
-        return
+        return  # Exit if connection fails
 
-    # List of queries
+    # List of queries corresponding to materialized views
     queries = [
-        "SELECT * FROM TotalSalesByCustomer",  
-        "SELECT * FROM TotalQuantityByProduct",  
-        "SELECT * FROM MonthlySales"  
+        "SELECT * FROM TotalSalesByCustomer",
+        "SELECT * FROM TotalQuantityByProduct",
+        "SELECT * FROM MonthlySales"
     ]
 
     # PSO parameters
-    num_particles = 5  # Number of particles
+    num_particles = 5  # Number of particles in the swarm
     num_iterations = 5  # Number of iterations
-    num_queries = len(queries)  # Number of queries
+    num_queries = len(queries)  # Number of queries (materialized views) to optimize
 
     # Run PSO
-    logging.info("Starting PSO algorithm...")
-    logging.info(f"Number of particles: {num_particles}")
-    logging.info(f"Number of iterations: {num_iterations}")
-    best_position, best_cost, best_time, best_cpu_cost = pso(num_particles, num_iterations, num_queries, queries, conn)
+    logging.info("Starting PSO algorithm...")  # Log the start of the PSO algorithm
+    logging.info(f"Number of particles: {num_particles}")  # Log the number of particles
+    logging.info(f"Number of iterations: {num_iterations}")  # Log the number of iterations
+    best_position, best_cost, best_time, best_cpu_cost, iteration_data = pso(num_particles, num_iterations, num_queries, queries, conn)
 
     # Output optimal materialized views
-    optimal_views = [queries[i] for i, view in enumerate(best_position) if view == 1]
-    logging.info("Optimal Materialized Views:")
+    optimal_views = [queries[i] for i, view in enumerate(best_position) if view == 1]  # Get optimal views
+    logging.info("Optimal Materialized Views:")  # Log the optimal views
     for view in optimal_views:
-        logging.info(f"- {view}")
-    logging.info(f"Best Execution Time: {best_time:.4f}")
-    logging.info(f"Best CPU Cost: {best_cpu_cost:.4f}")
+        logging.info(f"- {view}")  # Log each optimal view
+    logging.info(f"Best Execution Time: {best_time:.4f}")  # Log the best execution time
+    logging.info(f"Best CPU Cost: {best_cpu_cost:.4f}")  # Log the best CPU cost
+
+    # Print iteration data
+    print("\nIteration Data:")
+    print("Iteration | Execution Time | CPU Cost | Best View")
+    print("-" * 50)
+    for data in iteration_data:
+        print(f"{data['iteration']:9} | {data['execution_time']:.4f}       | {data['cpu_cost']:.4f}   | {', '.join(data['best_view'])}")
+
+    # Print best view, execution time, and CPU cost as a list
+    print("\nBest View, Execution Time, and CPU Cost:")
+    print(f"Best View: {optimal_views}")
+    print(f"Execution Time: {best_time:.4f}")
+    print(f"CPU Cost: {best_cpu_cost:.4f}")
 
     # Close connection
-    conn.close()
-    logging.info("Connection closed.")
+    conn.close()  # Close the database connection
+    logging.info("Connection closed.")  # Log the connection closure
 
 if __name__ == "__main__":
-    main()
+    main()  # Run the main function
 \end{lstlisting}\vspace{.4cm}
 
-The \texttt{main} function orchestrates the execution of the script. It establishes a database connection, defines the queries to optimize, and sets the PSO parameters. It then runs the PSO algorithm and logs the optimal materialized views, execution time, and CPU cost. Finally, it closes the database connection.
-
-\subsubsection*{8. Execution}
-The script is executed when run directly:
-\begin{lstlisting}[language=Python]
-if __name__ == "__main__":
-    main()
-\end{lstlisting}\vspace{.4cm}
-
-This block ensures that the \texttt{main} function is executed only when the script is run directly, not when it is imported as a module.
+The \texttt{main} function coordinates the execution of the script. It creates a database connection, specifies the queries to optimize, and sets the PSO parameters. It then performs the PSO algorithm and saves the optimal materialized views, execution time, and CPU cost. Finally, it closes the database connection.
 

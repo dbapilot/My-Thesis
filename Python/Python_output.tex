@@ -2,69 +2,77 @@
 
 \begin{lstlisting}[style=pythonstyle, caption={Output from python code }, label={lst:pso_query_optimization}]]
 
-2025-03-17 16:58:11,620 - INFO - Connection established!
-2025-03-17 16:58:11,620 - INFO - Connected to database: AccessAuditDB on server: T915-TEST-DB
-2025-03-17 16:58:11,620 - INFO - Starting PSO algorithm...
-2025-03-17 16:58:11,620 - INFO - Number of particles: 5
-2025-03-17 16:58:11,620 - INFO - Number of iterations: 5
-2025-03-17 16:58:11,620 - INFO - Iteration 1 started.
-2025-03-17 16:58:11,621 - INFO - Executing query: SELECT * FROM TotalQuantityByProduct
-2025-03-17 16:58:11,741 - INFO - Executing query: SELECT * FROM MonthlySales
-2025-03-17 16:58:11,887 - INFO - Executing query: SELECT * FROM MonthlySales
-2025-03-17 16:58:12,016 - INFO - Executing query: SELECT * FROM TotalSalesByCustomer
-2025-03-17 16:58:16,463 - INFO - Executing query: SELECT * FROM TotalQuantityByProduct
-2025-03-17 16:58:17,029 - INFO - Executing query: SELECT * FROM MonthlySales
-2025-03-17 16:58:17,531 - INFO - Executing query: SELECT * FROM TotalSalesByCustomer
-2025-03-17 16:58:22,793 - INFO - Executing query: SELECT * FROM TotalQuantityByProduct
-2025-03-17 16:58:22,916 - INFO - Executing query: SELECT * FROM MonthlySales
-2025-03-17 16:58:23,083 - INFO - Executing query: SELECT * FROM TotalSalesByCustomer
-2025-03-17 16:58:25,112 - INFO - Executing query: SELECT * FROM TotalQuantityByProduct
-2025-03-17 16:58:25,197 - INFO - Executing query: SELECT * FROM MonthlySales
-2025-03-17 16:58:25,306 - INFO - Iteration 1: Best Cost = 0.1292, Execution Time = 0.1292, CPU Cost = 0.1292
-2025-03-17 16:58:25,306 - INFO - Iteration 2 started.
-2025-03-17 16:58:25,306 - INFO - Executing query: SELECT * FROM MonthlySales
-2025-03-17 16:58:25,406 - INFO - Executing query: SELECT * FROM TotalQuantityByProduct
-2025-03-17 16:58:25,487 - INFO - Executing query: SELECT * FROM TotalSalesByCustomer
-2025-03-17 16:58:27,227 - INFO - Executing query: SELECT * FROM MonthlySales
-2025-03-17 16:58:27,378 - INFO - Iteration 2: Best Cost = 0.0813, Execution Time = 0.0813, CPU Cost = 0.0813
-2025-03-17 16:58:27,378 - INFO - Iteration 3 started.
-2025-03-17 16:58:27,378 - INFO - Executing query: SELECT * FROM TotalQuantityByProduct
-2025-03-17 16:58:27,494 - INFO - Executing query: SELECT * FROM MonthlySales
-2025-03-17 16:58:27,618 - INFO - Executing query: SELECT * FROM TotalSalesByCustomer
-2025-03-17 16:58:28,910 - INFO - Executing query: SELECT * FROM MonthlySales
-2025-03-17 16:58:28,998 - INFO - Executing query: SELECT * FROM TotalSalesByCustomer
-2025-03-17 16:58:29,985 - INFO - Executing query: SELECT * FROM MonthlySales
-2025-03-17 16:58:30,080 - INFO - Executing query: SELECT * FROM TotalSalesByCustomer
-2025-03-17 16:58:32,420 - INFO - Executing query: SELECT * FROM TotalQuantityByProduct
-2025-03-17 16:58:32,484 - INFO - Executing query: SELECT * FROM TotalSalesByCustomer
-2025-03-17 16:58:35,111 - INFO - Executing query: SELECT * FROM TotalQuantityByProduct
-2025-03-17 16:58:35,467 - INFO - Iteration 3: Best Cost = 0.0813, Execution Time = 0.0813, CPU Cost = 0.0813
-2025-03-17 16:58:35,467 - INFO - Iteration 4 started.
-2025-03-17 16:58:35,467 - INFO - Executing query: SELECT * FROM TotalSalesByCustomer
-2025-03-17 16:58:40,846 - INFO - Executing query: SELECT * FROM TotalQuantityByProduct
-2025-03-17 16:58:41,379 - INFO - Executing query: SELECT * FROM TotalSalesByCustomer
-2025-03-17 16:58:43,526 - INFO - Executing query: SELECT * FROM TotalQuantityByProduct
-2025-03-17 16:58:43,596 - INFO - Executing query: SELECT * FROM TotalSalesByCustomer
-2025-03-17 16:58:45,083 - INFO - Executing query: SELECT * FROM TotalQuantityByProduct
-2025-03-17 16:58:45,205 - INFO - Executing query: SELECT * FROM MonthlySales
-2025-03-17 16:58:45,337 - INFO - Iteration 4: Best Cost = 0.0705, Execution Time = 0.0705, CPU Cost = 0.0705
-2025-03-17 16:58:45,337 - INFO - Iteration 5 started.
-2025-03-17 16:58:45,337 - INFO - Executing query: SELECT * FROM MonthlySales
-2025-03-17 16:58:45,439 - INFO - Executing query: SELECT * FROM TotalSalesByCustomer
-2025-03-17 16:58:46,835 - INFO - Executing query: SELECT * FROM TotalQuantityByProduct
-2025-03-17 16:58:46,899 - INFO - Executing query: SELECT * FROM TotalQuantityByProduct
-2025-03-17 16:58:46,958 - INFO - Executing query: SELECT * FROM MonthlySales
-2025-03-17 16:58:47,045 - INFO - Executing query: SELECT * FROM TotalSalesByCustomer
-2025-03-17 16:58:48,672 - INFO - Executing query: SELECT * FROM TotalQuantityByProduct
-2025-03-17 16:58:48,739 - INFO - Executing query: SELECT * FROM TotalQuantityByProduct
-2025-03-17 16:58:48,811 - INFO - Iteration 5: Best Cost = 0.0705, Execution Time = 0.0705, CPU Cost = 0.0705
-2025-03-17 16:58:48,812 - INFO - Optimal Materialized Views:
-2025-03-17 16:58:48,812 - INFO - - SELECT * FROM TotalQuantityByProduct
-2025-03-17 16:58:48,812 - INFO - Best Execution Time: 0.0705
-2025-03-17 16:58:48,812 - INFO - Best CPU Cost: 0.0705
-2025-03-17 16:58:48,916 - INFO - Connection closed.
+2025-03-20 22:53:36,783 - INFO - Connection established!
+2025-03-20 22:53:36,783 - INFO - Connected to database: AccessAuditDB on server: T915-TEST-DB
+2025-03-20 22:53:36,783 - INFO - Starting PSO algorithm...
+2025-03-20 22:53:36,783 - INFO - Number of particles: 5
+2025-03-20 22:53:36,783 - INFO - Number of iterations: 5
+2025-03-20 22:53:36,783 - INFO - Iteration 1 started.
+2025-03-20 22:53:36,783 - INFO - Executing query: SELECT * FROM TotalSalesByCustomer
+2025-03-20 22:53:37,750 - INFO - Executing query: SELECT * FROM MonthlySales
+2025-03-20 22:53:37,840 - INFO - Executing query: SELECT * FROM TotalSalesByCustomer
+2025-03-20 22:53:38,791 - INFO - Executing query: SELECT * FROM TotalQuantityByProduct
+2025-03-20 22:53:38,858 - INFO - Executing query: SELECT * FROM TotalSalesByCustomer
+2025-03-20 22:53:39,813 - INFO - Executing query: SELECT * FROM TotalQuantityByProduct
+2025-03-20 22:53:39,870 - INFO - Iteration 1: Best Cost = 1.0117, Execution Time = 1.0117, CPU Cost = 1.0117
+2025-03-20 22:53:39,870 - INFO - Iteration 2 started.
+2025-03-20 22:53:39,870 - INFO - Executing query: SELECT * FROM TotalSalesByCustomer
+2025-03-20 22:53:40,818 - INFO - Executing query: SELECT * FROM TotalSalesByCustomer
+2025-03-20 22:53:41,769 - INFO - Executing query: SELECT * FROM MonthlySales
+2025-03-20 22:53:41,861 - INFO - Executing query: SELECT * FROM TotalQuantityByProduct
+2025-03-20 22:53:41,922 - INFO - Executing query: SELECT * FROM TotalSalesByCustomer
+2025-03-20 22:53:42,875 - INFO - Executing query: SELECT * FROM TotalQuantityByProduct
+2025-03-20 22:53:42,932 - INFO - Executing query: SELECT * FROM TotalSalesByCustomer
+2025-03-20 22:53:43,892 - INFO - Executing query: SELECT * FROM MonthlySales
+2025-03-20 22:53:43,998 - INFO - Iteration 2: Best Cost = 0.0603, Execution Time = 0.0603, CPU Cost = 0.0603
+2025-03-20 22:53:43,998 - INFO - Iteration 3 started.
+2025-03-20 22:53:43,998 - INFO - Executing query: SELECT * FROM TotalQuantityByProduct
+2025-03-20 22:53:44,054 - INFO - Executing query: SELECT * FROM TotalSalesByCustomer
+2025-03-20 22:53:45,020 - INFO - Executing query: SELECT * FROM TotalQuantityByProduct
+2025-03-20 22:53:45,081 - INFO - Executing query: SELECT * FROM TotalSalesByCustomer
+2025-03-20 22:53:46,041 - INFO - Executing query: SELECT * FROM TotalQuantityByProduct
+2025-03-20 22:53:46,097 - INFO - Executing query: SELECT * FROM MonthlySales
+2025-03-20 22:53:46,191 - INFO - Executing query: SELECT * FROM TotalQuantityByProduct
+2025-03-20 22:53:46,248 - INFO - Executing query: SELECT * FROM TotalSalesByCustomer
+2025-03-20 22:53:47,209 - INFO - Executing query: SELECT * FROM TotalQuantityByProduct
+2025-03-20 22:53:47,273 - INFO - Executing query: SELECT * FROM MonthlySales
+2025-03-20 22:53:47,362 - INFO - Iteration 3: Best Cost = 0.0565, Execution Time = 0.0565, CPU Cost = 0.0565
+2025-03-20 22:53:47,362 - INFO - Iteration 4 started.
+2025-03-20 22:53:47,363 - INFO - Executing query: SELECT * FROM TotalSalesByCustomer
+2025-03-20 22:53:48,313 - INFO - Executing query: SELECT * FROM TotalQuantityByProduct
+2025-03-20 22:53:48,372 - INFO - Executing query: SELECT * FROM MonthlySales
+2025-03-20 22:53:48,463 - INFO - Executing query: SELECT * FROM TotalSalesByCustomer
+2025-03-20 22:53:49,420 - INFO - Executing query: SELECT * FROM TotalQuantityByProduct
+2025-03-20 22:53:49,483 - INFO - Executing query: SELECT * FROM TotalSalesByCustomer
+2025-03-20 22:53:50,439 - INFO - Executing query: SELECT * FROM TotalQuantityByProduct
+2025-03-20 22:53:50,496 - INFO - Executing query: SELECT * FROM TotalSalesByCustomer
+2025-03-20 22:53:51,454 - INFO - Executing query: SELECT * FROM TotalQuantityByProduct
+2025-03-20 22:53:51,510 - INFO - Iteration 4: Best Cost = 0.0565, Execution Time = 0.0565, CPU Cost = 0.0565
+2025-03-20 22:53:51,510 - INFO - Iteration 5 started.
+2025-03-20 22:53:51,510 - INFO - Executing query: SELECT * FROM TotalQuantityByProduct
+2025-03-20 22:53:51,567 - INFO - Executing query: SELECT * FROM TotalSalesByCustomer
+2025-03-20 22:53:52,517 - INFO - Executing query: SELECT * FROM TotalQuantityByProduct
+2025-03-20 22:53:52,582 - INFO - Executing query: SELECT * FROM TotalQuantityByProduct
+2025-03-20 22:53:52,639 - INFO - Executing query: SELECT * FROM MonthlySales
+2025-03-20 22:53:52,727 - INFO - Iteration 5: Best Cost = 0.0565, Execution Time = 0.0565, CPU Cost = 0.0565
+2025-03-20 22:53:52,728 - INFO - Optimal Materialized Views:
+2025-03-20 22:53:52,728 - INFO - - SELECT * FROM TotalQuantityByProduct
+2025-03-20 22:53:52,728 - INFO - Best Execution Time: 0.0565
+2025-03-20 22:53:52,728 - INFO - Best CPU Cost: 0.0565
 
-[Done] exited with code=0 in 38.476 seconds
+Iteration Data:
+Iteration | Execution Time | CPU Cost | Best View
+--------------------------------------------------
+        1 | 1.0117       | 1.0117   | SELECT * FROM TotalSalesByCustomer, SELECT * FROM TotalQuantityByProduct
+        2 | 0.0603       | 0.0603   | SELECT * FROM TotalQuantityByProduct
+        3 | 0.0565       | 0.0565   | SELECT * FROM TotalQuantityByProduct
+        4 | 0.0565       | 0.0565   | SELECT * FROM TotalQuantityByProduct
+        5 | 0.0565       | 0.0565   | SELECT * FROM TotalQuantityByProduct
 
+Best View, Execution Time, and CPU Cost:
+Best View: ['SELECT * FROM TotalQuantityByProduct']
+Execution Time: 0.0565
+CPU Cost: 0.0565
+2025-03-20 22:53:52,781 - INFO - Connection closed.
 
 \end{lstlisting}
