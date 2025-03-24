@@ -52,7 +52,7 @@ This arrangement ensures that all log messages are displayed with a timestamp, l
 The connection parameters for the SQL Server database are defined:
 \begin{lstlisting}[language=Python]
 server = 'T915-TEST-DB'  # Server name
-database = 'AccessAuditDB'  # Database name
+database = 'HealthInsuranceDB'  # Database name
 driver_name = 'ODBC Driver 17 for SQL Server'  # ODBC driver
 \end{lstlisting}\vspace{.4cm}
 
@@ -65,10 +65,10 @@ def create_connection():
     try:
         # Create a connection string and connect to the database
         conn = pyodbc.connect(
-            f'DRIVER={{{driver_name}}};'  # Specify the ODBC driver
-            f'SERVER={server};'  # Specify the server name
-            f'DATABASE={database};'  # Specify the database name
-            'Trusted_Connection=yes;'  # Use Windows Authentication
+            f'DRIVER={{{driver_name}}};'  # name of the ODBC driver
+            f'SERVER={server};'  # take the server name from the variable
+            f'DATABASE={database};'  # take the database name from the variable
+            'Trusted_Connection=yes;'  #  Windows Authentication 
         )
         logging.info("Connection established!")  # Log success message
         logging.info(f"Connected to database: {database} on server: {server}")  # Log connection details
@@ -233,7 +233,7 @@ def pso(num_particles, num_iterations, num_queries, queries, conn):
     return global_best_position, global_best_cost, global_best_time, global_best_cpu_cost, iteration_data
 \end{lstlisting}\vspace{.4cm}
 
-The Particle Swarm Optimization (PSO) algorithm is implemented using \texttt{pso} function. It initializes particles with random positions and velocities. Based on their personal best as well as the global best, the algorithm repeatedly changes the placements and velocities of the particles. The inertia weight (\texttt{W}) decreases over time to balance exploration and exploitation. The algorithm records the best CPU cost, execution time, and best overall cost for each iteration.
+The Particle Swarm Optimization (PSO) algorithm is implemented using \texttt{pso} function. It initializes particles with random positions and velocities. Based on their personal best as well as the global best, the algorithm repeatedly changes the placements and velocities of the particles. The inertia weight (\texttt{W})\footnote{The inertia weight W in the PSO algorithm is a dimensionless parameter that controls the balance between exploration and exploitation. It typically ranges between 0.4 and 0.9 and is used to scale the particle's previous velocity during the velocity update process.} decreases over time to balance exploration and exploitation. The algorithm records the best CPU cost, execution time, and best overall cost for each iteration.
 
 \subsubsection*{7. Main Function}
 The \texttt{main} function orchestrates the execution of the script:
@@ -245,9 +245,9 @@ def main():
 
     # List of queries corresponding to materialized views
     queries = [
-        "SELECT * FROM TotalSalesByCustomer",
-        "SELECT * FROM TotalQuantityByProduct",
-        "SELECT * FROM MonthlySales"
+        "SELECT * FROM TotalClaimsByPatient ",
+        "SELECT * FROM TotalTreatmentCostByProvider ",
+        "SELECT * FROM MonthlyClaimsByProvider " 
     ]
 
     # PSO parameters

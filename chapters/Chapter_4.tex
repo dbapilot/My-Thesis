@@ -1,7 +1,5 @@
 %\chapter{Implementaion}
-\begin{center}
-    --Running--
-\end{center}
+
 \section{Implementations}
 This section describes a step-by-step process for effectively deploying materialized views, and PSO algorithm based on the earlier theoretical foundations, to reduce query execution time, minimize computational overhead, and enhance overall performance. The implementation begins with an overview of the tools and technologies utilized in this project, providing essential context before delving into the optimization process.
 
@@ -9,7 +7,7 @@ This section describes a step-by-step process for effectively deploying material
 This project uses some software tools and technologies related to database management, query optimization, and technical documentation. Collectively, these tools support database management, query optimization, data analysis, and technical documentation throughout the research and development process.
 
 \begin{enumerate}[label=(\roman*)]
-\item\textbf{SQL Server Management Studio :} SQL Server Management Studio(SSMS) is actually an integrated environment that can maintain the SQL Server infrastructure. It is used to access, manage, configure, administer, and develop all components of SQL Server. In addition,t is used to manage the schema, tables, access to SQL Server, and materialized views of the database. Also, it monitors the performance of the query using execution plans and statistics, and it helps to debug SQL queries and optimize their execution. Here MSSQL is used to host the database, create tables, and define materialized views, enabling query execution and performance measurement.
+\item\textbf{SQL Server Management Studio :} SQL Server Management Studio(SSMS) is actually an integrated environment that can maintain the SQL Server infrastructure. It is used to access, manage, configure, administer, and develop all components of SQL Server. In addition, it is used to manage the schema, tables, access to SQL Server, and materialized views of the database. Also, it monitors the performance of the query using execution plans and statistics, and it helps to debug SQL queries and optimize their execution. Here, MSSQL is used to host the database, create tables, and define materialized views, enabling query execution and performance measurement.
 
 
 \item\textbf{{Visual Studio Code:}} Microsoft created this open-source integrated development environment (IDE) for web browsers, Linux, macOS, and Windows. It is used to write Python scripts for automation (e.g., measuring query performance), integrate MSSQL queries with Python using extensions, and debug Python and SQL scripts. VS Code is used as the primary Integrated Development Environment (IDE) for writing, debugging, and running Python scripts that implement the PSO algorithm and interact with the SQL Server database.
@@ -19,7 +17,7 @@ This project uses some software tools and technologies related to database manag
 \item\textbf{Microsoft SQL Server:} Microsoft SQL Server is a relational database that provides a wide range of features for storing, processing, and securing data. SQL Server hosts the database, stores the tables and materialized views, and executes the SQL queries, allowing the measurement and optimization of query performance using the PSO algorithm.
 
 
-\item\textbf{Python:} Python is a high-level interpreted programming language known for its simplicity and readability. It was created by Guido van Rossum and released in 1991 \cite{martin2023stam,wijanarko2020prediksi} . It has become one of the most popular programming languages worldwide. The structure of the language and its object-oriented approach help programmers to write logical and clear code for small and large projects. Python libraries (packages) effectively simplify many important processes such as analysing and visualizing data, retrieving unstructured data from the web, image processing, building machine learning models, and textual information \cite{Samira_Gholizadeh2022}. Here, it has been used to implement the PSO algorithm to optimize query performance, connects to the database using libraries like pyodbc, measures, executes, and analyzes the database programmatically.
+\item\textbf{Python:} Python is a high-level interpreted programming language known for its simplicity and readability. It was created by Guido van Rossum and released in 1991 \cite{martin2023stam,wijanarko2020prediksi} . It has become one of the most popular programming languages worldwide. Its object-oriented approach helps programmers to write logical and clear code for small and large projects. Python libraries (packages) effectively simplify many important processes such as analyzing and visualizing data, retrieving unstructured data from the web, image processing, building machine learning models, and textual information \cite{Samira_Gholizadeh2022}. Here, it has been used to implement the PSO algorithm to optimize query performance, connect to the database using libraries like pyodbc, measures, executes, and analyzes the database programmatically. Due to its simplicity, readability, extensive libraries, ease of use, and efficiency, it is one of the best choices for implementing PSO.
 
 \item\textbf{pyodbc:} Pyodbc is an open-source Python module that makes accessing ODBC\footnote{Open Database Connectivity (ODBC) is a standardized application programming interface (API) for accessing databases.} databases simple. It implements the DB API\footnote{An Application Programming Interface (API) is a set of protocols, tools, and definitions that allow different software applications to communicate with each other.} 2.0 specification but is packed with even more Pythonic convenience. The pyodbc library connects Python to MSSQL, allowing programmatic execution of SQL queries and retrieval of results.
 
@@ -27,41 +25,51 @@ This project uses some software tools and technologies related to database manag
 
 \item\textbf{matplotlib:} Matplotlib is a comprehensive library for creating static, animated, and interactive visualizations in Python. \enquote{Matplotlib makes easy things easy and hard things possible} \cite{matplotlib}. It has been used to visualize query performance metrics and PSO convergence, making results easier to interpret.
 
-\item\textbf{Git:} Git is a version control system that is used for tracking the changes made in the files and for enabling a collaborative software world. Git is incredibly popular due to its flexibility, speed, and ability to support almost any workflow. It has become the go-to standard for version control, with around 90 per cent of developers worldwide using it as their primary system. Git is used to track changes in Python scripts, LaTeX documents, and SQL files, making it an essential tool for collaboration and version control during thesis development.
+\item\textbf{GitHub:} GitHub is an open-source version control system that is used for tracking the changes made in the files and for enabling a collaborative software world. GitHub is incredibly popular due to its flexibility, speed, and ability to support almost any workflow. It has become the world's largest source code host, with around 90 per cent of developers worldwide using it to create, store, manage, and share their code. GitHub is used to track changes in Python scripts, LaTeX documents, and SQL files, making it an essential tool for collaboration and version control during thesis development. The platform’s features, such as branching, pull requests, and issue tracking, enable efficient project management and seamless integration of feedback from advisors or peers. Additionally, GitHub’s public or private repository options allow me to share my work with the academic community while retaining control over access.
 
 \end{enumerate}
 
 \clearpage
 
 \subsection{Practical Implementation }
- \begin{center}
-     \textbf{..... Running ...........}
- \end{center}
-\subsubsection{Database Creation}
-Choosing a database or creating one if not available is the initial step of the implementation. For the demonstration purpose, one database called \texttt{AccessAuditDB} is created. The database was populated with tables and sample data to simulate a real-world environment. Relationships between tables are defined using primary keys and foreign keys to ensure data integrity and enable efficient querying, enabling the testing and optimization of queries using materialized views and the PSO algorithm.
 
-The following SQL query checks if the database \texttt{AccessAuditDB} exists and creates it if it does not: \vspace{.4cm}
+\subsubsection{Database Creation}
+Choosing a database or creating one if not available is the initial step of the implementation. For the demonstration purpose of this thesis only, one database called \texttt{HealthInsuranceDB} is created here. The database was populated with tables and sample data to simulate a real-world environment. Relationships among tables are created through primary keys and foreign keys to ensure data integrity and efficient querying, enabling the testing and optimization of queries using materialized views and the PSO algorithm.
+
+The following SQL query checks if the database \texttt{HealthInsuranceDB} exists and creates it if it does not: \vspace{.4cm}
 
 \input{SQL/Create_database}
 
-\subsubsection{Identify Complex Queries} This is a very important part of identifying the frequent queries that need to be optimized. It refers to the process of analyzing a database workload to pinpoint queries that are resource-intensive, frequently executed, or critical to performance. SQL Server Management Studio or direct SQL query can be used to analyze execution logs and identify the frequently executed and resource-intensive queries. Also identify frequently used sub-queries, aggregation (Queries with GROUP BY, SUM, AVG)s, or frequently joins between tables. For example, the following query to identify long-running queries: \vspace{.4cm}
+
+\subsubsection{Table Creation} A database schema with four tables, namely \texttt{InsuranceProviders}, \texttt{Patients}, \texttt{Claims}, and \texttt{Treatments}, are created with the help of the following SQL query. These tables are intended to store information on insurance providers, patient details, insurance claims, and associated treatments respectively. Foreign key constraints ensure data integrity as they set up relationships between the tables, making this schema suitable for demonstrating materialized views and query optimization in a health insurance context. \vspace{.4cm}
+
+\input{SQL/table_creation}
+
+\subsubsection{Identify Complex Queries} This is a very important part of identifying the frequent queries that need to be optimized. It refers to the process of analyzing a database workload to pinpoint queries that are resource-intensive, frequently executed, or critical to performance. SQL Server Management Studio or direct SQL query can be used to analyze execution logs and identify the frequently executed and resource-intensive queries. Also, identify frequently used sub-queries, aggregation (Queries with GROUP BY, SUM, AVG)s, or frequent joins between tables. For example, the following query to identify long-running queries: \vspace{.4cm}
 
 \input{SQL/Query_identify}
 
-The above SQL query retrieves the top 10 most time-consuming queries from SQL Server by analyzing the \(\texttt{sys.dm\_exec\_query\_stats}\) Dynamic Management Views(DMV)\footnote{DMVs are system defined views for database administrators and developers to troubleshoot performance issues, identify missing indexes, analyze query performance, and monitor resource usage efficiently.}. It calculates the total elapsed time in milliseconds, counts the number of executions, and fetches the query text using \(\texttt{sys.dm\_exec\_sql\_text}\). The results are sorted by \(\texttt{total\_elapsed\_time}\) in descending order to highlight the slowest queries for performance tuning and optimization. These queries were then used to create materialized views, which were optimized using the PSO algorithm to improve overall query performance.
+As shown in Listing~\ref{lst:IdentifyComplexQueries}, query retrieves the top 10 most time-consuming queries from SQL Server by analyzing the \(\texttt{sys.dm\_exec\_query\_stats}\) Dynamic Management Views(DMV)\footnote{DMVs are system defined views for database administrators and developers to troubleshoot performance issues, identify missing indexes, analyze query performance, and monitor resource usage efficiently.}. It calculates the total elapsed time in milliseconds, counts the number of executions, and fetches the query text using \(\texttt{sys.dm\_exec\_sql\_text}\). The results are sorted by \(\texttt{total\_elapsed\_time}\) in descending order to highlight the slowest queries for performance tuning and optimization. These queries were then used to create materialized views, which were optimized using the PSO algorithm to improve overall query performance.
 
-\subsubsection{ Materialized views Creation (Indexed Views):}\label{Query_decomposition} Once the top slow queries are sorted out, MVs(In MSSQL Server Mvs are implemented as Indexed views ) are created for each of these queries to store their precomputed results.\vspace{.4cm}
+\subsubsection{ Materialized views Creation (Indexed Views)}\label{Query_decomposition} Once the top slow queries are sorted out, MVs(In MSSQL Server Mvs are implemented as Indexed views ) are created for each of these queries to store their precomputed results.\vspace{.4cm}
 
   %\input{SQL/Create_MSSQL}
-  \input{SQL/Create_Views}\vspace{.4cm}
+  \input{SQL/Create_Views}\vspace{.4cm} 
 
-  \subsubsection{View Maintenance and Refresh Strategies:}\label{View_maintainance} Manual or automatic refresh strategies can be set up according to the requirements query to create a scheduled job: \vspace{.4cm}
 
-\input{SQL/Refresh_config}
 
+These materialized/indexed views in listing ~\ref{lst:MV_creation} are designed to optimize query performance in a health insurance database by precomputing and storing aggregated results. The \texttt{TotalClaimsByPatient} view demonstrates the retrieval of claim counts per patient, while the \texttt{TotalTreatmentCostByProvider} view offers a rapid summary of treatment costs by the insurance provider. The \texttt{MonthlyClaimsByProvider} view breaks down monthly claims in detail, enabling efficient analysis of claim trends over time. By materializing these views with unique clustered indexes, the database ensures faster query execution and reduced computational costs on data with frequent access.
+
+
+
+  \subsubsection{View Maintenance and Refresh Strategies}\label{View_maintainance} Incremental, Manual or automatic refresh strategies can be set up according to the requirements query to create a scheduled job:\vspace{.4cm}
+
+\input{SQL/Refresh_config}\vspace{.4cm}
+
+As the database is created here only for demonstration purposes and all data are inserted once manually, therefore materialized views are refreshed manually. This approach is suitable for scenarios where immediate updates are required or when automated refresh mechanisms (like triggers or scheduled jobs) are not feasible. Manual refresh ensures that the views reflect the latest changes in the underlying data, providing accurate results for query processing.\vspace{.4cm}
 
 \subsection{Automation with the PSO algorithm:} \label{Cost_evaluation}
- The following Python code illustrates the implementation of the PSO algorithm for multiple values in the database system. The goal is to minimize query execution time and CPU cost by selecting the most beneficial views to materialize. The following sections provide a detailed explanation of each function in the implementation.
+ The following Python code illustrates the implementation of the PSO algorithm for multiple values in the database system. The goal is to minimize query execution time and CPU cost by selecting the most beneficial views to materialize. This section provides a detailed explanation of each function in the implementation.
 
 
 
@@ -69,7 +77,7 @@ The above SQL query retrieves the top 10 most time-consuming queries from SQL Se
 
 \input{Python/PSO_python}\vspace{.4cm}
 
-A sequence diagram is included here to help better understand the workflow and interactions between the system's components. It provides a step-by-step visualisation of how this code operates, making it more understandable.
+A sequence diagram in figure ~\ref{fig:Sequence_diagram} is included here to help better understand the workflow and interactions between the system's components. It provides a step-by-step visualisation of how this code operates, making it more understandable.
   
  % \input{Python/PSO_Best_Response} \vspace{.4cm}
 
@@ -85,7 +93,7 @@ A sequence diagram is included here to help better understand the workflow and i
     \centering
     \includegraphics[width=0.5\textwidth]{Figure/seq.diagram .png} % Replace 'example-image' with your image file name
     \caption{Sequence diagram of code}
-    \label{fig:sample_image}
+    \label{fig:Sequence_diagram}
 \end{figure}
 
 
@@ -136,7 +144,7 @@ After executing each query several times, both with and without materialized vie
 \begin{comment}\[
 \text{Difference (\%)} = \frac{\text{Without MV} - \text{With MV}}{\text{Without MV}} \times 100 = \frac{2.35 - 0.45}{2.35} \times 100 \approx 80.85\%
 \]
-\end{comment}
+\end{comment}\vspace{.4cm}
 
 The output indicates an 80.85\% improvement in performance. Here, \( W = 2.35 \) represents the initial execution time (without optimization), and \( M = 0.45 \) represents the improved execution time (with optimization). This significant reduction in execution time demonstrates the effectiveness of the optimization technique, as it reduces the query processing time by approximately 80.85\%, leading to faster and more efficient database operations.\vspace{.4cm}
 
@@ -173,9 +181,9 @@ The output indicates an 80.85\% improvement in performance. Here, \( W = 2.35 \)
 
 \end{itemize} \vspace{.4cm}
 
-    \item \textbf{CPU performance analysis:}
+\item \textbf{CPU performance analysis:}
 
-The following \hyperref[fig:cpu_usage]{bar chart} illustrates the average CPU usage for query execution before and after materialized views (MVs) are implemented. The x-axis is used to represent two conditions: \textit{Before} MVs (without materialized views) and \textit{After} MVs (with materialized views). The y-axis is used to represent the average CPU usage as a percentage. As it is evident from the graph, the CPU utilization average went down significantly from \textbf{85\%} (before MVs) to \textbf{30\%} (after MVs), showcasing the effectiveness of materialized views in reducing CPU burden in query processing. The reduction can be accounted for due to precomputation and caching of query output, which reduces real-time computation and subsequently CPU consumption.
+The following \hyperref[fig:cpu_usage]{\textbf{bar chart}} illustrates the average CPU usage for query execution before and after materialized views (MVs) are implemented. The x-axis is used to represent two conditions: \textit{Before} MVs (without materialized views) and \textit{After} MVs (with materialized views). The y-axis is used to represent the average CPU usage as a percentage. As it is evident from the graph, the CPU utilization average went down significantly from \textbf{85\%} (before MVs) to \textbf{30\%} (after MVs), showcasing the effectiveness of materialized views in reducing CPU burden in query processing. The reduction can be accounted for due to precomputation and caching of query output, which reduces real-time computation and subsequently CPU consumption.
 
 %\input{Table_chart/cpu_usage}
 

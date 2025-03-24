@@ -6,6 +6,8 @@
 \definecolor{bordercolor}{rgb}{0.7,0.7,0.7}  % ✅ Left border color (gray)
 \definecolor{codeblue}{rgb}{0,0,0.8}  % ✅ Blue for SQL keywords
 
+\definecolor{commentcolor}{RGB}{0, 128, 0}  % Green for comments
+\definecolor{titlecolor}{RGB}{0, 0, 255}    % Blue for titles
 % ✅ Define SQL language with correct comment handling
 \lstdefinelanguage{MySQL}{
     keywords={SELECT, FROM, WHERE, JOIN, ON, INNER, OUTER, LEFT, RIGHT, FULL, GROUP, BY, ORDER, ASC, DESC, AS, COUNT, SUM, AVG, MAX, MIN, DISTINCT, INSERT, INTO, VALUES, UPDATE, SET, DELETE, CREATE, TABLE, PRIMARY, FOREIGN, KEY, DEFAULT, NULL, NOT, CHECK, CONSTRAINT, INDEX, VIEW, MATERIALIZED, PROCEDURE, FUNCTION, TRIGGER, DATABASE, ALTER, DROP, EXEC, IF, EXISTS, UNION, ALL, CASE, WHEN, THEN, ELSE, END, CAST, CONVERT, LIKE, IN, BETWEEN, AND, OR, HAVING, LIMIT, OFFSET},
@@ -24,6 +26,7 @@
     basicstyle=\ttfamily\footnotesize,
     breaklines=true,
     captionpos=b,
+    title=\color{titlecolor}\textbf{Table Creation Script}, % Title in blue
     numbers=left,      % ✅ Enables row numbers on the left
     stepnumber=1,      % ✅ Row numbers increment by 1
     firstnumber=1,     % ✅ Starts numbering at 1
@@ -36,64 +39,59 @@
     language=MySQL  % ✅ Uses SQL keyword highlighting
 }
   
-\begin{lstlisting}[style=sqlstyle, caption={Materialized view creation},]
---Materialized View for Query 1: Total Sales by Customer
-
-CREATE VIEW totalsalesbycustomer
-WITH schemabinding
+\begin{lstlisting}[style=sqlstyle, caption={Materialized view creation}, label=lst:MV_creation]
+--Materialized View for Query 1: Total Claims By Patient
+CREATE VIEW TotalClaimsByPatient
+WITH SCHEMABINDING
 AS
-  SELECT customerid,
-         Sum(totalamount) AS TotalSales
-  FROM   dbo.orders
-  GROUP  BY customerid;
+SELECT PatientID, COUNT_BIG(*) AS TotalClaims
+FROM dbo.Claims
+GROUP BY PatientID;
+GO
 
-go
+CREATE UNIQUE CLUSTERED INDEX IX_TotalClaimsByPatient
+ON TotalClaimsByPatient (PatientID);
+GO
 
-CREATE UNIQUE CLUSTERED INDEX ix_totalsalesbycustomer
-  ON totalsalesbycustomer (customerid);
-
-go 
-
--- This view calculates the total sales amount for each customer by aggregating the TotalAmount column from the Orders table.
-
---Materialized View for Query 2: Total Quantity by Product
+-- This view calculates the total number of claims submitted by each patient. It groups the data by PatientID and uses COUNT_BIG(*) to count all related claims.
 
 
-CREATE VIEW totalquantitybyproduct
-WITH schemabinding
+
+--Materialized View for Query 2: TotalTreatmentCostByProvider
+
+
+CREATE VIEW TotalTreatmentCostByProvider
+WITH SCHEMABINDING
 AS
-  SELECT productid,
-         Sum(quantity) AS TotalQuantity
-  FROM   dbo.orderdetails
-  GROUP  BY productid;
+SELECT c.InsuranceProviderID, SUM(t.Cost) AS TotalCost
+FROM dbo.Treatments t
+JOIN dbo.Claims c ON t.ClaimID = c.ClaimID
+GROUP BY c.InsuranceProviderID;
+GO
 
-go
+CREATE UNIQUE CLUSTERED INDEX IX_TotalTreatmentCostByProvider
+ON TotalTreatmentCostByProvider (InsuranceProviderID);
+GO
 
-CREATE UNIQUE CLUSTERED INDEX ix_totalquantitybyproduct
-  ON totalquantitybyproduct (productid);
+-- This view computes the total treatment cost for each insurance provider. It joins the Treatments and Claims tables and sums up the Cost field, grouped by InsuranceProviderID.
 
-go 
+--Materialized View for Query 3: MonthlyClaimsByProvider
 
--- This view calculates the total quantity sold for each product by aggregating the Quantity column from the OrderDetails table.
-
---Materialized View for Query 3: Monthly Sales
-
-CREATE VIEW monthlysales
-WITH schemabinding
+CREATE VIEW MonthlyClaimsByProvider
+WITH SCHEMABINDING
 AS
-  SELECT Year(orderdate)  AS SalesYear,
-         Month(orderdate) AS SalesMonth,
-         Sum(totalamount) AS MonthlySales
-  FROM   dbo.orders
-  GROUP  BY Year(orderdate),
-            Month(orderdate);
+SELECT 
+    c.InsuranceProviderID, 
+    YEAR(c.ClaimDate) AS ClaimYear, 
+    MONTH(c.ClaimDate) AS ClaimMonth, 
+    COUNT_BIG(*) AS TotalClaims
+FROM dbo.Claims c
+GROUP BY c.InsuranceProviderID, YEAR(c.ClaimDate), MONTH(c.ClaimDate);
+GO
 
-go
+CREATE UNIQUE CLUSTERED INDEX IX_MonthlyClaimsByProvider
+ON MonthlyClaimsByProvider (InsuranceProviderID, ClaimYear, ClaimMonth);
+GO
 
-CREATE UNIQUE CLUSTERED INDEX ix_monthlysales
-  ON monthlysales (salesyear, salesmonth);
-
-go 
-
--- This view calculates the total sales amount for each month by aggregating the TotalAmount column from the Orders table, grouped by year and month.
+-- This view summarizes the number of claims submitted per insurance provider for each month. It extracts the year and month from ClaimDate and counts claims grouped by provider, year, and month.
 \end{lstlisting}

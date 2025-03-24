@@ -37,11 +37,47 @@
 }
 
 \begin{lstlisting}[style=sqlstyle, caption={SQL query to Create Database}]
-IF NOT EXISTS (SELECT * FROM sys.databases WHERE name = 'HealthInsuranceDB')
-BEGIN
-    CREATE DATABASE HealthInsuranceDB;
-END
-GO
+-- Create InsuranceProviders Table
+CREATE TABLE InsuranceProviders (
+    InsuranceProviderID INT PRIMARY KEY IDENTITY(1,1),
+    ProviderName NVARCHAR(100) NOT NULL,
+    Address NVARCHAR(255),
+    City NVARCHAR(100),
+    State NVARCHAR(50),
+    ZipCode NVARCHAR(20)
+);
 
-USE HealthInsuranceDB;
+-- Create Patients Table
+CREATE TABLE Patients (
+    PatientID INT PRIMARY KEY IDENTITY(1,1),
+    FirstName NVARCHAR(50) NOT NULL,
+    LastName NVARCHAR(50) NOT NULL,
+    DateOfBirth DATE NOT NULL,
+    Gender CHAR(1) CHECK (Gender IN ('M', 'F', 'O')), -- M: Male, F: Female, O: Other
+    Address NVARCHAR(255),
+    City NVARCHAR(100),
+    State NVARCHAR(50),
+    ZipCode NVARCHAR(20),
+    InsuranceProviderID INT FOREIGN KEY REFERENCES InsuranceProviders(InsuranceProviderID)
+);
+
+-- Create Claims Table
+CREATE TABLE Claims (
+    ClaimID INT PRIMARY KEY IDENTITY(1,1),
+    PatientID INT FOREIGN KEY REFERENCES Patients(PatientID),
+    InsuranceProviderID INT FOREIGN KEY REFERENCES InsuranceProviders(InsuranceProviderID),
+    ClaimDate DATE NOT NULL,
+    ClaimAmount DECIMAL(18, 2) NOT NULL,
+    Status NVARCHAR(50) CHECK (Status IN ('Pending', 'Approved', 'Rejected'))
+);
+
+-- Create Treatments Table
+CREATE TABLE Treatments (
+    TreatmentID INT PRIMARY KEY IDENTITY(1,1),
+    ClaimID INT FOREIGN KEY REFERENCES Claims(ClaimID),
+    TreatmentDate DATE NOT NULL,
+    TreatmentType NVARCHAR(100) NOT NULL,
+    Cost DECIMAL(18, 2) NOT NULL
+);
+GO
 \end{lstlisting}

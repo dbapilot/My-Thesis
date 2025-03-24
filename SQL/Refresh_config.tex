@@ -36,7 +36,24 @@
     language=MySQL  % ✅ Uses SQL keyword highlighting
 }
          \begin{lstlisting}[style=sqlstyle]
--- Example of creating a job to refresh a materialized view automatically every hour
+
+     ---1. Incremental refresh 
+     
+         CREATE TRIGGER trg_UpdateClaims
+ON Claims
+AFTER INSERT, UPDATE, DELETE
+AS
+BEGIN
+    -- Refresh materialized view logic here
+    EXEC sp_refreshview 'TotalClaimsByPatient';
+END;
+GO
+
+--This trigger ensures that the TotalClaimsByPatient materialized view stays up to date. It automatically refreshes the view whenever records in the Claims table are inserted, updated, or deleted by calling sp_refreshview.
+
+
+
+     ---2. Example of creating a job to refresh a materialized view automatically every hour
 
 USE msdb;
 GO
@@ -50,9 +67,11 @@ EXEC dbo.sp_add_job
 -- Add a job step
 EXEC sp_add_jobstep
     @job_name = N'RefreshMaterializedViewJob',
-    @step_name = N'RefreshViewStep',
+    @step_name = N'RefreshViews',
     @subsystem = N'TSQL',
-    @command = N'EXEC RefreshMaterializedView;',
+    @command = 'EXEC sp_refreshview ''TotalClaimsByPatient'';
+               EXEC sp_refreshview ''TotalTreatmentCostByProvider'';
+               EXEC sp_refreshview ''MonthlyClaimsByProvider'';',
     @retry_attempts = 3,
     @retry_interval = 5;
 
@@ -76,4 +95,12 @@ EXEC dbo.Sp_add_jobserver
 
 go 
 
+
+
+      ---3. Manual Refresh
+EXEC sp_refreshview 'TotalClaimsByPatient';
+EXEC sp_refreshview 'TotalTreatmentCostByProvider';
+EXEC sp_refreshview 'MonthlyClaimsByProvider';
+
+--The EXEC sp_refreshview statements refresh the metadata for each specified view. This ensures that the views are up to date with any changes made to the underlying tables (like added columns or altered data types), helping to prevent potential schema-related errors during future queries or operations.
         \end{lstlisting}
