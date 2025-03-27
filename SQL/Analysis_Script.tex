@@ -1,0 +1,132 @@
+% Define colors
+\definecolor{codegreen}{rgb}{0,0.6,0}  % ✅ Green for comments
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}  % ✅ Gray for numbers
+\definecolor{codepurple}{rgb}{0.58,0,0.82}  % ✅ Purple for strings
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}  % ✅ Light gray background
+\definecolor{bordercolor}{rgb}{0.7,0.7,0.7}  % ✅ Left border color (gray)
+\definecolor{codeblue}{rgb}{0,0,0.8}  % ✅ Blue for SQL keywords
+
+\definecolor{commentcolor}{RGB}{0, 128, 0}  % Green for comments
+\definecolor{titlecolor}{RGB}{0, 0, 255}    % Blue for titles
+% ✅ Define SQL language with correct comment handling
+\lstdefinelanguage{MySQL}{
+    keywords={SELECT, FROM, WHERE, JOIN, ON, INNER, OUTER, LEFT, RIGHT, FULL, GROUP, BY, ORDER, ASC, DESC, AS, COUNT, SUM, AVG, MAX, MIN, DISTINCT, INSERT, INTO, VALUES, UPDATE, SET, DELETE, CREATE, TABLE, PRIMARY, FOREIGN, KEY, DEFAULT, NULL, NOT, CHECK, CONSTRAINT, INDEX, VIEW, MATERIALIZED, PROCEDURE, FUNCTION, TRIGGER, DATABASE, ALTER, DROP, EXEC, IF, EXISTS, UNION, ALL, CASE, WHEN, THEN, ELSE, END, CAST, CONVERT, LIKE, IN, BETWEEN, AND, OR, HAVING, LIMIT, OFFSET},
+    sensitive=false,
+    morestring=[b]',  % ✅ Strings in single quotes
+    morestring=[b]",  % ✅ Strings in double quotes
+    morecomment=[l][\color{codegreen}]{--}  % ✅ Ensures full line comment in green
+}
+
+\lstdefinestyle{sqlstyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},  % ✅ Comments in green
+    keywordstyle=\bfseries\color{codeblue},  % ✅ SQL Keywords in Blue & Bold
+    numberstyle=\scriptsize\color{codegray},  % ✅ Row numbers in gray
+    stringstyle=\color{codepurple},  % ✅ Strings in purple
+    basicstyle=\ttfamily\footnotesize,
+    breaklines=true,
+    captionpos=b,
+    title=\color{titlecolor}\textbf{Table Creation Script}, % Title in blue
+    numbers=left,      % ✅ Enables row numbers on the left
+    stepnumber=1,      % ✅ Row numbers increment by 1
+    firstnumber=1,     % ✅ Starts numbering at 1
+    numbersep=8pt,     % ✅ Increases space between numbers and SQL code
+    xleftmargin=3em,   % ✅ Ensures space inside the left border
+    frame=single,      % ✅ Keeps a single border (left-aligned)
+    framesep=5pt,      % ✅ Ensures space inside the frame
+    rulesepcolor=\color{bordercolor},  % ✅ Matches row numbers with left border
+    rulecolor=\color{bordercolor},  % ✅ Sets left border color
+    language=MySQL  % ✅ Uses SQL keyword highlighting
+}
+  
+\begin{lstlisting}[style=sqlstyle, caption={Materialized view creation}, label=lst:Analysis]
+USE healthInsuranceDB;
+GO
+
+-- Clear caches for accurate testing (development only)
+DBCC DROPCLEANBUFFERS;
+DBCC FREEPROCCACHE;
+GO
+
+PRINT '===========================================================';
+PRINT 'PERFORMANCE COMPARISON: DIRECT QUERIES vs MATERIALIZED VIEWS';
+PRINT '===========================================================';
+GO
+
+-- Enable time statistics
+SET STATISTICS TIME ON;
+GO
+
+-- ===========================================================
+-- TEST CASE 1: Total Claims By Patient
+-- ===========================================================
+PRINT CHAR(10) + '1. TOTAL CLAIMS BY PATIENT' + CHAR(10) + REPLICATE('-', 40);
+
+PRINT 'DIRECT QUERY:';
+SELECT 
+    p.PatientID,
+    p.FirstName,
+    p.LastName,
+    COUNT(c.ClaimID) AS TotalClaims
+FROM Patients p
+JOIN Claims c ON p.PatientID = c.PatientID
+GROUP BY p.PatientID, p.FirstName, p.LastName;
+
+PRINT CHAR(10) + 'MATERIALIZED VIEW:';
+SELECT * FROM TotalClaimsByPatient;
+GO
+
+-- ===========================================================
+-- TEST CASE 2: Total Treatment Cost By Provider
+-- ===========================================================
+PRINT CHAR(10) + '2. TOTAL TREATMENT COST BY PROVIDER' + CHAR(10) + REPLICATE('-', 40);
+
+PRINT 'DIRECT QUERY:';
+SELECT 
+    ip.ProviderName,
+    SUM(t.Cost) AS TotalTreatmentCost,
+    COUNT(t.TreatmentID) AS TreatmentCount
+FROM Treatments t
+JOIN Claims c ON t.ClaimID = c.ClaimID
+JOIN InsuranceProviders ip ON c.InsuranceProviderID = ip.InsuranceProviderID
+GROUP BY ip.ProviderName;
+
+PRINT CHAR(10) + 'MATERIALIZED VIEW:';
+SELECT * FROM TotalTreatmentCostByProvider;
+GO
+
+-- ===========================================================
+-- TEST CASE 3: Monthly Claims By Provider
+-- ===========================================================
+PRINT CHAR(10) + '3. MONTHLY CLAIMS BY PROVIDER' + CHAR(10) + REPLICATE('-', 40);
+
+PRINT 'DIRECT QUERY:';
+SELECT 
+    YEAR(c.ClaimDate) AS ClaimYear,
+    MONTH(c.ClaimDate) AS ClaimMonth,
+    ip.ProviderName,
+    COUNT(c.ClaimID) AS ClaimCount,
+    SUM(c.ClaimAmount) AS TotalClaimAmount
+FROM Claims c
+JOIN InsuranceProviders ip ON c.InsuranceProviderID = ip.InsuranceProviderID
+GROUP BY YEAR(c.ClaimDate), MONTH(c.ClaimDate), ip.ProviderName;
+
+PRINT CHAR(10) + 'MATERIALIZED VIEW:';
+SELECT * FROM MonthlyClaimsByProvider;
+GO
+
+-- Disable statistics
+SET STATISTICS TIME OFF;
+GO
+
+PRINT CHAR(10) + '===========================================================';
+PRINT 'SUMMARY OF RESULTS';
+PRINT '===========================================================';
+PRINT 'Compare the CPU time and elapsed time values in Messages tab for:';
+PRINT '1. Total Claims By Patient';
+PRINT '2. Total Treatment Cost By Provider';
+PRINT '3. Monthly Claims By Provider';
+PRINT '';
+PRINT 'Note: Materialized views will show significantly lower times';
+PRINT '===========================================================';
+\end{lstlisting}

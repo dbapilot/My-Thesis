@@ -22,6 +22,25 @@
 }
          \begin{lstlisting}
 SET STATISTICS TIME ON;
+GO
+-- TEST CASE 1: Total Claims By Patient
+-- ===========================================================
+PRINT CHAR(10) + '1. TOTAL CLAIMS BY PATIENT' + CHAR(10) + REPLICATE('-', 40);
 
+PRINT 'DIRECT QUERY:';
+SELECT 
+    p.PatientID,
+    p.FirstName,
+    p.LastName,
+    COUNT(c.ClaimID) AS TotalClaims
+FROM Patients p
+JOIN Claims c ON p.PatientID = c.PatientID
+GROUP BY p.PatientID, p.FirstName, p.LastName;
 
+PRINT CHAR(10) + 'MATERIALIZED VIEW:';
+SELECT * FROM TotalClaimsByPatient;
+GO
+-- Disable statistics
+SET STATISTICS TIME OFF;
+GO
         \end{lstlisting}

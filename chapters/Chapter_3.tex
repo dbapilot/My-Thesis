@@ -12,7 +12,7 @@ This chapter will focus on the materialized view selection processes, implementa
       \item\textbf{ Write the base query :} Begin by writing the base  SQL query that defines the materialized views. It should contain all necessary data, join, aggregation, or other complex operations that need to be optimized. \vspace{0.4cm}
       \input{SQL/Base_query}
       
-      \item\textbf{ Create the materialized view :} After writing the query, proceed to create a materialized view (indexed view) in SQL server using the `` with schemabinding'' clause starting with schema and view name. Schema binding options bind the view to the schema of the underlying tables, preventing changes to the base tables from affecting the view's definition. %\cite*{risingwave2024}.\vspace{0.4cm}
+      \item\textbf{ Create the materialized view :} After writing the query, proceed to create an indexed view in SQL server using the `` with schemabinding'' clause starting with schema and view name. Schema binding options bind the view to the schema of the underlying tables, preventing changes to the base tables from affecting the view's definition. %\cite*{risingwave2024}.\vspace{0.4cm}
 
       \input{SQL/MV_on_mssql}
 
@@ -44,7 +44,7 @@ This statement materializes the view and stores the result in a clustered index.
     
     \item \textbf{Storage cost}: Materialized views require additional disk space, particularly for large databases. The gain in query performance should offset the storage cost of MV. Disabled views still incur storage costs, even if they're not maintained or used for query optimization. As data volume grows, the storage costs for MV can increase significantly. This aspect should be considered when designing a long-term strategy for MV. 
      
-    \item \textbf{Usage cost:} Materialized views are great. However, there is a cost associated with the jobs that maintain them. The cost can be calculated using the following formula\cite{10.1145/2206869.2206874}:
+    \item \textbf{Usage cost:} Materialized views are great to use. However, there is a cost associated with the jobs that maintain them. The cost can be calculated using the following formula\cite{10.1145/2206869.2206874}:
 
     \input{Math/Total_cost}
 
@@ -77,7 +77,7 @@ A well-structured and systematic selection approach is needed to optimize query 
 \subsubsection{Materialized View Selection Approach}
   
 \begin{enumerate}[label=\alph*)]
-    \item \textbf{Query identification:} This is the first step in selecting materialized views to identify which queries are most frequently executed and resource intensive. The prime queries involve complex joins, aggregation, or large datasets.
+    \item \textbf{Query identification:} This is the first step in selecting materialized views to identify which queries are most frequently executed and resource intensive. The prime queries involve a combination of complex joins, aggregation, or large datasets.
     
     \item \textbf{Analyze query patterns:} This step involves analyzing execution logs to determine:
     

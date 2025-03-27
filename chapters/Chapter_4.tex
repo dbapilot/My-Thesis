@@ -115,9 +115,11 @@ A sequence diagram in figure ~\ref{fig:Sequence_diagram} is included here to hel
 \textbf{For the full code and further test cases, please refer to the Appendix~\ref{fullcode:Fullcode}.}
 
 
-\subsection{Performance Testing and Data Analysis} After creating the materialized views, performance metrics were collected using SQL query statistics. Query execution times and CPU usages are recorded using built-in database monitoring tools, such as Dynamic Management Views (DMVs) or with the help of SQL queries. \vspace{.4cm}
+\subsection{Performance Testing and Data Analysis} After creating the materialized views on the database \texttt{"HealthInsuranceDB"}, performance metrics were collected using SQL query statistics. Query elapsed times and CPU usages are recorded using built-in database monitoring tools, such as Dynamic Management Views (DMVs) or with the help of SQL queries. \vspace{.4cm}
 
  \input{SQL/Query_statistics}
+
+ \textbf{The full script to analyse performance is provided in listing ~\ref{lst:Analysis}.}
 
 \begin{enumerate}
 
@@ -128,11 +130,13 @@ The tests were performed using \textit{MSSQL} on a system running \textit{Window
     \item \textbf{System Type}: 64-bit operating system, x64-based processor.
     \item \textbf{Processor}: 12th Gen Intel(R) Core(TM) i7-1255U, 1.70 GHz.
     \item \textbf{RAM}: 32 GB.
+    \item \textbf{Server}: MSSQL.
 \end{itemize}\vspace{.4cm}
-After executing each query several times, both with and without materialized views, the \textit{response time}\footnote{Time taken to execute queries} and \textit{CPU usage}\footnote{Percentage of CPU utilization during query execution and refresh processes.} were noted in the "Messages" tab in SSMS. The effectiveness of the materialized views was also evaluated using a comparison table and the percentage difference formula.
+
+After executing each query multiple times, both with and without materialized views, the \textit{response time}\footnote{Time taken to execute queries} and \textit{CPU usage}\footnote{Percentage of CPU utilization during query execution and refresh processes.} were noted in from the "Messages" tab in SSMS. The effectiveness of the materialized views was also evaluated using a comparison table and the percentage difference formula.
 
 \begin{itemize}
-\item\textbf{Differences between optimization methods:} The \hyperref[comparison_table]{table~\ref*{comparison_table}} presents a performance comparison of query execution times using three different approaches: \textit{Direct SELECT Aggregation}, \textit{Indexed View }, and \textit{Materialized View}. The results show that the MV approach consistently outperforms the other methods, with an average execution time of \textbf{5 ms}, compared to \textbf{14.8 ms} for indexed View query and \textbf{66.6 ms} for direct \textit{SELECT} aggregation. This demonstrates that materialized views significantly reduce query execution times, providing a \textbf{92.5\%} improvement over direct aggregation and a \textbf{66.2\%} improvement over indexed views. The consistent performance across multiple runs highlights the reliability and efficiency of materialized views in optimizing database queries.\vspace{.4cm}
+\item\textbf{Differences between optimization methods:} The following \hyperref[comparison_table]{\textit{Table}~\ref*{comparison_table}} presents a performance comparison of elapsed time using two different approaches: \textit{Direct SELECT Aggregation}, and \textit{Materialized View}. The results show that the MV approach consistently outperforms the other method, with an average execution time of \textbf{69.2 ms}, compared to \textbf{106.6 ms} for direct \textit{SELECT} aggregation. This demonstrates that materialized views significantly reduce query execution time, providing a \textbf{35.08\%} improvement over direct aggregation. The consistent performance across multiple runs highlights the reliability and efficiency of materialized views in optimizing database queries.\vspace{.4cm}
  
  \input{Table/Response_time_comparion}\vspace{.4cm
  }
@@ -146,26 +150,16 @@ After executing each query several times, both with and without materialized vie
 \]
 \end{comment}\vspace{.4cm}
 
-The output indicates an 80.85\% improvement in performance. Here, \( W = 2.35 \) represents the initial execution time (without optimization), and \( M = 0.45 \) represents the improved execution time (with optimization). This significant reduction in execution time demonstrates the effectiveness of the optimization technique, as it reduces the query processing time by approximately 80.85\%, leading to faster and more efficient database operations.\vspace{.4cm}
+The output indicates an \textit{39.47\% }improvement in performance. Here, \( W = 114 \) represents the initial execution time (without optimization), and \( M = 69 \) represents the improved execution time (with optimization). This significant reduction in execution time demonstrates the effectiveness of the optimization technique, as it reduces the query processing time by approximately \textit{39.47\%}, leading to faster and more efficient database operations.\vspace{.4cm}
 
-\item \textbf{Impact of MV on query execution time:} The performance of queries with and without materialized views (MV) is compared in \hyperref[tab:performance]{Table~\ref*{tab:performance}}. The table shows the execution times for three queries without materialized views and with materialized views, along with the percentage difference in performance. As evident from the results, the use of materialized views significantly reduces query execution time, with improvements ranging from **79.34\%** to **83.61\%**.
+\item \textbf{Impact of MV on CPU and elapsed time:} The \hyperref[tab:performance]{\textit{Table}~\ref*{tab:performance}} shows the execution metrics for three queries, highlighting significant improvements when using MVs. Particularly is the \textit{MonthlyClaimsByProvider} where CPU and elapsed times were reduced by factors 47x and 38x, respectively. The \textit{"TotalTreatmentCostByProvider"} showed modest benefits (1.1× and 1.6×), while the  \textit{"TotalClaimsByPatient"} demonstrated more notable gains, with execution times improved by approximately 6.3×. The results confirm that materialized views can substantially enhance query performance, especially for complex data aggregations and frequent report generation.
 
-\begin{table}[h!]
-    \centering
-    \caption{Performance Comparison}
-    \label{tab:performance}
-    \rowcolors{2}{gray!10}{white} % Alternate row colors
-    \begin{tabular}{lccc}
-        \toprule
-        \rowcolor{blue!10} % Header row color
-        \textbf{Query} & \textbf{Without MV (s)} & \textbf{With MV (s)} & \textbf{Difference (\%)} \\
-        \midrule
-        Query 1 & 2.35 & 0.45 & \cellcolor{white!20}80.85 \\
-        Query 2 & 3.78 & 0.62 & \cellcolor{gray!10}83.61 \\
-        Query 3 & 4.21 & 0.87 & \cellcolor{white!20}79.34 \\
-        \bottomrule
-    \end{tabular}
-\end{table}
+
+\input{Table/updated}
+
+
+%\input{Table/cpu_performance}
+
 
 %\item \textbf{Bar Chart Comparison:} As shown in the \hyperref[fig:execution-plan]{barchart}, the execution time demonstrates the optimization achieved by using materialized views. Direct select aggregation is the least efficient as it involves computing aggregation directly from the raw data during query execution, which is resource-intensive and time-consuming. On the other hand, a materialized view is the fastest one. Although the choice of method depends on the trade-off between query speed, storage requirements, and maintenance.
 
@@ -183,7 +177,7 @@ The output indicates an 80.85\% improvement in performance. Here, \( W = 2.35 \)
 
 \item \textbf{CPU performance analysis:}
 
-The following \hyperref[fig:cpu_usage]{\textbf{bar chart}} illustrates the average CPU usage for query execution before and after materialized views (MVs) are implemented. The x-axis is used to represent two conditions: \textit{Before} MVs (without materialized views) and \textit{After} MVs (with materialized views). The y-axis is used to represent the average CPU usage as a percentage. As it is evident from the graph, the CPU utilization average went down significantly from \textbf{85\%} (before MVs) to \textbf{30\%} (after MVs), showcasing the effectiveness of materialized views in reducing CPU burden in query processing. The reduction can be accounted for due to precomputation and caching of query output, which reduces real-time computation and subsequently CPU consumption.
+The following \hyperref[fig:cpu_usage]{\textit{bar chart}} illustrates the average CPU usage for query execution before and after materialized views (MVs) are implemented. The x-axis is used to represent two conditions: \textit{Before} MVs (without materialized views) and \textit{After} MVs (with materialized views). The y-axis is used to represent the average CPU usage as a percentage. As it is evident from the graph, the CPU utilization average went down significantly from \textbf{85\%} (before MVs) to \textbf{30\%} (after MVs), showcasing the effectiveness of materialized views in reducing CPU burden in query processing. The reduction can be accounted for due to precomputation and caching of query output, which reduces real-time computation and subsequently CPU consumption.
 
 %\input{Table_chart/cpu_usage}
 

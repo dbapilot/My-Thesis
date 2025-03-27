@@ -1,0 +1,23 @@
+
+% Optional: Define custom colors
+\definecolor{headerblue}{RGB}{200, 220, 255}
+\definecolor{rowgray}{gray}{0.95}
+\definecolor{lightgreen}{RGB}{220, 255, 220}
+\definecolor{lightred}{RGB}{255, 230, 230}
+
+\begin{table}[h!]
+    \centering
+    \caption{Performance Comparison}
+    %\label{tab:performance}
+    \rowcolors{2}{gray!10}{white} % Alternate row colors
+    \begin{tabular}{lccc}
+        \toprule
+        \rowcolor{blue!10} % Header row color
+        \textbf{Query} & \textbf{Without MV (s)} & \textbf{With MV (s)} & \textbf{Difference (\%)} \\
+        \midrule
+        Query 1 & 2.35 & 0.45 & \cellcolor{white!20}80.85 \\
+        Query 2 & 3.78 & 0.62 & \cellcolor{gray!10}83.61 \\
+        Query 3 & 4.21 & 0.87 & \cellcolor{white!20}79.34 \\
+        \bottomrule
+    \end{tabular}
+\end{table}

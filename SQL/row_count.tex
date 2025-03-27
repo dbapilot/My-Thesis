@@ -41,7 +41,8 @@
 SELECT Count(*) AS MV_RowCount
 FROM   materializedviewname;
 
--- Row Count in Base Table with Same Filter ConditionSELECT Count(*) AS basetable_rowcount
+-- Row Count in Base Table with Same Filter Condition
+SELECT Count(*) AS basetable_rowcount
 FROM   basetablename
 WHERE  <filter_conditions>;
 

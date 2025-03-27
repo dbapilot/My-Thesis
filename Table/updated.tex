@@ -1,0 +1,36 @@
+
+
+% Define custom colors
+\definecolor{thesisblue}{RGB}{25,84,166}  % Darker, more professional blue
+\definecolor{rowgray}{RGB}{248,248,248}   % Very light gray for subtle contrast
+
+
+\begin{table}[h!]
+\centering
+\caption{Performance Comparison}
+\label{tab:performance}
+\renewcommand{\arraystretch}{1.6} % Increased row height
+\setlength{\tabcolsep}{10pt} % Optimal column spacing
+\begin{tabular}{|>{\RaggedRight}p{3.2cm}|rr|rr|rr|}
+\hline
+\rowcolor{thesisblue}
+\multicolumn{1}{|>{\centering\color{white}}p{3.2cm}|}{\textbf{Test Case}} & 
+\multicolumn{2}{>{\centering\color{white}}p{2.4cm}|}{\textbf{Direct (ms)}} & 
+\multicolumn{2}{>{\centering\color{white}}p{2.4cm}|}{\textbf{MV (ms)}} & 
+\multicolumn{2}{>{\centering\color{white}}p{2.8cm}|}{\textbf{Improvement Factor}} \\
+\cline{2-7}
+\rowcolor{thesisblue}
+& \color{white}\textbf{CPU} & \color{white}\textbf{Elap.} & \color{white}\textbf{CPU} & \color{white}\textbf{Elap.} & \color{white}\textbf{CPU} & \color{white}\textbf{Elap.} \\
+\hline
+\rowcolor{rowgray}
+TotalClaims\\ByPatient & 203 & 4,983 & 32 & 797 & 6.3$\times$ & 6.3$\times$ \\ \hline
+TotalTreatment\\CostByProvider & 297 & 110 & 282 & 68 & 1.1$\times$ & 1.6$\times$ \\ \hline
+\rowcolor{rowgray}
+MonthlyClaims\\ByProvider & 47 & 38 & 1 & 1 & 47$\times$ & 38$\times$ \\ \hline
+\end{tabular}
+
+\vspace{6pt}
+{\footnotesize 
+\textbf{Note:} Elap. = Elapsed Time. Improvement factors are calculated as Direct/MV time ratios. \\
+Tests conducted on SQL Server 2019 (SSMS v18.4).}
+\end{table}
