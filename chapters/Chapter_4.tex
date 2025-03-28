@@ -44,6 +44,10 @@ The following SQL query checks if the database \texttt{HealthInsuranceDB} exists
 \subsubsection{Table Creation} A database schema with four tables, namely \texttt{InsuranceProviders}, \texttt{Patients}, \texttt{Claims}, and \texttt{Treatments}, are created with the help of the following SQL query. These tables are intended to store information on insurance providers, patient details, insurance claims, and associated treatments respectively. Foreign key constraints ensure data integrity as they set up relationships between the tables, making this schema suitable for demonstrating materialized views and query optimization in a health insurance context. \vspace{.4cm}
 
 \input{SQL/table_creation}
+\subsubsection{Inserting Random Data in Database}
+One million patient records are automatically generated through a looped SQL script~\ref{lst:inserting_data}. Random values are assigned for date of birth (ranging from 0-100 years), gender (evenly distributed among M/F/O), and location data (address, city, state, and zip code).\vspace{.4cm}
+
+ \input{SQL/inserting_data}
 
 \subsubsection{Identify Complex Queries} This is a very important part of identifying the frequent queries that need to be optimized. It refers to the process of analyzing a database workload to pinpoint queries that are resource-intensive, frequently executed, or critical to performance. SQL Server Management Studio or direct SQL query can be used to analyze execution logs and identify the frequently executed and resource-intensive queries. Also, identify frequently used sub-queries, aggregation (Queries with GROUP BY, SUM, AVG)s, or frequent joins between tables. For example, the following query to identify long-running queries: \vspace{.4cm}
 
@@ -62,7 +66,7 @@ These materialized/indexed views in listing ~\ref{lst:MV_creation} are designed 
 
 
 
-  \subsubsection{View Maintenance and Refresh Strategies}\label{View_maintainance} Incremental, Manual or automatic refresh strategies can be set up according to the requirements query to create a scheduled job:\vspace{.4cm}
+  \subsubsection{View Maintenance and Refresh Strategies}\label{View_maintainance} Incremental, Manual or automatic refresh strategies can be set up according to the requirements query to create a scheduled job with the help of script as in the listing ~\ref{lst:Maintenance_and_Refresh_Strategies}.\vspace{.4cm}
 
 \input{SQL/Refresh_config}\vspace{.4cm}
 
@@ -150,13 +154,11 @@ After executing each query multiple times, both with and without materialized vi
 \]
 \end{comment}\vspace{.4cm}
 
-The output indicates an \textit{39.47\% }improvement in performance. Here, \( W = 114 \) represents the initial execution time (without optimization), and \( M = 69 \) represents the improved execution time (with optimization). This significant reduction in execution time demonstrates the effectiveness of the optimization technique, as it reduces the query processing time by approximately \textit{39.47\%}, leading to faster and more efficient database operations.\vspace{.4cm}
+The output indicates an \textit{39.47\% }improvement in performance. Here, \( W = 114 \) represents the initial execution time (without optimization), and \( M = 69 \) represents the improved execution time (with optimization). This significant reduction in execution time demonstrates the effectiveness of the optimization technique, as it reduces the query processing time by approximately \textit{39.47\%}, leading to faster and more efficient database operations.
 
 \item \textbf{Impact of MV on CPU and elapsed time:} The \hyperref[tab:performance]{\textit{Table}~\ref*{tab:performance}} shows the execution metrics for three queries, highlighting significant improvements when using MVs. Particularly is the \textit{MonthlyClaimsByProvider} where CPU and elapsed times were reduced by factors 47x and 38x, respectively. The \textit{"TotalTreatmentCostByProvider"} showed modest benefits (1.1× and 1.6×), while the  \textit{"TotalClaimsByPatient"} demonstrated more notable gains, with execution times improved by approximately 6.3×. The results confirm that materialized views can substantially enhance query performance, especially for complex data aggregations and frequent report generation.
-
-
 \input{Table/updated}
-
+\clearpage
 
 %\input{Table/cpu_performance}
 
@@ -179,55 +181,9 @@ The output indicates an \textit{39.47\% }improvement in performance. Here, \( W 
 
 The following \hyperref[fig:cpu_usage]{\textit{bar chart}} illustrates the average CPU usage for query execution before and after materialized views (MVs) are implemented. The x-axis is used to represent two conditions: \textit{Before} MVs (without materialized views) and \textit{After} MVs (with materialized views). The y-axis is used to represent the average CPU usage as a percentage. As it is evident from the graph, the CPU utilization average went down significantly from \textbf{85\%} (before MVs) to \textbf{30\%} (after MVs), showcasing the effectiveness of materialized views in reducing CPU burden in query processing. The reduction can be accounted for due to precomputation and caching of query output, which reduces real-time computation and subsequently CPU consumption.
 
-%\input{Table_chart/cpu_usage}
+\input{Table/cpu_performance}
 
-\begin{figure}[h!] % Use the figure environment
-\begin{center}
-\begin{tikzpicture}
-    \begin{axis}[
-        ybar, 
-        symbolic x coords={Before MV, After MV}, % Labels for x-axis
-        xtick=data, 
-        ylabel={CPU Usage (\%)}, % Y-axis Label (updated to CPU Usage)
-        xlabel={Query Execution Type}, % X-axis Label
-        nodes near coords, % Shows values above bars
-        bar width=25pt, % Adjusted bar width
-        enlarge x limits=0.5, % Spacing between bars
-        ymin=0, ymax=100, % Y-axis limits
-        area legend, % Enables legend area
-        legend style={
-            at={(0.5,-0.25)}, % Position of the legend (below the chart)
-            anchor=north, % Anchors the legend to the north (top) of the point
-            yshift=-5pt, % Adds a small gap between xlabel and legend
-            font=\small, % Smaller font for legend
-        }, 
-        bar shift=0pt, % Aligns bars properly
-        ymajorgrids=true, % Adds horizontal grid lines
-        grid style={dashed, gray!30}, % Grid line style
-        ytick={0, 20, 40, 60, 80, 100}, % Custom Y-axis ticks
-        xticklabel style={font=\small}, % Smaller font for x-axis labels
-        yticklabel style={font=\small}, % Smaller font for y-axis labels
-        axis on top, % Places axis lines on top of the bars
-    ]
-    \addplot[
-        fill=red!30, % First bar fill color (red)
-        draw=red, % First bar border color (red)
-    ] coordinates {(Before MV, 85)(After MV, 30)}; % First bar value (Before MV)
-   % \addlegendentry{Before MV} % Legend entry for the first bar
 
-    \addplot[
-        fill=green!30, % Second bar fill color (green)
-        draw=green, % Second bar border color (green)
-    ] coordinates {(After MV, 30)(After MV, 30)}; % Second bar value (After MV)
-    %\addlegendentry{After MV} % Legend entry for the second bar
-
-    \end{axis}
-\end{tikzpicture}
-\caption{Comparison of CPU Usage}
-\label{fig:cpu_usage}
-\end{center}
-\end{figure}
-\end{enumerate}
 
 
  \textbf{Data will be updated once the final implementation is done}.

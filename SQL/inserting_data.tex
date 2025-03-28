@@ -6,6 +6,8 @@
 \definecolor{bordercolor}{rgb}{0.7,0.7,0.7}  % ✅ Left border color (gray)
 \definecolor{codeblue}{rgb}{0,0,0.8}  % ✅ Blue for SQL keywords
 
+\definecolor{commentcolor}{RGB}{0, 128, 0}  % Green for comments
+\definecolor{titlecolor}{RGB}{0, 0, 255}    % Blue for titles
 % ✅ Define SQL language with correct comment handling
 \lstdefinelanguage{MySQL}{
     keywords={SELECT, FROM, WHERE, JOIN, ON, INNER, OUTER, LEFT, RIGHT, FULL, GROUP, BY, ORDER, ASC, DESC, AS, COUNT, SUM, AVG, MAX, MIN, DISTINCT, INSERT, INTO, VALUES, UPDATE, SET, DELETE, CREATE, TABLE, PRIMARY, FOREIGN, KEY, DEFAULT, NULL, NOT, CHECK, CONSTRAINT, INDEX, VIEW, MATERIALIZED, PROCEDURE, FUNCTION, TRIGGER, DATABASE, ALTER, DROP, EXEC, IF, EXISTS, UNION, ALL, CASE, WHEN, THEN, ELSE, END, CAST, CONVERT, LIKE, IN, BETWEEN, AND, OR, HAVING, LIMIT, OFFSET},
@@ -24,6 +26,7 @@
     basicstyle=\ttfamily\footnotesize,
     breaklines=true,
     captionpos=b,
+    title=\color{titlecolor}\textbf{Table Creation Script}, % Title in blue
     numbers=left,      % ✅ Enables row numbers on the left
     stepnumber=1,      % ✅ Row numbers increment by 1
     firstnumber=1,     % ✅ Starts numbering at 1
@@ -35,49 +38,26 @@
     rulecolor=\color{bordercolor},  % ✅ Sets left border color
     language=MySQL  % ✅ Uses SQL keyword highlighting
 }
-
-\begin{lstlisting}[style=sqlstyle, caption={SQL query to Create Table}]
--- Create InsuranceProviders Table
-CREATE TABLE InsuranceProviders (
-    InsuranceProviderID INT PRIMARY KEY IDENTITY(1,1),
-    ProviderName NVARCHAR(100) NOT NULL,
-    Address NVARCHAR(255),
-    City NVARCHAR(100),
-    State NVARCHAR(50),
-    ZipCode NVARCHAR(20)
-);
-
--- Create Patients Table
-CREATE TABLE Patients (
-    PatientID INT PRIMARY KEY IDENTITY(1,1),
-    FirstName NVARCHAR(50) NOT NULL,
-    LastName NVARCHAR(50) NOT NULL,
-    DateOfBirth DATE NOT NULL,
-    Gender CHAR(1) CHECK (Gender IN ('M', 'F', 'O')), -- M: Male, F: Female, O: Other
-    Address NVARCHAR(255),
-    City NVARCHAR(100),
-    State NVARCHAR(50),
-    ZipCode NVARCHAR(20),
-    InsuranceProviderID INT FOREIGN KEY REFERENCES InsuranceProviders(InsuranceProviderID)
-);
-
--- Create Claims Table
-CREATE TABLE Claims (
-    ClaimID INT PRIMARY KEY IDENTITY(1,1),
-    PatientID INT FOREIGN KEY REFERENCES Patients(PatientID),
-    InsuranceProviderID INT FOREIGN KEY REFERENCES InsuranceProviders(InsuranceProviderID),
-    ClaimDate DATE NOT NULL,
-    ClaimAmount DECIMAL(18, 2) NOT NULL,
-    Status NVARCHAR(50) CHECK (Status IN ('Pending', 'Approved', 'Rejected'))
-);
-
--- Create Treatments Table
-CREATE TABLE Treatments (
-    TreatmentID INT PRIMARY KEY IDENTITY(1,1),
-    ClaimID INT FOREIGN KEY REFERENCES Claims(ClaimID),
-    TreatmentDate DATE NOT NULL,
-    TreatmentType NVARCHAR(100) NOT NULL,
-    Cost DECIMAL(18, 2) NOT NULL
-);
+  
+\begin{lstlisting}[style=sqlstyle, caption={Script for Inserting Data}, label=lst:inserting_data]
+-- Insert Patients (Generate 1 Million Patients)
+DECLARE @i INT = 1;
+WHILE @i <= 1000000
+BEGIN
+    INSERT INTO Patients (FirstName, LastName, DateOfBirth, Gender, Address, City, State, ZipCode, InsuranceProviderID)
+    VALUES (
+        'FirstName' + CAST(@i AS NVARCHAR(10)),
+        'LastName' + CAST(@i AS NVARCHAR(10)),
+        DATEADD(DAY, -ABS(CHECKSUM(NEWID())) % 36500, GETDATE()), -- Random Date of Birth (0-100 years old)
+        CASE WHEN @i % 3 = 0 THEN 'M' WHEN @i % 3 = 1 THEN 'F' ELSE 'O' END, -- Random Gender
+        'Address' + CAST(@i AS NVARCHAR(10)),
+        'City' + CAST(@i % 100 AS NVARCHAR(10)),
+        'State' + CAST(@i % 10 AS NVARCHAR(10)),
+        'ZipCode' + CAST(@i % 1000 AS NVARCHAR(10)),
+        (SELECT InsuranceProviderID FROM InsuranceProviders WHERE ProviderName = 'TK (Techniker Krankenkasse)')
+    );
+    SET @i = @i + 1;
+END;
 GO
+
 \end{lstlisting}

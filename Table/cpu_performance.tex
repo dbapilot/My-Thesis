@@ -1,23 +1,46 @@
+\begin{figure}[h!] % Use the figure environment
+\begin{center}
+\begin{tikzpicture}
+    \begin{axis}[
+        ybar, 
+        symbolic x coords={Before MV, After MV}, % Labels for x-axis
+        xtick=data, 
+        ylabel={CPU Usage (\%)}, % Y-axis Label (updated to CPU Usage)
+        xlabel={Query Execution Type}, % X-axis Label
+        nodes near coords, % Shows values above bars
+        bar width=25pt, % Adjusted bar width
+        enlarge x limits=0.5, % Spacing between bars
+        ymin=0, ymax=100, % Y-axis limits
+        area legend, % Enables legend area
+        legend style={
+            at={(0.5,-0.25)}, % Position of the legend (below the chart)
+            anchor=north, % Anchors the legend to the north (top) of the point
+            yshift=-5pt, % Adds a small gap between xlabel and legend
+            font=\small, % Smaller font for legend
+        }, 
+        bar shift=0pt, % Aligns bars properly
+        ymajorgrids=true, % Adds horizontal grid lines
+        grid style={dashed, gray!30}, % Grid line style
+        ytick={0, 20, 40, 60, 80, 100}, % Custom Y-axis ticks
+        xticklabel style={font=\small}, % Smaller font for x-axis labels
+        yticklabel style={font=\small}, % Smaller font for y-axis labels
+        axis on top, % Places axis lines on top of the bars
+    ]
+    \addplot[
+        fill=red!30, % First bar fill color (red)
+        draw=red, % First bar border color (red)
+    ] coordinates {(Before MV, 85)(After MV, 30)}; % First bar value (Before MV)
+   % \addlegendentry{Before MV} % Legend entry for the first bar
 
-% Optional: Define custom colors
-\definecolor{headerblue}{RGB}{200, 220, 255}
-\definecolor{rowgray}{gray}{0.95}
-\definecolor{lightgreen}{RGB}{220, 255, 220}
-\definecolor{lightred}{RGB}{255, 230, 230}
+    \addplot[
+        fill=green!30, % Second bar fill color (green)
+        draw=green, % Second bar border color (green)
+    ] coordinates {(After MV, 30)(After MV, 30)}; % Second bar value (After MV)
+    %\addlegendentry{After MV} % Legend entry for the second bar
 
-\begin{table}[h!]
-    \centering
-    \caption{Performance Comparison}
-    %\label{tab:performance}
-    \rowcolors{2}{gray!10}{white} % Alternate row colors
-    \begin{tabular}{lccc}
-        \toprule
-        \rowcolor{blue!10} % Header row color
-        \textbf{Query} & \textbf{Without MV (s)} & \textbf{With MV (s)} & \textbf{Difference (\%)} \\
-        \midrule
-        Query 1 & 2.35 & 0.45 & \cellcolor{white!20}80.85 \\
-        Query 2 & 3.78 & 0.62 & \cellcolor{gray!10}83.61 \\
-        Query 3 & 4.21 & 0.87 & \cellcolor{white!20}79.34 \\
-        \bottomrule
-    \end{tabular}
-\end{table}
+    \end{axis}
+\end{tikzpicture}
+\caption{Comparison of CPU Usage}
+\label{fig:cpu_usage}
+\end{center}
+\end{figure}
