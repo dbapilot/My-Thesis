@@ -1,11 +1,10 @@
 
-
 % Define custom colors
 \definecolor{thesisblue}{RGB}{25,84,166}  % Darker, more professional blue
 \definecolor{rowgray}{RGB}{248,248,248}   % Very light gray for subtle contrast
-\begin{table}[h!]
+\begin{table}[H]
 \centering
-\caption{Performance Comparison}
+\caption{Performance Comparison of Views}
 \label{tab:performance}
 \renewcommand{\arraystretch}{1.5} % Increased row height
 \setlength{\tabcolsep}{10pt} % Optimal column spacing
@@ -29,6 +28,6 @@ MonthlyClaims\\ByProvider & 47 & 38 & 1 & 1 & 47$\times$ & 38$\times$ \\ \hline
 
 \vspace{6pt}
 {\footnotesize 
-\textbf{Note:} Elap. = Elapsed Time. Improvement factors are calculated as Direct/MV time ratios. \\
-Tests conducted on SQL Server 2019 (SSMS v18.4).}
+\textbf{Note:} Elap. = Elapsed Time. Factors are calculated as Direct/MV time ratios. (X for multiplicative improvements). \\
+Tests on SQL Server 2019 (SSMS v18.4).}
 \end{table}

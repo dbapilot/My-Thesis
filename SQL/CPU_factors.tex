@@ -39,25 +39,32 @@
     language=MySQL  % ✅ Uses SQL keyword highlighting
 }
   
-\begin{lstlisting}[style=sqlstyle, caption={Script for Inserting Data}, label=lst:inserting_data]
--- Insert Patients (Generate 1 Million Patients)
-DECLARE @i INT = 1;
-WHILE @i <= 1000000
-BEGIN
-    INSERT INTO Patients (FirstName, LastName, DateOfBirth, Gender, Address, City, State, ZipCode, InsuranceProviderID)
-    VALUES (
-        'FirstName' + CAST(@i AS NVARCHAR(10)),
-        'LastName' + CAST(@i AS NVARCHAR(10)),
-        DATEADD(DAY, -ABS(CHECKSUM(NEWID())) % 36500, GETDATE()), -- Random Date of Birth (0-100 years old)
-        CASE WHEN @i % 3 = 0 THEN 'M' WHEN @i % 3 = 1 THEN 'F' ELSE 'O' END, -- Random Gender
-        'Address' + CAST(@i AS NVARCHAR(10)),
-        'City' + CAST(@i % 100 AS NVARCHAR(10)),
-        'State' + CAST(@i % 10 AS NVARCHAR(10)),
-        'ZipCode' + CAST(@i % 1000 AS NVARCHAR(10)),
-        (SELECT InsuranceProviderID FROM InsuranceProviders WHERE ProviderName = 'TK(Techniker Krankenkasse)')
-    );
-    SET @i = @i + 1;
-END;
-GO
+\begin{lstlisting}[style=sqlstyle, caption={Materialized view creation}, label=lst:cpu_factors]
+-- Simplified CPU Percentage Comparison
+DECLARE @DirectQueryCPU DECIMAL(10,2), @MVQueryCPU DECIMAL(10,2);
 
+-- Get CPU time for Direct Query
+SELECT @DirectQueryCPU = AVG(total_worker_time * 100.0 / NULLIF(total_elapsed_time, 0))
+FROM sys.dm_exec_query_stats qs
+CROSS APPLY sys.dm_exec_sql_text(qs.sql_handle) qt
+WHERE qt.text LIKE '%SELECT%p.PatientID,
+                    %p.FirstName,
+                    %p.LastName,%COUNT(c.ClaimID)%AS%TotalClaims%';
+
+-- Get CPU time for Materialized View
+SELECT @MVQueryCPU = AVG(total_worker_time * 100.0 / NULLIF(total_elapsed_time, 0))
+FROM sys.dm_exec_query_stats qs
+CROSS APPLY sys.dm_exec_sql_text(qs.sql_handle) qt
+WHERE qt.text LIKE '%SELECT%*%FROM%TotalClaimsByPatient%';
+
+-- Calculate and display the percentage comparison
+SELECT 
+    'Direct Query' AS QueryType,
+    @DirectQueryCPU AS Avg_CPU_Percentage,
+    'Materialized View' AS ComparisonType,
+    @MVQueryCPU AS Avg_CPU_Percentage,
+    CASE 
+        WHEN @MVQueryCPU = 0 THEN NULL
+        ELSE (@DirectQueryCPU / @MVQueryCPU) * 100 
+    END AS DirectQuery_Percentage_Of_MV
 \end{lstlisting}

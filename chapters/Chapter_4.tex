@@ -19,13 +19,13 @@ This project uses some software tools and technologies related to database manag
 
 \item\textbf{Python:} Python is a high-level interpreted programming language known for its simplicity and readability. It was created by Guido van Rossum and released in 1991 \cite{martin2023stam,wijanarko2020prediksi} . It has become one of the most popular programming languages worldwide. Its object-oriented approach helps programmers to write logical and clear code for small and large projects. Python libraries (packages) effectively simplify many important processes such as analyzing and visualizing data, retrieving unstructured data from the web, image processing, building machine learning models, and textual information \cite{Samira_Gholizadeh2022}. Here, it has been used to implement the PSO algorithm to optimize query performance, connect to the database using libraries like pyodbc, measures, executes, and analyzes the database programmatically. Due to its simplicity, readability, extensive libraries, ease of use, and efficiency, it is one of the best choices for implementing PSO.
 
-\item\textbf{pyodbc:} Pyodbc is an open-source Python module that makes accessing ODBC\footnote{Open Database Connectivity (ODBC) is a standardized application programming interface (API) for accessing databases.} databases simple. It implements the DB API\footnote{An Application Programming Interface (API) is a set of protocols, tools, and definitions that allow different software applications to communicate with each other.} 2.0 specification but is packed with even more Pythonic convenience. The pyodbc library connects Python to MSSQL, allowing programmatic execution of SQL queries and retrieval of results.
+\item\textbf{pyodbc:} Pyodbc is an open-source Python module that makes accessing ODBC\footnote{Open Database Connectivity (ODBC) is a standardized application programming interface (API) for accessing databases.} databases simple. It implements the DB API\footnote{An Application Programming Interface (API) is a set of definitions, tools and protocols that enable different software applications to communicate with each other.} 2.0 specification but is packed with even more Pythonic convenience. The pyodbc library connects Python to MSSQL, allowing programmatic execution of SQL queries and retrieval of results.
 
 \item\textbf{pandas:} The pandas constitute an open-source data manipulation and analysis tool that is fast, powerful, flexible, and easy to use. It provides data structures like DataFrames and Series, which are particularly useful for working with structured data. It is built entirely on the Python programming language. Pandas is used to analyze query performance data, such as execution times and storage costs, for better insights.
 
 \item\textbf{matplotlib:} Matplotlib is a comprehensive library for creating static, animated, and interactive visualizations in Python. \enquote{Matplotlib makes easy things easy and hard things possible} \cite{matplotlib}. It has been used to visualize query performance metrics and PSO convergence, making results easier to interpret.
 
-\item\textbf{GitHub:} GitHub is an open-source version control system that is used for tracking the changes made in the files and for enabling a collaborative software world. GitHub is incredibly popular due to its flexibility, speed, and ability to support almost any workflow. It has become the world's largest source code host, with around 90 per cent of developers worldwide using it to create, store, manage, and share their code. GitHub is used to track changes in Python scripts, LaTeX documents, and SQL files, making it an essential tool for collaboration and version control during thesis development. The platform’s features, such as branching, pull requests, and issue tracking, enable efficient project management and seamless integration of feedback from advisors or peers. Additionally, GitHub’s public or private repository options allow me to share my work with the academic community while retaining control over access.
+\item\textbf{Git:} Git is an open-source version control system for tracking file changes and the collaborative software world. It is incredibly popular due to its flexibility, speed, and ability to support almost any workflow. It has become the world's largest source code host, with around 90 per cent of developers worldwide using it to create, store, manage, and share their code. Git is used to track changes in Python scripts, LaTeX documents, and SQL files, making it an essential tool for collaboration and version control during thesis development. The platform’s features, such as branching, pull requests, and issue tracking, enable efficient project management and seamless integration of feedback from advisors or peers. Additionally, Git’s public or private repository options allow one to share work with the academic community while retaining control over access.
 
 \end{enumerate}
 
@@ -45,7 +45,7 @@ The following SQL query checks if the database \texttt{HealthInsuranceDB} exists
 
 \input{SQL/table_creation}
 \subsubsection{Inserting Random Data in Database}
-One million patient records are automatically generated through a looped SQL script~\ref{lst:inserting_data}. Random values are assigned for date of birth (ranging from 0-100 years), gender (evenly distributed among M/F/O), and location data (address, city, state, and zip code).\vspace{.4cm}
+One million patient records are automatically generated through a looped SQL \hyperref[lst:inserting_data]{\textbf{script}~\ref{lst:inserting_data}}. Random values are assigned for date of birth (ranging from 0-100 years), gender (evenly distributed among M/F/O), and location data (address, city, state, and zip code).\textit{The full script that is used to insert data for the other two table is provided in the appendix ~\ref{lst:inserting_fullData}}.\vspace{.4cm}
 
  \input{SQL/inserting_data}
 
@@ -53,7 +53,7 @@ One million patient records are automatically generated through a looped SQL scr
 
 \input{SQL/Query_identify}
 
-As shown in Listing~\ref{lst:IdentifyComplexQueries}, query retrieves the top 10 most time-consuming queries from SQL Server by analyzing the \(\texttt{sys.dm\_exec\_query\_stats}\) Dynamic Management Views(DMV)\footnote{DMVs are system defined views for database administrators and developers to troubleshoot performance issues, identify missing indexes, analyze query performance, and monitor resource usage efficiently.}. It calculates the total elapsed time in milliseconds, counts the number of executions, and fetches the query text using \(\texttt{sys.dm\_exec\_sql\_text}\). The results are sorted by \(\texttt{total\_elapsed\_time}\) in descending order to highlight the slowest queries for performance tuning and optimization. These queries were then used to create materialized views, which were optimized using the PSO algorithm to improve overall query performance.
+As shown in \hyperref[lst:IdentifyComplexQueries]{\textbf{listing}~\ref{lst:IdentifyComplexQueries}}, query retrieves the top 10 most time-consuming queries from SQL Server by analyzing the \(\texttt{sys.dm\_exec\_query\_stats}\) Dynamic Management Views(DMV)\footnote{DMVs are system defined views for database administrators and developers to troubleshoot performance issues, identify missing indexes, analyze query performance, and monitor resource usage efficiently.}. It calculates the total elapsed time in milliseconds, counts the number of executions, and fetches the query text using \(\texttt{sys.dm\_exec\_sql\_text}\). The results are sorted by \(\texttt{total\_elapsed\_time}\) in descending order to highlight the slowest queries for performance tuning and optimization. These queries were then used to create materialized views, which were optimized using the PSO algorithm to improve overall query performance.
 
 \subsubsection{ Materialized views Creation (Indexed Views)}\label{Query_decomposition} Once the top slow queries are sorted out, MVs(In MSSQL Server Mvs are implemented as Indexed views ) are created for each of these queries to store their precomputed results.\vspace{.4cm}
 
@@ -62,18 +62,18 @@ As shown in Listing~\ref{lst:IdentifyComplexQueries}, query retrieves the top 10
 
 
 
-These materialized/indexed views in listing ~\ref{lst:MV_creation} are designed to optimize query performance in a health insurance database by precomputing and storing aggregated results. The \texttt{TotalClaimsByPatient} view demonstrates the retrieval of claim counts per patient, while the \texttt{TotalTreatmentCostByProvider} view offers a rapid summary of treatment costs by the insurance provider. The \texttt{MonthlyClaimsByProvider} view breaks down monthly claims in detail, enabling efficient analysis of claim trends over time. By materializing these views with unique clustered indexes, the database ensures faster query execution and reduced computational costs on data with frequent access.
+These materialized/indexed views in \hyperref[lst:MV_creation]{\textbf{listing}~\ref{lst:MV_creation}} are designed to optimize query performance in a health insurance database by precomputing and storing aggregated results. The \texttt{TotalClaimsByPatient} view demonstrates the retrieval of claim counts per patient, while the \texttt{TotalTreatmentCostByProvider} view offers a rapid summary of treatment costs by the insurance provider. The \texttt{MonthlyClaimsByProvider} view breaks down monthly claims in detail, enabling efficient analysis of claim trends over time. By materializing these views with unique clustered indexes, the database ensures faster query execution and reduced computational costs on data with frequent access.
 
 
 
-  \subsubsection{View Maintenance and Refresh Strategies}\label{View_maintainance} Incremental, Manual or automatic refresh strategies can be set up according to the requirements query to create a scheduled job with the help of script as in the listing ~\ref{lst:Maintenance_and_Refresh_Strategies}.\vspace{.4cm}
+  \subsubsection{View Maintenance and Refresh Strategies}\label{View_maintainance} Incremental, Manual or automatic refresh strategies can be set up according to the requirements query to create a scheduled job with the help of script as in the \hyperref[lst:Maintenance_and_Refresh_Strategies]{\textbf{listing} ~\ref{lst:Maintenance_and_Refresh_Strategies}}.\vspace{.4cm}
 
 \input{SQL/Refresh_config}\vspace{.4cm}
 
 As the database is created here only for demonstration purposes and all data are inserted once manually, therefore materialized views are refreshed manually. This approach is suitable for scenarios where immediate updates are required or when automated refresh mechanisms (like triggers or scheduled jobs) are not feasible. Manual refresh ensures that the views reflect the latest changes in the underlying data, providing accurate results for query processing.\vspace{.4cm}
 
-\subsection{Automation with the PSO algorithm:} \label{Cost_evaluation}
- The following Python code illustrates the implementation of the PSO algorithm for multiple values in the database system. The goal is to minimize query execution time and CPU cost by selecting the most beneficial views to materialize. This section provides a detailed explanation of each function in the implementation.
+\subsection{Automation with the PSO algorithm} \label{Cost_evaluation}
+ The following Python code illustrates the implementation of the PSO algorithm for multiple values in the database system. The goal is to minimize query execution time and CPU cost by selecting the most beneficial views to materialize. This section provides a detailed explanation of each function in the implementation.\vspace{.4cm}
 
 
 
@@ -81,7 +81,7 @@ As the database is created here only for demonstration purposes and all data are
 
 \input{Python/PSO_python}\vspace{.4cm}
 
-A sequence diagram in figure ~\ref{fig:Sequence_diagram} is included here to help better understand the workflow and interactions between the system's components. It provides a step-by-step visualisation of how this code operates, making it more understandable.
+A sequence diagram in \hyperref[fig:Sequence_diagram]{\textbf{figure}~\ref{fig:Sequence_diagram}} is included here to help better understand the workflow and interactions between the system's components. It provides a step-by-step visualisation of how this code operates, making it more straightforward.\vspace{.4cm}
   
  % \input{Python/PSO_Best_Response} \vspace{.4cm}
 
@@ -95,17 +95,17 @@ A sequence diagram in figure ~\ref{fig:Sequence_diagram} is included here to hel
 % Inserting the image
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.5\textwidth]{Figure/seq.diagram .png} % Replace 'example-image' with your image file name
-    \caption{Sequence diagram of code}
+    \includegraphics[width=0.8\textwidth]{Figure/Seq.Dia.png} % Replace 'example-image' with your image file name
+    \caption{Python Code Execution Sequence}
     \label{fig:Sequence_diagram}
-\end{figure}
+\end{figure}\vspace{.4cm}
 
 
 
 
 
 
-\subsubsection{Output from PSO automation }  Upon execution for a specified number of iterations, the code records the best combination of materialized views that minimize the total cost. It makes a list of the iteration-wise data, including the best execution time, CPU cost and the corresponding views for each iteration. Finally, it prints the overall best view according to their parameters. Below is the sample of the output from the python code: \vspace{.4cm}
+\subsubsection{Output from PSO automation }  Upon execution for a specified number of iterations, the code records the best combination of materialized views that minimize the total cost. It makes a list of the iteration-wise data, including the best execution time, CPU cost and the corresponding views for each iteration. Finally, it prints the overall best view according to their parameters. Below is the final output from the Python code after multiple iterations: \vspace{.4cm}
 
 
 
@@ -116,14 +116,14 @@ A sequence diagram in figure ~\ref{fig:Sequence_diagram} is included here to hel
 
   
 
-\textbf{For the full code and further test cases, please refer to the Appendix~\ref{fullcode:Fullcode}.}
+\textit{\textbf{To see the full output from the PSO implementation, please refer to the Appendix~\ref{lst:pso_fullOutput}.}}\vspace{.4cm}
 
 
 \subsection{Performance Testing and Data Analysis} After creating the materialized views on the database \texttt{"HealthInsuranceDB"}, performance metrics were collected using SQL query statistics. Query elapsed times and CPU usages are recorded using built-in database monitoring tools, such as Dynamic Management Views (DMVs) or with the help of SQL queries. \vspace{.4cm}
 
- \input{SQL/Query_statistics}
+ \input{SQL/Query_statistics} \vspace{.4cm}
 
- \textbf{The full script to analyse performance is provided in listing ~\ref{lst:Analysis}.}
+\textit{\textbf{The full script to analyse performance is provided in appendix listing~\ref{lst:Analysis}.}} \vspace{.4cm}
 
 \begin{enumerate}
 
@@ -140,10 +140,9 @@ The tests were performed using \textit{MSSQL} on a system running \textit{Window
 After executing each query multiple times, both with and without materialized views, the \textit{response time}\footnote{Time taken to execute queries} and \textit{CPU usage}\footnote{Percentage of CPU utilization during query execution and refresh processes.} were noted in from the "Messages" tab in SSMS. The effectiveness of the materialized views was also evaluated using a comparison table and the percentage difference formula.
 
 \begin{itemize}
-\item\textbf{Differences between optimization methods:} The following \hyperref[comparison_table]{\textit{Table}~\ref*{comparison_table}} presents a performance comparison of elapsed time using two different approaches: \textit{Direct SELECT Aggregation}, and \textit{Materialized View}. The results show that the MV approach consistently outperforms the other method, with an average execution time of \textbf{69.2 ms}, compared to \textbf{106.6 ms} for direct \textit{SELECT} aggregation. This demonstrates that materialized views significantly reduce query execution time, providing a \textbf{35.08\%} improvement over direct aggregation. The consistent performance across multiple runs highlights the reliability and efficiency of materialized views in optimizing database queries.\vspace{.4cm}
+\item\textbf{Differences between optimization methods:} The following \hyperref[comparison_table]{\textit{Table}~\ref{comparison_table}} presents a performance comparison of elapsed time using two different approaches: \textit{Direct SELECT Aggregation}, and \textit{Materialized View}. The results show that the MV approach consistently outperforms the other method, with an average execution time of \textbf{\textit{69.2 ms}}, compared to \textbf{\textit{106.6 ms}} for direct \textit{SELECT} aggregation. This demonstrates that materialized views significantly reduce query execution time, providing a \textbf{35.08\%} improvement over direct aggregation. The consistent performance across multiple runs highlights the reliability and efficiency of materialized views in optimizing database queries.\vspace{.4cm}
  
- \input{Table/Response_time_comparion}\vspace{.4cm
- }
+ \input{Table/Response_time_comparion}\vspace{.4cm}
 
  \item\textbf{Analysis of percentage differences in query performance:}
  
@@ -154,37 +153,26 @@ After executing each query multiple times, both with and without materialized vi
 \]
 \end{comment}\vspace{.4cm}
 
-The output indicates an \textit{39.47\% }improvement in performance. Here, \( W = 114 \) represents the initial execution time (without optimization), and \( M = 69 \) represents the improved execution time (with optimization). This significant reduction in execution time demonstrates the effectiveness of the optimization technique, as it reduces the query processing time by approximately \textit{39.47\%}, leading to faster and more efficient database operations.
+The result indicates a \textbf{\textit{39.47\% }} improvement in performance. Here, \( W = 114 \) represents the initial execution time (unoptimized), and \( M = 69 \) represents the improved execution time (with optimization). This significant reduction in execution time demonstrates the effectiveness of the optimization technique, as it reduces the query processing time by approximately \textbf{\textit{39.47\% }}, leading to faster and more efficient database operations.\vspace{.4cm}
 
-\item \textbf{Impact of MV on CPU and elapsed time:} The \hyperref[tab:performance]{\textit{Table}~\ref*{tab:performance}} shows the execution metrics for three queries, highlighting significant improvements when using MVs. Particularly is the \textit{MonthlyClaimsByProvider} where CPU and elapsed times were reduced by factors 47x and 38x, respectively. The \textit{"TotalTreatmentCostByProvider"} showed modest benefits (1.1× and 1.6×), while the  \textit{"TotalClaimsByPatient"} demonstrated more notable gains, with execution times improved by approximately 6.3×. The results confirm that materialized views can substantially enhance query performance, especially for complex data aggregations and frequent report generation.
+\item \textbf{Impact of MV on CPU and elapsed time:}
+
 \input{Table/updated}
-\clearpage
 
-%\input{Table/cpu_performance}
-
-
-%\item \textbf{Bar Chart Comparison:} As shown in the \hyperref[fig:execution-plan]{barchart}, the execution time demonstrates the optimization achieved by using materialized views. Direct select aggregation is the least efficient as it involves computing aggregation directly from the raw data during query execution, which is resource-intensive and time-consuming. On the other hand, a materialized view is the fastest one. Although the choice of method depends on the trade-off between query speed, storage requirements, and maintenance.
-
-
-
-%\begin{figure}[H]
-%\centering
-%\includegraphics[width=0.8\textwidth]{Figure/Bar_chart.png} % Replace with your image file name
-%\caption{Comparison of query execution time} % Caption for the screenshot
-%\label{fig:execution-plan} % Label for referencing
-%\end{figure}
+The \hyperref[tab:performance]{\textbf{\textit{Table}~\ref*{tab:performance}}} shows the execution metrics for three queries, highlighting significant improvements when using MVs. Particularly is the \textit{MonthlyClaimsByProvider} where CPU and elapsed times were reduced by factors \textbf{\textit{47$\times$}} (times faster) and \textbf{\textit{38$\times$}}, respectively. The \textit{"TotalTreatmentCostByProvider"} showed modest benefits (\textbf{\textit{1.1×}} and \textbf{\textit{1.6×)}}, while the  \textit{"TotalClaimsByPatient"} demonstrated more notable gains, with execution times improved by approximately \textbf{\textit{6.3×}}. The results confirm that materialized views can substantially enhance query performance, especially for complex data aggregations and frequent report generation.
 
 
 \end{itemize} \vspace{.4cm}
 
 \item \textbf{CPU performance analysis:}
+The  \hyperref[fig:cpu_usage]{\textbf{\textit{figure}~\ref*{fig:cpu_usage}}} illustrates the average CPU percentage while executing a query using direct and materialized views. The x-axis is used to represent two states: \textit{Direct query} (unoptimized ) and \textit{with} MVs. The y-axis is used to represent the average CPU usage as a percentage. As one can observe on the graph, the average CPU utilization declined notably from \textbf{\textit{62.40\%}} to \textbf{\textit{51.78\%}}, emphasizing how materialized views are effective at lowering CPU load during query processing. Caching of query output and precomputation helps to reduce real-time calculation and, subsequently, CPU consumption. For the full script used to analyze, please refer to the \textit{appendix\textbf{~\ref{lst:cpu_factors}}}.
 
-The following \hyperref[fig:cpu_usage]{\textit{bar chart}} illustrates the average CPU usage for query execution before and after materialized views (MVs) are implemented. The x-axis is used to represent two conditions: \textit{Before} MVs (without materialized views) and \textit{After} MVs (with materialized views). The y-axis is used to represent the average CPU usage as a percentage. As it is evident from the graph, the CPU utilization average went down significantly from \textbf{85\%} (before MVs) to \textbf{30\%} (after MVs), showcasing the effectiveness of materialized views in reducing CPU burden in query processing. The reduction can be accounted for due to precomputation and caching of query output, which reduces real-time computation and subsequently CPU consumption.
 
 \input{Table/cpu_performance}
 
 
+\end{enumerate}
 
 
- \textbf{Data will be updated once the final implementation is done}.
+
 

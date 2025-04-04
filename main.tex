@@ -4,6 +4,7 @@
 \documentclass[language=en,degree=bachelor, 12pt, book]{./other_pages/mfithesis} % options: language=[de|en], degree=[bachelor|master], [natbib|biblatex], [bibtex|biber]
 %\newtheorem{definition}{Definition}[Section]
 \usepackage[utf8]{inputenc}
+%\usepackage{times} 
 \usepackage{appendix}
 \usepackage{microtype}
 \bibliographystyle{achemso}
@@ -188,6 +189,8 @@
 \usepackage{array}
 \usepackage[table,xcdraw]{xcolor} % For table colors
 \usepackage{booktabs} % For professional table styling
+%\usepackage{tocloft} 
+
 
 \begin{document}
   \author{Md Nazmul Islam}
@@ -199,56 +202,36 @@
  \coadvisor{Dr. Robert Martin}
  \externaladvisor{Björn Renner} % optional
 
- \date{Date of the thesis' completion}
+ \date{ Date of submission: 9\textsuperscript{th} April 2025}
  \logo{logoUDE.pdf}
 
  \maketitle % generate the title page\\ 
-
+ %\newpage
  \declaration
  \newpage
 \include{other_pages/non-Disclosure-agrement}
  \include{other_pages/Acknowledgement}
- \newpage
+    \include{other_pages/abstract}
+   \include{other_pages/acronym}
+   \newpage
    \tableofcontents{}
    \listoffigures{}
    \listoftables{}
-   \include{other_pages/abstract}
-   \include{other_pages/acronym}
    \include{chapters/chapter_1}
    \include{chapters/chapter_2}
    \include{chapters/Chapter_3}
    \include{chapters/Chapter_4}
    \include{chapters/chapter_5}
    \include{chapters/chapter_6}
-   \include{chapters/Chapter_7}
-
-   % Back matter with alphabetic page numbering
-    % Start alphabetic page numbering with 'a'
-
+ 
     \clearpage
     
  %%bibliography
  \bibliography{other_pages/Bibliography} % print the bibliography, using the .bib-file "bib_filename.bib"
  \clearpage
 
-%\section{Appendix} % Use a descriptive title
-%\label{app:python_output} % Add a label for referencing
-
-
-\section{Appendix} % Use a descriptive title
-Here is the full code that is used for the first test:\vspace{.4cm}
-
-%\label{fullcode:Fullcode} % Add a label for referencing
-
-
-
-\input{Python/Full_code} \vspace{.4cm}
-
-The Following script is used to analyse the performance
-\input{SQL/Analysis_Script}
-
-\textbf{output}
-\input{Python/Python_output}% Include the external file
+  %\appendix 
+  \include{chapters/Chapter_7}
 
 
 

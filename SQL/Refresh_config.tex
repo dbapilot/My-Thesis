@@ -8,7 +8,7 @@
 
 % ✅ Define SQL language with correct comment handling
 \lstdefinelanguage{MySQL}{
-    keywords={SELECT, FROM, WHERE, JOIN, ON, INNER, OUTER, LEFT, RIGHT, FULL, GROUP, BY, ORDER, ASC, DESC, AS, COUNT, SUM, AVG, MAX, MIN, DISTINCT, INSERT, INTO, VALUES, UPDATE, SET, DELETE, CREATE, TABLE, PRIMARY, FOREIGN, KEY, DEFAULT, NULL, NOT, CHECK, CONSTRAINT, INDEX, VIEW, MATERIALIZED, PROCEDURE, FUNCTION, TRIGGER, DATABASE, ALTER, DROP, EXEC, IF, EXISTS, UNION, ALL, CASE, WHEN, THEN, ELSE, END, CAST, CONVERT, LIKE, IN, BETWEEN, AND, OR, HAVING, LIMIT, OFFSET},
+    keywords={SELECT, FROM, WHERE, JOIN, ON, INNER, OUTER, LEFT, RIGHT, FULL, GROUP, BY, ORDER, ASC, DESC, AS, COUNT, SUM, AVG, MAX, MIN, DISTINCT, INSERT, INTO, VALUES, UPDATE, SET, DELETE, CREATE, TABLE, PRIMARY, FOREIGN, KEY, DEFAULT, NULL, NOT, CHECK, CONSTRAINT, INDEX, VIEW, MATERIALIZED, PROCEDURE, FUNCTION, TRIGGER, DATABASE, ALTER, DROP, EXEC, IF, EXISTS, UNION, ALL, CASE, WHEN, THEN, ELSE, END, CAST, CONVERT, LIKE, IN, BETWEEN, AND, OR, HAVING, LIMIT, OFFSET,EXEC,sp_add_jobstep,sp_refreshview,N,sp_add_schedule,sp_attach_schedule,dbo,Sp_add_jobserver,go},
     sensitive=false,
     morestring=[b]',  % ✅ Strings in single quotes
     morestring=[b]",  % ✅ Strings in double quotes
@@ -16,6 +16,8 @@
 }
 
 \lstdefinestyle{sqlstyle}{
+    alsoletter={.,_}, % Treat dots and underscores as part of identifiers
+    showstringspaces=false, % Prevent special space character
     backgroundcolor=\color{backcolour},   
     commentstyle=\color{codegreen},  % ✅ Comments in green
     keywordstyle=\bfseries\color{codeblue},  % ✅ SQL Keywords in Blue & Bold
@@ -39,7 +41,7 @@
 
      ---1. Incremental refresh 
      
-         CREATE TRIGGER trg_UpdateClaims
+    CREATE TRIGGER trg_UpdateClaims
 ON Claims
 AFTER INSERT, UPDATE, DELETE
 AS
@@ -93,7 +95,7 @@ EXEC sp_attach_schedule
 EXEC dbo.Sp_add_jobserver
      @job_name = N'RefreshMaterializedViewJob';
 
-go 
+GO
 
 
 

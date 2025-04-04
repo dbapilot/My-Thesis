@@ -1,19 +1,82 @@
 \begin{table}[H]
   \centering
-  \caption{Deciding between regular and materialized view}
+  \caption{Comparative Analysis of Regular vs. Materialized Views}
   \label{tab:view-comparison}
-  \resizebox{\textwidth}{!}{
-    \begin{tabular}{|p{0.18\textwidth}|p{0.40\textwidth}|p{0.42\textwidth}|}
+  \setlength{\arrayrulewidth}{0.3pt} % Thin borders
+  \rowcolors{2}{gray!5}{white} % Lighter alternating row colors
+  \renewcommand{\arraystretch}{1.5} % More vertical spacing
+  \resizebox{\textwidth}{!}{%
+    \begin{tabular}{
+      >{\raggedright\arraybackslash}m{0.22\textwidth} 
+      >{\raggedright\arraybackslash}m{0.38\textwidth} 
+      >{\raggedright\arraybackslash}m{0.38\textwidth}
+    }
+      \toprule
+      \rowcolor{blue!10}
+      \textbf{Criteria} & \textbf{Regular View} & \textbf{Materialized View} \\
+      \midrule
+      
+      \cellcolor{blue!5}\textbf{Query Complexity} & 
+      \begin{itemize}[leftmargin=*,noitemsep,topsep=2pt]
+        \item[\color{red}\textbullet] Executes underlying query at runtime
+        \item[\color{green!60!black}\textbullet] Useful for ad-hoc queries
+      \end{itemize} & 
+      \begin{itemize}[leftmargin=*,noitemsep,topsep=2pt]
+        \item[\color{green!60!black}\textbullet] Stores pre-computed results
+        \item[\color{green!60!black}\textbullet] Optimized for complex analytical queries
+      \end{itemize} \\
+      
+      \hline % Light horizontal line
+      
+      \cellcolor{blue!5}\textbf{Data Freshness} & 
+      \begin{itemize}[leftmargin=*,noitemsep,topsep=2pt]
+        \item[\color{green!60!black}\textbullet] Always returns current data
+        \item[\color{green!60!black}\textbullet] Ideal for transactional systems
+      \end{itemize} & 
+      \begin{itemize}[leftmargin=*,noitemsep,topsep=2pt]
+        \item[\color{red}\textbullet] Requires refresh mechanisms
+        \item[\color{green!60!black}\textbullet] Best for frequently accessed, infrequently updated data
+      \end{itemize} \\
+      
       \hline
-      \textbf{Requirement} & \textbf{Regular view} & \textbf{Materialized view} \\
+      
+      \cellcolor{blue!5}\textbf{Performance Profile} & 
+      \begin{itemize}[leftmargin=*,noitemsep,topsep=2pt]
+        \item[\color{red}\textbullet] Runtime computation overhead
+        \item[\color{green!60!black}\textbullet] Minimal storage requirements
+      \end{itemize} & 
+      \begin{itemize}[leftmargin=*,noitemsep,topsep=2pt]
+        \item[\color{green!60!black}\textbullet] Faster performance with pre-computed data 
+        \item[\color{red}\textbullet] Additional storage consumption
+      \end{itemize} \\
+      
       \hline
-      Complex Queries & Not ideal for complex queries as it recalculates each time, useful for ad-hoc queries & Suitable, precomputes results for faster querying \\
+      
+      \cellcolor{blue!5}\textbf{Scalability} & 
+      \begin{itemize}[leftmargin=*,noitemsep,topsep=2pt]
+        \item[\color{red}\textbullet] Limited by underlying query performance
+        \item[\color{green!60!black}\textbullet] No data duplication
+      \end{itemize} & 
+      \begin{itemize}[leftmargin=*,noitemsep,topsep=2pt]
+        \item[\color{green!60!black}\textbullet] Handles large datasets efficiently
+        \item[\color{red}\textbullet] Requires refresh strategy
+      \end{itemize} \\
+      
       \hline
-      Real-time Data & Suitable for accessing the most current data & Useful when data is accessed frequently and updated infrequently. \\
-      \hline
-      Performance & May slow down with complex queries due to on-the-fly computations & Faster performance with precomputed data. \\
-      \hline
-      Database Size & Performance may degrade with large datasets & Well-suited for large datasets as it reduces query latency \\
-      \hline
-    \end{tabular}}
+      
+      \cellcolor{blue!5}\textbf{Maintenance} & 
+      \begin{itemize}[leftmargin=*,noitemsep,topsep=2pt]
+        \item[\color{green!60!black}\textbullet] Automatic schema synchronization
+        \item[\color{green!60!black}\textbullet] No refresh management needed
+      \end{itemize} & 
+      \begin{itemize}[leftmargin=*,noitemsep,topsep=2pt]
+        \item[\color{red}\textbullet] Requires explicit refresh
+        \item[\color{red}\textbullet] Schema changes may break views
+      \end{itemize} \\
+      \bottomrule
+    \end{tabular}%
+  }
+  \vspace{4pt}
+  \footnotesize\textit{Note: Green bullets (\textcolor{green!60!black}{\textbullet}) indicate strengths; red (\textcolor{red}{\textbullet}) indicate limitations.}
 \end{table}
+

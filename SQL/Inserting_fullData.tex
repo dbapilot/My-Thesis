@@ -39,7 +39,15 @@
     language=MySQL  % ✅ Uses SQL keyword highlighting
 }
   
-\begin{lstlisting}[style=sqlstyle, caption={Script for Inserting Data}, label=lst:inserting_data]
+\begin{lstlisting}[style=sqlstyle, caption={Script for Inserting Data}, label=lst:inserting_fullData]
+-- Insert Insurance Providers
+INSERT INTO InsuranceProviders (ProviderName, Address, City, State, ZipCode)
+VALUES 
+('TK (Techniker Krankenkasse)', 'Bramfelder Str. 140', 'Hamburg', 'Hamburg', '22305'),
+('AOK', 'Rosenthaler Str. 31', 'Berlin', 'Berlin', '10178'),
+('Barmer', 'Axel-Springer-Str. 44', 'Berlin', 'Berlin', '10117');
+GO
+
 -- Insert Patients (Generate 1 Million Patients)
 DECLARE @i INT = 1;
 WHILE @i <= 1000000
@@ -54,10 +62,40 @@ BEGIN
         'City' + CAST(@i % 100 AS NVARCHAR(10)),
         'State' + CAST(@i % 10 AS NVARCHAR(10)),
         'ZipCode' + CAST(@i % 1000 AS NVARCHAR(10)),
-        (SELECT InsuranceProviderID FROM InsuranceProviders WHERE ProviderName = 'TK(Techniker Krankenkasse)')
+        (SELECT InsuranceProviderID FROM InsuranceProviders WHERE ProviderName = 'TK (Techniker Krankenkasse)')
     );
     SET @i = @i + 1;
 END;
 GO
 
+-- Insert Claims (Generate 1 Million Claims)
+DECLARE @j INT = 1;
+WHILE @j <= 1000000
+BEGIN
+    INSERT INTO Claims (PatientID, InsuranceProviderID, ClaimDate, ClaimAmount, Status)
+    VALUES (
+        (SELECT TOP 1 PatientID FROM Patients ORDER BY NEWID()), -- Random Patient
+        (SELECT TOP 1 InsuranceProviderID FROM InsuranceProviders ORDER BY NEWID()), -- Random Provider
+        DATEADD(DAY, -ABS(CHECKSUM(NEWID())) % 365, GETDATE()), -- Random Claim Date (within the last year)
+        ABS(CHECKSUM(NEWID())) % 10000 + 100, -- Random Claim Amount (100 to 10,100)
+        CASE WHEN @j % 3 = 0 THEN 'Pending' WHEN @j % 3 = 1 THEN 'Approved' ELSE 'Rejected' END -- Random Status
+    );
+    SET @j = @j + 1;
+END;
+GO
+
+-- Insert Treatments (Generate 2 Million Treatments)
+DECLARE @k INT = 1;
+WHILE @k <= 2000000
+BEGIN
+    INSERT INTO Treatments (ClaimID, TreatmentDate, TreatmentType, Cost)
+    VALUES (
+        (SELECT TOP 1 ClaimID FROM Claims ORDER BY NEWID()), -- Random Claim
+        DATEADD(DAY, -ABS(CHECKSUM(NEWID())) % 365, GETDATE()), -- Random Treatment Date (within the last year)
+        'TreatmentType' + CAST(@k % 100 AS NVARCHAR(10)), -- Random Treatment Type
+        ABS(CHECKSUM(NEWID())) % 5000 + 100 -- Random Cost (100 to 5,100)
+    );
+    SET @k = @k + 1;
+END;
+GO
 \end{lstlisting}

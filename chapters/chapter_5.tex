@@ -1,17 +1,16 @@
 \section{Future Work}
 \begin{itemize}
 
-    \item \textbf{Real Time Monitoring with Grafana}: Implementing real-time monitoring tools such as Grafana to track the performance impact of materialised views in production environments would be a valuable extension of this topic. Moreover, comparing direct versus MV response dynamically, monitoring maintenance costs to balance freshness and overhead, and detecting inefficient views proactively could also be an interesting part.
+    \item \textbf{Real Time Monitoring}: Implementing real-time monitoring tools like Grafana, Prometheus, and Kibana to track the performance effect of MV in production environments would be a valuable extension of this topic. In addition, dynamically comparing direct versus MV responses, monitoring maintenance expenses to maintain a balance between freshness and overhead, and proactively detecting inefficient views might also be an interesting part.
        
-    \item \textbf{Machine Learning for Adaptive PSO}: Future research related to this topic could investigate the selection and maintenance of MV using machine learning tools.
+    \item \textbf{Machine Learning for Adaptive \hyperref[sec:PSO]{PSO} }: Future research related to this topic could investigate the selection and maintenance of MV and additionally adjust the PSO parameters based on historical performance data using machine learning tools.
     
     \item \textbf{Incremental Maintenance}: comparing its impact on performance versus full refresh incremental view maintenance systems in real-time approaches could offer valuable insights.
     
     \item \textbf{Cloud Integration}: The use of cost-based algorithms to automatically select the most beneficial materialized views could be investigated. Extend the solution to cloud-based database systems, such as Azure SQL Database or Amazon RDS, to evaluate its scalability and performance in distributed environments.
     
-    \item \textbf{Machine Learning for Adaptive PSO}: Use machine learning techniques to adaptively adjust PSO parameters based on historical performance data, improving the efficiency of the optimization process.
-    
-    \item \textbf{Benchmarking with Standard Datasets}: Evaluate the proposed approach using standard benchmarking datasets, such as TPC-H or TPC-DS, to compare its performance with existing methods.
+    \item \textbf{Benchmarking with Standard Datasets}: Whereas this work prioritizes query optimization with PSO, evaluation of the proposed approach using standard benchmarking datasets, such as TPC-H or TPC-DS\footnote{TPC-H (Transaction Processing Performance Council - Ad-Hoc) and TPC-DS (Transaction Processing Performance Council - Decision Support) used to measure the performance of decision support systems (DSS) and data warehousing workloads. They assess the performance of database systems, with respect to query execution, data warehousing, and analytics.} to compare their performance with existing methods remains future work.
 \end{itemize}
 
-These future paths are meant to enhance the scalability, efficiency, and applicability of the proposed solution in real-world database systems.\\
+These future paths are meant to enhance the scalability, efficiency, and applicability of the proposed solution in real-world database systems.
+

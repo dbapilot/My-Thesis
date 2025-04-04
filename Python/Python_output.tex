@@ -1,65 +1,6 @@
 
 
-\begin{lstlisting}[style=pythonstyle, caption={Output from python code }, label={lst:pso_query_optimization}]]
-
-2025-03-24 17:11:07,071 - INFO - Connection established!
-2025-03-24 17:11:07,071 - INFO - Connected to database: HealthInsuranceDB  on server: T915-TEST-DB
-2025-03-24 17:11:07,071 - INFO - Starting PSO algorithm...
-2025-03-24 17:11:07,071 - INFO - Number of particles: 5
-2025-03-24 17:11:07,071 - INFO - Number of iterations: 5
-2025-03-24 17:11:07,071 - INFO - Iteration 1 started.
-2025-03-24 17:11:07,071 - INFO - Executing query: SELECT * FROM TotalClaimsByPatient 
-2025-03-24 17:11:07,635 - INFO - Executing query: SELECT * FROM MonthlyClaimsByProvider 
-2025-03-24 17:11:07,664 - INFO - Executing query: SELECT * FROM TotalTreatmentCostByProvider 
-2025-03-24 17:11:07,690 - INFO - Executing query: SELECT * FROM MonthlyClaimsByProvider 
-2025-03-24 17:11:07,717 - INFO - Executing query: SELECT * FROM TotalClaimsByPatient 
-2025-03-24 17:11:08,269 - INFO - Executing query: SELECT * FROM TotalTreatmentCostByProvider 
-2025-03-24 17:11:08,296 - INFO - Executing query: SELECT * FROM MonthlyClaimsByProvider 
-2025-03-24 17:11:08,323 - INFO - Executing query: SELECT * FROM TotalClaimsByPatient 
-2025-03-24 17:11:08,874 - INFO - Executing query: SELECT * FROM TotalTreatmentCostByProvider 
-2025-03-24 17:11:08,912 - INFO - Executing query: SELECT * FROM MonthlyClaimsByProvider 
-2025-03-24 17:11:08,939 - INFO - Executing query: SELECT * FROM TotalClaimsByPatient 
-2025-03-24 17:11:09,453 - INFO - Executing query: SELECT * FROM TotalTreatmentCostByProvider 
-2025-03-24 17:11:09,481 - INFO - Executing query: SELECT * FROM MonthlyClaimsByProvider 
-2025-03-24 17:11:09,509 - INFO - Iteration 1: Best Cost = 0.0533, Execution Time = 0.0533, CPU Cost = 0.0533
-2025-03-24 17:11:09,509 - INFO - Iteration 2 started.
-2025-03-24 17:11:09,509 - INFO - Executing query: SELECT * FROM TotalTreatmentCostByProvider 
-2025-03-24 17:11:09,536 - INFO - Executing query: SELECT * FROM MonthlyClaimsByProvider 
-2025-03-24 17:11:09,562 - INFO - Executing query: SELECT * FROM MonthlyClaimsByProvider 
-2025-03-24 17:11:09,589 - INFO - Executing query: SELECT * FROM TotalClaimsByPatient 
-2025-03-24 17:11:10,126 - INFO - Executing query: SELECT * FROM TotalTreatmentCostByProvider 
-2025-03-24 17:11:10,153 - INFO - Executing query: SELECT * FROM MonthlyClaimsByProvider 
-2025-03-24 17:11:10,181 - INFO - Executing query: SELECT * FROM TotalTreatmentCostByProvider 
-2025-03-24 17:11:10,209 - INFO - Executing query: SELECT * FROM TotalClaimsByPatient 
-2025-03-24 17:11:10,734 - INFO - Iteration 2: Best Cost = 0.0266, Execution Time = 0.0266, CPU Cost = 0.0266
-2025-03-24 17:11:10,734 - INFO - Iteration 3 started.
-2025-03-24 17:11:10,735 - INFO - Executing query: SELECT * FROM TotalTreatmentCostByProvider 
-2025-03-24 17:11:10,761 - INFO - Executing query: SELECT * FROM MonthlyClaimsByProvider 
-2025-03-24 17:11:10,789 - INFO - Executing query: SELECT * FROM TotalTreatmentCostByProvider 
-2025-03-24 17:11:10,815 - INFO - Executing query: SELECT * FROM MonthlyClaimsByProvider 
-2025-03-24 17:11:10,842 - INFO - Executing query: SELECT * FROM MonthlyClaimsByProvider 
-2025-03-24 17:11:10,870 - INFO - Iteration 3: Best Cost = 0.0266, Execution Time = 0.0266, CPU Cost = 0.0266
-2025-03-24 17:11:10,870 - INFO - Iteration 4 started.
-2025-03-24 17:11:10,870 - INFO - Executing query: SELECT * FROM TotalClaimsByPatient 
-2025-03-24 17:11:11,390 - INFO - Executing query: SELECT * FROM MonthlyClaimsByProvider 
-2025-03-24 17:11:11,417 - INFO - Executing query: SELECT * FROM MonthlyClaimsByProvider 
-2025-03-24 17:11:11,445 - INFO - Executing query: SELECT * FROM TotalClaimsByPatient 
-2025-03-24 17:11:11,951 - INFO - Executing query: SELECT * FROM MonthlyClaimsByProvider 
-2025-03-24 17:11:11,987 - INFO - Executing query: SELECT * FROM TotalTreatmentCostByProvider 
-2025-03-24 17:11:12,013 - INFO - Iteration 4: Best Cost = 0.0265, Execution Time = 0.0265, CPU Cost = 0.0265
-2025-03-24 17:11:12,014 - INFO - Iteration 5 started.
-2025-03-24 17:11:12,014 - INFO - Executing query: SELECT * FROM TotalTreatmentCostByProvider 
-2025-03-24 17:11:12,040 - INFO - Executing query: SELECT * FROM TotalClaimsByPatient 
-2025-03-24 17:11:12,556 - INFO - Executing query: SELECT * FROM TotalTreatmentCostByProvider 
-2025-03-24 17:11:12,582 - INFO - Executing query: SELECT * FROM MonthlyClaimsByProvider 
-2025-03-24 17:11:12,611 - INFO - Executing query: SELECT * FROM TotalClaimsByPatient 
-2025-03-24 17:11:13,144 - INFO - Executing query: SELECT * FROM TotalClaimsByPatient 
-2025-03-24 17:11:13,676 - INFO - Executing query: SELECT * FROM TotalTreatmentCostByProvider 
-2025-03-24 17:11:13,713 - INFO - Executing query: SELECT * FROM MonthlyClaimsByProvider 
-2025-03-24 17:11:13,741 - INFO - Executing query: SELECT * FROM TotalTreatmentCostByProvider 
-2025-03-24 17:11:13,772 - INFO - Iteration 5: Best Cost = 0.0265, Execution Time = 0.0265, CPU Cost = 0.0265
-2025-03-24 17:11:13,772 - INFO - Optimal Materialized Views:
-2025-03-24 17:11:13,772 - INFO - - SELECT * FROM TotalTreatmentCostByProvider 
+\begin{lstlisting}[style=pythonstyle, caption={Output from python code }, label={lst:pso_Output}]]
 
 Iteration Data:
 Iteration | Execution Time | CPU Cost | Best View
